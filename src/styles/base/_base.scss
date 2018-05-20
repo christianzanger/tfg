@@ -1,0 +1,17 @@
+html {
+  // 16 px base * .625 = 10 (working with REM in base 10 system where 1.6 rem = 16px)
+  font-size: 62.5%
+}
+
+body {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: $m-size;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
+}

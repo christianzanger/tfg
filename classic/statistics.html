@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <!-- Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="assets/styles/styles.css">
+
+    <title>Interactive Web Performance</title>
+</head>
+<body>
+    <div>
+        <div>Average load time: <span id="avgLoadTime">Loading...</span></div>
+        <div>Total number of page loads: <span id="pageLoads">Loading...</span></div>
+    </div>
+    <button onclick="sessionStorage.removeItem('stats');">Clear session information</button>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+    <script src="/app/stats.js" type="module"></script>
+    <script src="/app/classicApp.js" type="module"></script>
+</body>
+</html>
