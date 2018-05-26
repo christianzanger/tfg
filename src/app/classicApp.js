@@ -7,7 +7,7 @@ const recalcAvgLoadTime = (stats) => {
     stats.averageLoadTime = Math.round(newAverage * 100) / 100;
 
     sessionStorage.setItem("stats", JSON.stringify(stats));
-    console.log(stats);
+    // console.log(stats);
     window.dispatchEvent(statsUpdatedEvent);
 };
 

@@ -21,21 +21,25 @@
                     <ul id="nav-mobile" class="left">
                         <li><a href="">Home</a></li>
                         <li><a href="">FAQ</a></li>
-                        <li><a href="./statistics.html">Stats</a></li>
+                        <li><a href="./statistics">Stats</a></li>
                     </ul>
                 </div>
             </nav>
             <div id="search" class="valign-wrapper" >
                 <div class="container amber lighten-3">
-                    <form class="">
+                    <form class="" id="search__form" action="/search" method="get">
                         <div class="input-field col s12">
                             <i class="material-icons prefix grey-text text-darken-4">search</i>
-                            <input id="searchText" type="text" class="validate amber lighten-5" placeholder="Location">
+                            <input id="search__text" type="text" class="validate amber lighten-5" placeholder="Location" name="q">
                         </div>
                     </form>
                     <div id="featured" class="row">
                         <div class="row col s4">
                             <div class="card">
+                                <div class="featured__badge deep-orange lighten-3 deep-orange-text text-darken-4">
+                                    <i class="material-icons deep-orange-text">favorite</i>
+                                    Featured
+                                </div>
                                 <div class="card-image">
                                     <img src="/assets/images/featured/1.jpg">
                                 </div>
@@ -49,6 +53,10 @@
                         </div>
                         <div class="row col s4">
                             <div class="card">
+                                <div class="featured__badge deep-orange lighten-3 deep-orange-text text-darken-4">
+                                    <i class="material-icons deep-orange-text">favorite</i>
+                                    Featured
+                                </div>
                                 <div class="card-image">
                                     <img src="/assets/images/featured/2.jpg">
                                 </div>
@@ -62,6 +70,10 @@
                         </div>
                         <div class="row col s4">
                             <div class="card">
+                                <div class="featured__badge deep-orange lighten-3 deep-orange-text text-darken-4">
+                                    <i class="material-icons deep-orange-text">favorite</i>
+                                    Featured
+                                </div>
                                 <div class="card-image">
                                     <img src="/assets/images/featured/3.jpg">
                                 </div>

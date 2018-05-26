@@ -12,3 +12,25 @@ html, body {
     background-image: url("/assets/images/landing/1.jpg");
     flex-grow: 2;
 }
+
+#search__form {
+    padding-right: 1em;
+}
+
+#searchText {
+    margin-right: 1em;
+}
+
+.featured__badge {
+    position: absolute;
+    z-index: 1;
+    right: 0;
+    top: 0;
+    padding: 0.3em;
+    font-weight: bold;
+}
+
+.featured__badge i {
+    vertical-align:middle;
+}
+
