@@ -9,13 +9,12 @@ const key = fs.readFileSync('./secret/unsplash', 'utf8', (err, data) => {
 });
 
 const URL = `https://api.unsplash.com/search/photos?client_id=${key}&per_page=12&query=`;
+console.log(`URL: ${URL}`);
 
 module.exports = (q) => {
-    console.log("Search for: " + q);
-
     fs.mkdir('./images/searches/' + q, (err) => {
         if (err) return console.log(err);
-        console.log("Directory created");
+        console.log(`Directory for ${q} created.`);
     });
 
     https.get(URL + q, (res) => {
