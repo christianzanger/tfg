@@ -1,18 +1,16 @@
-// This query gets 1 page which has by default 10 images
 const https = require('https');
 const fs = require('fs');
-
 const key = fs.readFileSync('./secret/unsplash', 'utf8', (err, data) => {
     if (err) throw err;
     console.log(data);
     return data;
 });
-
 const URL = `https://api.unsplash.com/search/photos?client_id=${key}&per_page=12&query=`;
-console.log(`URL: ${URL}`);
+// TODO: remove debugging code
+// console.log(`URL: ${URL}`);
 
 module.exports = (q) => {
-    fs.mkdir('./images/searches/' + q, (err) => {
+    fs.mkdir(`./images/searches/${q}`, (err) => {
         if (err) return console.log(err);
         console.log(`Directory for ${q} created.`);
     });
@@ -39,7 +37,8 @@ module.exports = (q) => {
                     });
 
                     res.on('end', () => {
-                        fs.writeFile('./images/searches/' + q + '/' + index + '.png', data, 'binary', (err) => {
+                        // console.log(`Image server ${index}: ${data.length}`);
+                        fs.writeFile(`./images/searches/${q}/${index}.png`, data, 'binary', (err) => {
                             if(err) return console.log(err);
                         });
                     });
