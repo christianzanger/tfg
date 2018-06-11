@@ -8,13 +8,14 @@ export default class Cookie {
     static searchForCookie (key) {
         const cookies = document.cookie.split(';');
         for (let i = 0; i < cookies.length; i++) {
-        let c = cookies[i].replace(' ', '');
-        if (c.indexOf(`${key}=`) == 0) return c.substring(`${key}=`.length, c.length);
+            let c = cookies[i].replace(' ', '');
+            if (c.indexOf(`${key}=`) == 0) return c.substring(`${key}=`.length, c.length);
         }
         return null;
     };
 
     updateCookie () {
+        console.log(this.obj);
         document.cookie = `${this.key}=${encodeURIComponent(JSON.stringify(this.obj))}; path=/`;
     };
 

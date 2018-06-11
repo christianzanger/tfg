@@ -11,23 +11,21 @@ const recalcAvgLoadTime = (stats) => {
 };
 
 const updateStats = () => {
+    const statsCookie = new Cookie('stats');
     recalcAvgLoadTime(statsCookie.obj);
     statsCookie.updateCookie();
-    console.log("Stats updated: ", statsCookie.obj);
+    // console.log("Stats updated load:", statsCookie.obj);
     window.dispatchEvent(statsUpdatedEvent);
 };
 
+// TODO: maybe delete this if not needed. Image stats updated in server and fetched later
 imgs.forEach((img) => {
     img.onload = (e) => {
         // console.log("image loaded");
-        // fetch(img.src, {method: 'HEAD'}).then((res) => {
-        //     console.log(res);
-        // });
     }
 });
 
 const statsUpdatedEvent = new Event('statsUpdate');
-const statsCookie = new Cookie("stats");
 
 // This function has to be deferred so loadEventEnd can have a value
 // If it's not deferred, loadEventEnd will equal 0 since it's not really finished yet (and averageLoadTime will be negative).

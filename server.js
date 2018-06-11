@@ -17,15 +17,32 @@ const defaultSessionStats = {
 
 const currentSessions = {};
 
-app.use(cookieParser());
-app.use(session({
-    secret: 'patatadelapatatadelapatata',
-}));
-
 // TODO: refactor /assets to /images
 app.use("/assets", express.static(__dirname + '/public/assets'));
 app.use("/app", express.static(__dirname + '/src/app'));
 
+// Disallow robots.txt (express has a weird behavior where robots.txt assigns a new userSessionID)
+app.get('/robots.txt', function (req, res) {
+    res.type('text/plain');
+    res.send("User-agent: *\nDisallow: /");
+});
+
+// Middleware needs to be created after static files, or it will get called for each of the static files
+app.use(cookieParser());
+app.use(session({
+    secret: 'thisisaveryrandomandtotallynotobviousstring',
+    resave: false,
+    saveUninitialized: true
+}));
+
+app.use((req, res, next) => {
+    if (!currentSessions.hasOwnProperty(req.sessionID)) {
+        currentSessions[req.sessionID] = {
+            images: defaultSessionStats.images
+        }
+    }
+    next();
+});
 
 app.get('/search', (req, res) => {
     if (!fs.existsSync(`${__dirname}/images/searches/${req.query.q}/`)) {
@@ -34,27 +51,23 @@ app.get('/search', (req, res) => {
     res.sendFile(__dirname + '/classic/search.html');
 });
 
-app.use((req, res, next) => {
-    // console.log(req.sessionID);
-    if (currentSessions.hasOwnProperty(req.sessionID)) {
-        console.log(currentSessions);
-    } else {
-        currentSessions[req.sessionID] = {}
-    }
-    next();
-});
-
-/**
- * Called multiple times for every /search.
- */
+// Called multiple times for every /search.
 app.get('/images/:location/:id', (req, res) => {
     const statsCookie = JSON.parse(req.cookies.stats);
     const imagePath = `${__dirname}/images/searches/${req.params.location}/${req.params.id}`;
+    const session = currentSessions[req.sessionID];
 
-    statsCookie.images.numberOfImages++;
-    statsCookie.images.downloadedBytes += fs.statSync(imagePath).size;
+    session.images.numberOfImages++;
+    session.images.downloadedBytes += fs.statSync(imagePath).size;
 
     res.cookie("stats", JSON.stringify(statsCookie)).sendFile(imagePath);
+});
+
+app.get('/sync', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    const session = currentSessions[req.sessionID];
+    currentSessions[req.sessionID] = defaultSessionStats;
+    res.send(JSON.stringify(session));
 });
 
 app.get('/statistics', (req, res) => {
@@ -62,7 +75,6 @@ app.get('/statistics', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    // console.log(req.cookies.stats);
     if (!req.cookies.stats) {
         res.cookie("stats", JSON.stringify(defaultSessionStats)).sendFile(__dirname + '/classic/index.html');
     } else {
@@ -72,6 +84,7 @@ app.get('/', (req, res) => {
 
 app.listen(port, function(req, res){
     console.log('App listening on port ' + port);
+    console.log(currentSessions);
 });
 
 app.use(function (req, res) {
