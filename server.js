@@ -21,7 +21,7 @@ const currentSessions = {};
 app.use("/assets", express.static(__dirname + '/public/assets'));
 app.use("/app", express.static(__dirname + '/src/app'));
 
-// Disallow robots.txt (express has a weird behavior where robots.txt assigns a new userSessionID)
+// Disallow robots.txt (Express has a weird behavior where robots.txt assigns a new userSessionID)
 app.get('/robots.txt', function (req, res) {
     res.type('text/plain');
     res.send("User-agent: *\nDisallow: /");
@@ -70,7 +70,15 @@ app.get('/sync', (req, res) => {
     res.send(JSON.stringify(session));
 });
 
-app.get('/statistics', (req, res) => {
+app.get('/stats/reset', (req, res) => {
+   currentSessions[req.sessionID] = {
+       images: defaultSessionStats.images
+   };
+
+   res.cookie("stats", JSON.stringify(defaultSessionStats)).send();
+});
+
+app.get('/stats', (req, res) => {
     res.sendFile(__dirname + '/classic/statistics.html');
 });
 
@@ -84,7 +92,6 @@ app.get('/', (req, res) => {
 
 app.listen(port, function(req, res){
     console.log('App listening on port ' + port);
-    console.log(currentSessions);
 });
 
 app.use(function (req, res) {
