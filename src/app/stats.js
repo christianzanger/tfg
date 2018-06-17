@@ -1,11 +1,11 @@
 import Cookie from './Cookie.js';
 
 async function syncStatsWithServer() {
-    return await (await fetch('/sync')).json();
+    return await (await fetch('/sync', {credentials: "same-origin"})).json();
 }
 
 async function resetStats() {
-    return await fetch('/stats/reset');
+    return await fetch('/stats/reset', {credentials: "same-origin"});
 }
 
 syncStatsWithServer().then((data) => {
@@ -20,8 +20,11 @@ syncStatsWithServer().then((data) => {
 
 
 document.getElementById('reset').addEventListener('click', () => {
-    const statsCookie = new Cookie("stats");
-    resetStats().then(() => location.reload());
+    resetStats().then(() => {
+        const statsCookie = new Cookie("stats");
+        statsCookie.reset();
+        location.reload()
+    });
 });
 
 window.addEventListener('statsUpdate', () => {

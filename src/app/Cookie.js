@@ -15,11 +15,10 @@ export default class Cookie {
     };
 
     updateCookie () {
-        console.log(this.obj);
         document.cookie = `${this.key}=${encodeURIComponent(JSON.stringify(this.obj))}; path=/`;
     };
 
     reset () {
-
+        document.cookie = `${this.key}=; Max-Age=-99999999;`;
     }
 }

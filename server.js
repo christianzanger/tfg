@@ -6,14 +6,6 @@ const fs = require('fs');
 
 const app = express();
 const port = process.env.PORT || 3000;
-const defaultSessionStats = {
-    averageLoadTime: 0,
-    numberOfLoads: 0,
-    images: {
-        numberOfImages: 0,
-        downloadedBytes: 0
-    }
-};
 
 const currentSessions = {};
 
@@ -35,11 +27,30 @@ app.use(session({
     saveUninitialized: true
 }));
 
+// Used for server-tracking stats like file sizes.
 app.use((req, res, next) => {
     if (!currentSessions.hasOwnProperty(req.sessionID)) {
         currentSessions[req.sessionID] = {
-            images: defaultSessionStats.images
+            images: {
+                numberOfImages: 0,
+                downloadedBytes: 0
+            }
         }
+    }
+    next();
+});
+
+// Used to initialize the stats cookie
+app.use((req, res, next) => {
+    if (!req.cookies.stats) {
+        res.cookie("stats", JSON.stringify({
+            averageLoadTime: 0,
+            numberOfLoads: 0,
+            images: {
+                numberOfImages: 0,
+                downloadedBytes: 0
+            }
+        }));
     }
     next();
 });
@@ -51,7 +62,6 @@ app.get('/search', (req, res) => {
     res.sendFile(__dirname + '/classic/search.html');
 });
 
-// Called multiple times for every /search.
 app.get('/images/:location/:id', (req, res) => {
     const statsCookie = JSON.parse(req.cookies.stats);
     const imagePath = `${__dirname}/images/searches/${req.params.location}/${req.params.id}`;
@@ -60,22 +70,38 @@ app.get('/images/:location/:id', (req, res) => {
     session.images.numberOfImages++;
     session.images.downloadedBytes += fs.statSync(imagePath).size;
 
-    res.cookie("stats", JSON.stringify(statsCookie)).sendFile(imagePath);
+    res.cookie("test", "TEST").sendFile(imagePath);
 });
 
 app.get('/sync', (req, res) => {
-    res.setHeader('Content-Type', 'application/json');
     const session = currentSessions[req.sessionID];
-    currentSessions[req.sessionID] = defaultSessionStats;
+    currentSessions[req.sessionID] = {
+        images: {
+            numberOfImages: 0,
+            downloadedBytes: 0
+        }
+    };
+
+    res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify(session));
 });
 
 app.get('/stats/reset', (req, res) => {
    currentSessions[req.sessionID] = {
-       images: defaultSessionStats.images
+       images: {
+           numberOfImages: 0,
+           downloadedBytes: 0
+       }
    };
 
-   res.cookie("stats", JSON.stringify(defaultSessionStats)).send();
+   res.cookie("stats", JSON.stringify({
+       averageLoadTime: 0,
+       numberOfLoads: 0,
+       images: {
+           numberOfImages: 0,
+           downloadedBytes: 0
+       }
+   })).send();
 });
 
 app.get('/stats', (req, res) => {
@@ -83,11 +109,7 @@ app.get('/stats', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    if (!req.cookies.stats) {
-        res.cookie("stats", JSON.stringify(defaultSessionStats)).sendFile(__dirname + '/classic/index.html');
-    } else {
-        res.sendFile(__dirname + '/classic/index.html');
-    }
+    res.sendFile(__dirname + '/classic/index.html');
 });
 
 app.listen(port, function(req, res){
