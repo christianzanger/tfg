@@ -34,3 +34,8 @@ html, body {
     vertical-align:middle;
 }
 
+.progress {
+    width: 90%;
+    margin: 3em auto;
+}
+

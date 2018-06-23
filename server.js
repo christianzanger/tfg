@@ -57,9 +57,15 @@ app.use((req, res, next) => {
 
 app.get('/search', (req, res) => {
     if (!fs.existsSync(`${__dirname}/images/searches/${req.query.q}/`)) {
-        generation(req.query.q);
+        generation(req.query.q, res, (res) => {
+            if (!fs.existsSync(`${__dirname}/images/searches/${req.query.q}/`)) {
+                // No results found for this keyword
+                res.sendFile(__dirname + '/classic/search404.html');
+            } else {
+                res.sendFile(__dirname + '/classic/search.html');
+            }
+        });
     }
-    res.sendFile(__dirname + '/classic/search.html');
 });
 
 app.get('/images/:location/:id', (req, res) => {
@@ -82,7 +88,7 @@ app.get('/sync', (req, res) => {
         }
     };
 
-    res.setHeader('Content-Type', 'application/json');
+    res.type('json');
     res.send(JSON.stringify(session));
 });
 
@@ -94,7 +100,7 @@ app.get('/stats/reset', (req, res) => {
        }
    };
 
-   res.cookie("stats", JSON.stringify({
+   res.cookie('stats', JSON.stringify({
        averageLoadTime: 0,
        numberOfLoads: 0,
        images: {
