@@ -14,7 +14,7 @@
     <title>Interactive Web Performance</title>
 </head>
 <body>
-<div id="app">
+<div id="appNoResult">
     <nav>
         <div class="nav-wrapper amber lighten-2">
             <a href="" class="brand-logo right hide-on-med-and-down">A generic travel agency</a>
@@ -22,15 +22,25 @@
                 <li><a href="/">Home</a></li>
                 <li><a href="">FAQ</a></li>
                 <li><a href="./stats">Stats</a></li>
+                <li><a href="./settings">Settings</a></li>
             </ul>
         </div>
     </nav>
-    <form class="" id="search__form" action="/search" method="get">
-        <div class="input-field col s12">
-            <i class="material-icons prefix grey-text text-darken-4">search</i>
-            <input id="search__text" type="text" class="validate amber lighten-5" placeholder="Location" name="q">
+    <div class="row">
+        <div class="col s12">
+            <div class="card-panel orange darken-4">
+                <span class="white-text">
+                    Sorry, no results found. Try out "Dublin"!
+                </span>
+            </div>
         </div>
-    </form>
+        <form class="col s12" id="search__form" action="/search" method="get">
+            <div class="input-field col s12">
+                <i class="material-icons prefix grey-text text-darken-4">search</i>
+                <input id="search__text" type="text" class="validate amber lighten-5" placeholder="Location" name="q">
+            </div>
+        </form>
+    </div>
 </div>
 <!-- Compiled and minified JavaScript for MaterializeCSS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>

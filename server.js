@@ -65,18 +65,19 @@ app.get('/search', (req, res) => {
                 res.sendFile(__dirname + '/classic/search.html');
             }
         });
+    } else {
+        res.sendFile(__dirname + '/classic/search.html');
     }
 });
 
 app.get('/images/:location/:id', (req, res) => {
-    const statsCookie = JSON.parse(req.cookies.stats);
     const imagePath = `${__dirname}/images/searches/${req.params.location}/${req.params.id}`;
     const session = currentSessions[req.sessionID];
 
     session.images.numberOfImages++;
     session.images.downloadedBytes += fs.statSync(imagePath).size;
 
-    res.cookie("test", "TEST").sendFile(imagePath);
+    res.sendFile(imagePath);
 });
 
 app.get('/sync', (req, res) => {
@@ -118,7 +119,7 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/classic/index.html');
 });
 
-app.listen(port, function(req, res){
+app.listen(port, () => {
     console.log('App listening on port ' + port);
 });
 

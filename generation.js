@@ -11,10 +11,10 @@ const URL = `https://api.unsplash.com/search/photos?client_id=${key}&per_page=12
 
 /**
  * @param q search keyword
- *
- *
+ * @param ClientRes Response for the client, not from any of the APIs
+ * @param callback callback to decide which file to send if the keywords didn't show any results
  */
-module.exports = (q, res, callback) => {
+module.exports = (q, ClientRes, callback) => {
     https.get(URL + q, (res) => {
         let data = '';
 
@@ -51,7 +51,7 @@ module.exports = (q, res, callback) => {
                 });
             }
 
-            callback(res);
+            callback(ClientRes);
         });
     }).on('error', (err) => {
         console.log("Unsplash API error: " + err.message);

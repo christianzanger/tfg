@@ -39,3 +39,6 @@ html, body {
     margin: 3em auto;
 }
 
+#appNoResult {
+    height: 100%;
+}
