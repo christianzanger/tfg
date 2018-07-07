@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <!-- Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="assets/styles/styles.css">
+
+    <title>Interactive Web Performance</title>
+</head>
+<body>
+<div id="settings" class="amber lighten-2">
+    <a href="/">Home</a>
+    <h1 class="white-text center-align">Settings</h1>
+    <ul class="collapsible">
+        <li>
+            <div class="collapsible-header">
+                <h4>Compression</h4>
+                <div class="switch col s3">
+                    <label>
+                        Off
+                        <input type="checkbox">
+                        <span class="lever"></span>
+                        On
+                    </label>
+                </div>
+            </div>
+            <div class="collapsible-body">
+                <span>Lorem ipsum dolor sit amet.</span>
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header">
+                <h4>Compression</h4>
+                <div class="switch col s3">
+                    <label>
+                        Off
+                        <input type="checkbox">
+                        <span class="lever"></span>
+                        On
+                    </label>
+                </div>
+            </div>
+            <div class="collapsible-body">
+                <span>Lorem ipsum dolor sit amet.</span>
+            </div>
+        </li>
+
+    </ul>
+</div>
+<!-- Compiled and minified JavaScript for MaterializeCSS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+<script src="/app/classicApp.js" type="module"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const elems = document.querySelectorAll('.collapsible');
+        const onOpenStart = (li) => {
+            console.log(li);
+        };
+
+        const instances = M.Collapsible.init(elems, {
+            onOpenStart: onOpenStart
+        });
+    });
+</script>
+</body>
+</html>

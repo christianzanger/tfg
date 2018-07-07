@@ -111,6 +111,10 @@ app.get('/stats/reset', (req, res) => {
    })).send();
 });
 
+app.get('/settings', (req, res) => {
+   res.sendFile(__dirname + '/classic/settings.html');
+});
+
 app.get('/stats', (req, res) => {
     res.sendFile(__dirname + '/classic/statistics.html');
 });
