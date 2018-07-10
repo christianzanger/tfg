@@ -14,10 +14,27 @@
     <title>Interactive Web Performance</title>
 </head>
 <body>
-<div id="settings" class="amber lighten-2">
+<div class="amber lighten-2 settings">
     <a href="/">Home</a>
-    <h1 class="white-text center-align">Settings</h1>
-    <ul class="collapsible">
+    <h1 class="white-text center-align settings__header">Settings</h1>
+    <div class="row settings-panel">
+        <div class="col m10 offset-m1 card-panel white">
+            <div class="settings-panel__setting">
+                <div class="col s3">
+                    Compression
+                </div>
+                <div class="switch col s2">
+                    <label>
+                        Off
+                        <input type="checkbox">
+                        <span class="lever"></span>
+                        On
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <ul class="collapsible">
         <li>
             <div class="collapsible-header">
                 <h4>Compression</h4>
@@ -51,7 +68,7 @@
             </div>
         </li>
 
-    </ul>
+    </ul> -->
 </div>
 <!-- Compiled and minified JavaScript for MaterializeCSS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
