@@ -18,20 +18,47 @@
     <a href="/">Home</a>
     <h1 class="white-text center-align settings__header">Settings</h1>
     <div class="row settings-panel">
-        <div class="col m10 offset-m1 card-panel white">
-            <div class="settings-panel__setting">
-                <div class="col s3">
-                    Compression
+        <div class="col m8 offset-m2 card-panel white">
+            <form action="/settings/update">
+                <div class="row">
+                    <div class="settings-panel__setting">
+                        <div class="col s2">
+                            Compression
+                        </div>
+                        <div class="col s2">
+                            Explain!
+                        </div>
+                        <div class="switch col s2">
+                            <label>
+                                Off
+                                <input type="checkbox" name="compression">
+                                <span class="lever"></span>
+                                On
+                            </label>
+                        </div>
+                    </div>
+                    <div class="settings-panel__setting">
+                        <div class="col s2">
+                            Compression
+                        </div>
+                        <div class="col s2">
+                            Explain!
+                        </div>
+                        <div class="switch col s2">
+                            <label>
+                                Off
+                                <input type="checkbox">
+                                <span class="lever"></span>
+                                On
+                            </label>
+                        </div>
+                    </div>
                 </div>
-                <div class="switch col s2">
-                    <label>
-                        Off
-                        <input type="checkbox">
-                        <span class="lever"></span>
-                        On
-                    </label>
-                </div>
-            </div>
+                <button class="btn waves-effect waves-light amber darken-4" type="submit" name="action">
+                    Save
+                    <i class="material-icons right">sync</i>
+                </button>
+            </form>
         </div>
     </div>
     <!-- <ul class="collapsible">
@@ -74,7 +101,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
 <script src="/app/classicApp.js" type="module"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    /*document.addEventListener('DOMContentLoaded', () => {
         const elems = document.querySelectorAll('.collapsible');
         const onOpenStart = (li) => {
             console.log(li);
@@ -83,7 +110,7 @@
         const instances = M.Collapsible.init(elems, {
             onOpenStart: onOpenStart
         });
-    });
+    });*/
 </script>
 </body>
 </html>

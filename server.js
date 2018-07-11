@@ -1,13 +1,21 @@
 const express = require('express');
-const generation = require('./generation');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const fs = require('fs');
+const mysql = require('mysql');
+const compression = require('compression');
+const generation = require('./generation');
 
 const app = express();
 const port = process.env.PORT || 3000;
-
 const currentSessions = {};
+const settings = {};
+const connection = mysql.createConnection({
+    host     : 'localhost',
+    user     : 'root',
+    password : 'root',
+    database : 'tfg'
+});
 
 // TODO: refactor /assets to /images
 app.use("/assets", express.static(__dirname + '/public/assets'));
@@ -53,6 +61,13 @@ app.use((req, res, next) => {
         }));
     }
     next();
+});
+
+app.use((req, res, next) => {
+    if (settings[req.sessionID]) {
+        if (settings[req.sessionID].compression) compression();
+    }
+    next()
 });
 
 app.get('/search', (req, res) => {
@@ -113,6 +128,26 @@ app.get('/stats/reset', (req, res) => {
 
 app.get('/settings', (req, res) => {
    res.sendFile(__dirname + '/classic/settings.html');
+});
+
+app.get('/settings/update', (req, res) => {
+    const session = JSON.parse(req.cookies.stats);
+    const sessionImages = currentSessions[req.sessionID];
+    settings[req.sessionID] = {
+        compression: req.query.compression === "on"
+    };
+
+    connection.query(
+        `INSERT INTO user_history (user_id, avg_load_time, loads, images, bytes) VALUES
+        ("${req.sessionID}", ${session.averageLoadTime}, ${session.numberOfLoads}, ${sessionImages.images.numberOfImages}, ${sessionImages.images.downloadedBytes})`,
+        (error, rows, fields) => {
+            if (error) {
+                console.log(error)
+            }
+        }
+    );
+
+    res.redirect('/');
 });
 
 app.get('/stats', (req, res) => {

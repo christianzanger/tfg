@@ -20,6 +20,7 @@
     "express": "^4.16.3",
     "express-session": "^1.15.6",
     "live-server": "^1.2.0",
+    "mysql": "^2.15.0",
     "node-sass": "4.5.3",
     "normalize.css": "7.0.0",
     "react": "16.0.0",
