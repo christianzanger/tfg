@@ -63,12 +63,9 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use((req, res, next) => {
-    if (settings[req.sessionID]) {
-        if (settings[req.sessionID].compression) compression();
-    }
-    next()
-});
+app.use(compression({filter: (req) => {
+    return settings[req.sessionID] && settings[req.sessionID].compression;
+}}));
 
 app.get('/search', (req, res) => {
     if (!fs.existsSync(`${__dirname}/images/searches/${req.query.q}/`)) {

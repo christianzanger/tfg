@@ -19,14 +19,13 @@ const updateStats = () => {
 };
 
 // TODO: maybe delete this if not needed. Image stats updated in server and fetched later
-imgs.forEach((img) => {
-    img.onload = (e) => {
-        // console.log("image loaded");
-    }
-});
+imgs.forEach((img) => img.onload = () => console.log("Image loaded"));
 
 const statsUpdatedEvent = new Event('statsUpdate');
 
 // This function has to be deferred so loadEventEnd can have a value
 // If it's not deferred, loadEventEnd will equal 0 since it's not really finished yet (and averageLoadTime will be negative).
-window.addEventListener('load', () => {setTimeout(updateStats, 0)});
+window.addEventListener('load', () => {
+    setTimeout(updateStats, 0);
+    console.log(window.performance.getEntries());
+});
