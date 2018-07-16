@@ -2,7 +2,7 @@ export default class Cookie {
 
     constructor (key) {
         this.key = key;
-        this.obj = JSON.parse(decodeURIComponent(Cookie.searchForCookie(key)));
+        this.obj = JSON.parse(decodeURIComponent(Cookie.searchForCookie(key))) || {};
     }
 
     static searchForCookie (key) {

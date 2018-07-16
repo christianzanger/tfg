@@ -22,7 +22,7 @@ app.use("/assets", express.static(__dirname + '/public/assets'));
 app.use("/app", express.static(__dirname + '/src/app'));
 
 // Disallow robots.txt (Express has a weird behavior where robots.txt assigns a new userSessionID)
-app.get('/robots.txt', function (req, res) {
+app.get('/robots.txt', (req, res) => {
     res.type('text/plain');
     res.send("User-agent: *\nDisallow: /");
 });
@@ -64,7 +64,7 @@ app.use((req, res, next) => {
 });
 
 app.use(compression({filter: (req) => {
-    return settings[req.sessionID] && settings[req.sessionID].compression;
+    return JSON.parse(req.cookies.settings).settings.compression;
 }}));
 
 app.get('/search', (req, res) => {

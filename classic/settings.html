@@ -19,7 +19,7 @@
     <h1 class="white-text center-align settings__header">Settings</h1>
     <div class="row settings-panel">
         <div class="col m8 offset-m2 card-panel white">
-            <form action="/settings/update">
+            <form action="/settings/update" id="settings">
                 <div class="row">
                     <div class="settings-panel__setting">
                         <div class="col s2">
@@ -31,7 +31,7 @@
                         <div class="switch col s2">
                             <label>
                                 Off
-                                <input type="checkbox" name="compression">
+                                <input type="checkbox" name="compression" id="compression">
                                 <span class="lever"></span>
                                 On
                             </label>
@@ -100,6 +100,7 @@
 <!-- Compiled and minified JavaScript for MaterializeCSS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
 <script src="/app/classicApp.js" type="module"></script>
+<script src="/app/settings.js" type="module"></script>
 <script>
     /*document.addEventListener('DOMContentLoaded', () => {
         const elems = document.querySelectorAll('.collapsible');
