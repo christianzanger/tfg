@@ -27,7 +27,7 @@ module.exports = (q, ClientRes, callback) => {
             const responseObj = JSON.parse(data);
 
             if (responseObj.total > 0) {
-                fs.mkdir(`./images/searches/${q}`, (err) => {
+                fs.mkdir(`${__basedir}/public/images/searches/${q}`, (err) => {
                     if (err) return console.log(err);
                 });
 
@@ -43,7 +43,7 @@ module.exports = (q, ClientRes, callback) => {
                         });
 
                         res.on('end', () => {
-                            fs.writeFile(`./images/searches/${q}/${index}.png`, data, 'binary', (err) => {
+                            fs.writeFile(`${__basedir}/public/images/searches/${q}/${index}.png`, data, 'binary', (err) => {
                                 if(err) return console.log(err);
                             });
                         });

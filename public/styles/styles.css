@@ -9,7 +9,7 @@ html, body {
 }
 
 #search {
-    background-image: url("/assets/images/landing/1.jpg");
+    background-image: url("/images/static/landingbg.jpg");
     flex-grow: 2;
 }
 

@@ -4,7 +4,7 @@ const session = require('express-session');
 const fs = require('fs');
 const mysql = require('mysql');
 const compression = require('compression');
-const generation = require('./generation');
+const generation = require('./src/app/generation');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -17,7 +17,12 @@ const connection = mysql.createConnection({
     database : 'tfg'
 });
 
+// For root directory referencing
+global.__basedir = __dirname;
+
 app.use("/app", express.static(__dirname + '/src/app'));
+app.use(express.static(`${__dirname}/public`));
+app.use("/public", express.static(`${__dirname}/public`));
 
 // Disallow robots.txt (Express has a weird behavior where robots.txt assigns a new userSessionID)
 app.get('/robots.txt', (req, res) => {
@@ -65,23 +70,18 @@ app.use(compression({filter: (req) => {
     return JSON.parse(req.cookies.settings).settings.compression;
 }}));
 
-// TODO: refactor /assets to /images
-app.get("/assets/*", (req, res) => {
-    res.sendFile(__dirname + '/public' + req.originalUrl);
-});
-
 app.get('/search', (req, res) => {
-    if (!fs.existsSync(`${__dirname}/images/searches/${req.query.q}/`)) {
+    if (!fs.existsSync(`${__dirname}/public/images/searches/${req.query.q}/`)) {
         generation(req.query.q, res, (res) => {
-            if (!fs.existsSync(`${__dirname}/images/searches/${req.query.q}/`)) {
+            if (!fs.existsSync(`${__dirname}/public/images/searches/${req.query.q}/`)) {
                 // No results found for this keyword
-                res.sendFile(__dirname + '/classic/search404.html');
+                res.sendFile(`${__dirname}/public/pages/search404.html`);
             } else {
-                res.sendFile(__dirname + '/classic/search.html');
+                res.sendFile(`${__dirname}/public/pages/search.html`);
             }
         });
     } else {
-        res.sendFile(__dirname + '/classic/search.html');
+        res.sendFile(__dirname + '/public/pages/search.html');
     }
 });
 
@@ -126,10 +126,6 @@ app.get('/stats/reset', (req, res) => {
    })).send();
 });
 
-app.get('/settings', (req, res) => {
-   res.sendFile(__dirname + '/classic/settings.html');
-});
-
 app.post('/savehistory', (req, res) => {
     const session = JSON.parse(req.cookies.stats);
     const settings = JSON.parse(req.cookies.settings);
@@ -149,12 +145,8 @@ app.post('/savehistory', (req, res) => {
     );
 });
 
-app.get('/stats', (req, res) => {
-    res.sendFile(__dirname + '/classic/statistics.html');
-});
-
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/classic/index.html');
+    res.sendFile(`${__dirname}/public/pages/index.html`);
 });
 
 app.listen(port, () => {
