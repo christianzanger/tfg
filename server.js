@@ -20,10 +20,7 @@ const connection = mysql.createConnection({
 // For root directory referencing
 global.__basedir = __dirname;
 
-app.use("/app", express.static(__dirname + '/src/app'));
-app.use(express.static(`${__dirname}/public`));
-app.use("/public", express.static(`${__dirname}/public`));
-
+// ------------- MIDDLEWARE -------------
 // Disallow robots.txt (Express has a weird behavior where robots.txt assigns a new userSessionID)
 app.get('/robots.txt', (req, res) => {
     res.type('text/plain');
@@ -66,9 +63,32 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(compression({filter: (req) => {
-    return JSON.parse(req.cookies.settings).settings.compression;
-}}));
+app.use(compression({
+    filter: (req) => {
+        return req.cookies.settings ? JSON.parse(req.cookies.settings).settings.compression : false;
+    }
+}));
+
+// ------------- ROUTES -------------
+app.get('/public/*', (req, res) => {
+    res.sendFile(`${__dirname}${req.originalUrl}`)
+});
+
+app.get('/images/*', (req, res) => {
+    res.sendFile(`${__dirname}/public/${req.originalUrl}`)
+});
+
+app.get('/pages/*', (req, res) => {
+    res.sendFile(`${__dirname}/public/${req.originalUrl}`)
+});
+
+app.get('/scripts/*', (req, res) => {
+    res.sendFile(`${__dirname}/public/${req.originalUrl}`)
+});
+
+app.get('/styles/*', (req, res) => {
+    res.sendFile(`${__dirname}/public/${req.originalUrl}`)
+});
 
 app.get('/search', (req, res) => {
     if (!fs.existsSync(`${__dirname}/public/images/searches/${req.query.q}/`)) {
