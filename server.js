@@ -17,8 +17,6 @@ const connection = mysql.createConnection({
     database : 'tfg'
 });
 
-// TODO: refactor /assets to /images
-app.use("/assets", express.static(__dirname + '/public/assets'));
 app.use("/app", express.static(__dirname + '/src/app'));
 
 // Disallow robots.txt (Express has a weird behavior where robots.txt assigns a new userSessionID)
@@ -66,6 +64,11 @@ app.use((req, res, next) => {
 app.use(compression({filter: (req) => {
     return JSON.parse(req.cookies.settings).settings.compression;
 }}));
+
+// TODO: refactor /assets to /images
+app.get("/assets/*", (req, res) => {
+    res.sendFile(__dirname + '/public' + req.originalUrl);
+});
 
 app.get('/search', (req, res) => {
     if (!fs.existsSync(`${__dirname}/images/searches/${req.query.q}/`)) {
@@ -127,24 +130,23 @@ app.get('/settings', (req, res) => {
    res.sendFile(__dirname + '/classic/settings.html');
 });
 
-app.get('/settings/update', (req, res) => {
+app.post('/savehistory', (req, res) => {
     const session = JSON.parse(req.cookies.stats);
+    const settings = JSON.parse(req.cookies.settings);
     const sessionImages = currentSessions[req.sessionID];
-    settings[req.sessionID] = {
-        compression: req.query.compression === "on"
-    };
 
     connection.query(
-        `INSERT INTO user_history (user_id, avg_load_time, loads, images, bytes) VALUES
-        ("${req.sessionID}", ${session.averageLoadTime}, ${session.numberOfLoads}, ${sessionImages.images.numberOfImages}, ${sessionImages.images.downloadedBytes})`,
+        `INSERT INTO user_history (user_id, avg_load_time, loads, images, bytes, compression) VALUES
+        ("${req.sessionID}", ${session.averageLoadTime}, ${session.numberOfLoads}, ${sessionImages.images.numberOfImages}, ${sessionImages.images.downloadedBytes}, ${settings.settings.compression})`,
         (error, rows, fields) => {
             if (error) {
-                console.log(error)
+                console.log(error);
+                res.sendStatus(400);
+            } else {
+                res.sendStatus(200);
             }
         }
     );
-
-    res.redirect('/');
 });
 
 app.get('/stats', (req, res) => {

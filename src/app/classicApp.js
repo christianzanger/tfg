@@ -14,7 +14,6 @@ const updateStats = () => {
     const statsCookie = new Cookie('stats');
     recalcAvgLoadTime(statsCookie.obj);
     statsCookie.updateCookie();
-    // console.log("Stats updated load:", statsCookie.obj);
     window.dispatchEvent(statsUpdatedEvent);
 };
 
