@@ -8,8 +8,7 @@ const generation = require('./src/app/generation');
 
 const app = express();
 const port = process.env.PORT || 3000;
-const currentSessions = {};
-const settings = {};
+const currentSessionsBuffer = {};
 const connection = mysql.createConnection({
     host     : 'localhost',
     user     : 'root',
@@ -37,8 +36,9 @@ app.use(session({
 
 // Used for server-tracking stats like file sizes.
 app.use((req, res, next) => {
-    if (!currentSessions.hasOwnProperty(req.sessionID)) {
-        currentSessions[req.sessionID] = {
+    const session = req.cookies.stats && JSON.parse(req.cookies.stats);
+    if (req.method !== "HEAD" && session && !currentSessionsBuffer.hasOwnProperty(session.uid)) {
+        currentSessionsBuffer[session.uid] = {
             images: {
                 numberOfImages: 0,
                 downloadedBytes: 0
@@ -52,6 +52,7 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
     if (!req.cookies.stats) {
         res.cookie("stats", JSON.stringify({
+            uid: req.sessionID,
             averageLoadTime: 0,
             numberOfLoads: 0,
             images: {
@@ -69,13 +70,22 @@ app.use(compression({
     }
 }));
 
-// ------------- ROUTES -------------
+// ------------- STATIC ROUTES -------------
 app.get('/public/*', (req, res) => {
     res.sendFile(`${__dirname}${req.originalUrl}`)
 });
 
 app.get('/images/*', (req, res) => {
-    res.sendFile(`${__dirname}/public/${req.originalUrl}`)
+    const imagePath = `${__dirname}/public/${req.originalUrl}`;
+
+    if (req.method !== "HEAD") {
+        const session = JSON.parse(req.cookies.stats);
+        const sessionBuffer = currentSessionsBuffer[session.uid];
+        sessionBuffer.images.numberOfImages++;
+        sessionBuffer.images.downloadedBytes += fs.statSync(imagePath).size;
+        console.log(sessionBuffer.images.numberOfImages);
+    }
+    res.sendFile(imagePath);
 });
 
 app.get('/pages/*', (req, res) => {
@@ -90,6 +100,7 @@ app.get('/styles/*', (req, res) => {
     res.sendFile(`${__dirname}/public/${req.originalUrl}`)
 });
 
+// ------------- ROUTES -------------
 app.get('/search', (req, res) => {
     if (!fs.existsSync(`${__dirname}/public/images/searches/${req.query.q}/`)) {
         generation(req.query.q, res, (res) => {
@@ -105,51 +116,39 @@ app.get('/search', (req, res) => {
     }
 });
 
-app.get('/images/:location/:id', (req, res) => {
-    const imagePath = `${__dirname}/images/searches/${req.params.location}/${req.params.id}`;
-    const session = currentSessions[req.sessionID];
-
-    session.images.numberOfImages++;
-    session.images.downloadedBytes += fs.statSync(imagePath).size;
-
-    res.sendFile(imagePath);
+app.get('/sync', (req, res) => {
+    const session = JSON.parse(req.cookies.stats);
+    const sessionBuffer = currentSessionsBuffer[session.uid];
+    currentSessionsBuffer
+    res.type('json');
+    res.send(JSON.stringify(sessionBuffer));
 });
 
-app.get('/sync', (req, res) => {
-    const session = currentSessions[req.sessionID];
-    currentSessions[req.sessionID] = {
+app.get('/stats/reset', (req, res) => {
+    const currentID = JSON.parse(req.cookies.stats).uid;
+
+    currentSessionsBuffer[currentID] = {
         images: {
             numberOfImages: 0,
             downloadedBytes: 0
         }
     };
 
-    res.type('json');
-    res.send(JSON.stringify(session));
-});
-
-app.get('/stats/reset', (req, res) => {
-   currentSessions[req.sessionID] = {
-       images: {
-           numberOfImages: 0,
-           downloadedBytes: 0
-       }
-   };
-
-   res.cookie('stats', JSON.stringify({
+    res.cookie('stats', JSON.stringify({
+       uid: currentID,
        averageLoadTime: 0,
        numberOfLoads: 0,
        images: {
            numberOfImages: 0,
            downloadedBytes: 0
        }
-   })).send();
+    })).send();
 });
 
 app.post('/savehistory', (req, res) => {
     const session = JSON.parse(req.cookies.stats);
     const settings = JSON.parse(req.cookies.settings);
-    const sessionImages = currentSessions[req.sessionID];
+    const sessionImages = currentSessionsBuffer[session.uid];
 
     connection.query(
         `INSERT INTO user_history (user_id, avg_load_time, loads, images, bytes, compression) VALUES
@@ -173,7 +172,7 @@ app.listen(port, () => {
     console.log('App listening on port ' + port);
 });
 
-app.use(function (req, res) {
+app.use((req, res) => {
     console.log(`404: ${req.originalUrl}`);
     res.status(404).send("Sorry can't find that!")
 });
