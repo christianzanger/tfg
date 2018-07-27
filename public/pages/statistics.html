@@ -14,6 +14,7 @@
     <title>Interactive Web Performance</title>
 </head>
 <body>
+    <a href="/">Home</a>
     <div>
         <div>Average load time: <span id="avgLoadTime">Loading...</span></div>
         <div>Page loads: <span id="pageLoads">Loading...</span></div>
@@ -22,9 +23,11 @@
         <div>Bytes of images downloaded: <span id="downloadedBytes">Loading...</span></div>
     </div>
     <input type="button" id="reset" value="Reset stats">
+    <canvas id="myChart"></canvas>
 
     <!-- Compiled and minified JavaScript for materialize -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
 
     <script src="/scripts/stats.js" type="module"></script>
     <script src="/scripts/classicApp.js" type="module"></script>

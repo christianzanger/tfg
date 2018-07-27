@@ -78,14 +78,20 @@ app.get('/public/*', (req, res) => {
 app.get('/images/*', (req, res) => {
     const imagePath = `${__dirname}/public/${req.originalUrl}`;
 
-    if (req.method !== "HEAD") {
+    if (req.method === "HEAD") {
+        if (!fs.existsSync(imagePath)) {
+            res.sendStatus(202);
+        } else {
+            res.sendStatus(200);
+        }
+    } else {
         const session = JSON.parse(req.cookies.stats);
         const sessionBuffer = currentSessionsBuffer[session.uid];
         sessionBuffer.images.numberOfImages++;
         sessionBuffer.images.downloadedBytes += fs.statSync(imagePath).size;
-        console.log(sessionBuffer.images.numberOfImages);
+        console.log(`${req.originalUrl}: ${fs.statSync(imagePath).size} bytes`);
+        res.sendFile(imagePath);
     }
-    res.sendFile(imagePath);
 });
 
 app.get('/pages/*', (req, res) => {
@@ -119,7 +125,7 @@ app.get('/search', (req, res) => {
 app.get('/sync', (req, res) => {
     const session = JSON.parse(req.cookies.stats);
     const sessionBuffer = currentSessionsBuffer[session.uid];
-    currentSessionsBuffer
+    // console.log(JSON.stringify(currentSessionsBuffer));
     res.type('json');
     res.send(JSON.stringify(sessionBuffer));
 });
@@ -134,6 +140,14 @@ app.get('/stats/reset', (req, res) => {
         }
     };
 
+    connection.query(`DELETE FROM user_history WHERE user_id = "${currentID}"`,
+        (error, rows, fields) => {
+            if (error) {
+                console.log(error);
+            }
+        }
+    );
+
     res.cookie('stats', JSON.stringify({
        uid: currentID,
        averageLoadTime: 0,
@@ -145,14 +159,29 @@ app.get('/stats/reset', (req, res) => {
     })).send();
 });
 
+app.get('/history', (req, res) => {
+    const sessionId = JSON.parse(req.cookies.stats).uid;
+    res.type("JSON");
+
+    connection.query(`SELECT * FROM user_history WHERE user_id = "${sessionId}"`,
+        (error, rows, fields) => {
+            if (error) {
+                console.log(error);
+                res.sendStatus(400);
+            } else {
+                res.send(rows);
+            }
+        }
+    );
+});
+
 app.post('/savehistory', (req, res) => {
     const session = JSON.parse(req.cookies.stats);
-    const settings = JSON.parse(req.cookies.settings);
-    const sessionImages = currentSessionsBuffer[session.uid];
+    const settings = req.cookies.settings && JSON.parse(req.cookies.settings);
 
     connection.query(
         `INSERT INTO user_history (user_id, avg_load_time, loads, images, bytes, compression) VALUES
-        ("${req.sessionID}", ${session.averageLoadTime}, ${session.numberOfLoads}, ${sessionImages.images.numberOfImages}, ${sessionImages.images.downloadedBytes}, ${settings.settings.compression})`,
+        ("${session.uid}", ${session.averageLoadTime}, ${session.numberOfLoads}, ${session.images.numberOfImages}, ${session.images.downloadedBytes}, ${settings ? settings.settings.compression : 0})`,
         (error, rows, fields) => {
             if (error) {
                 console.log(error);

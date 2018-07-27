@@ -3,7 +3,7 @@ const query = window.location.search.substring(3);
 
 const assignSrc = (img, index) => {
     fetch(`/images/searches/${query}/${index}.png`, {method: 'HEAD', credentials: "same-origin"}).then((response) => {
-        if (response.ok) {
+        if (response.status === 200) {
             img.src = `/images/searches/${query}/${index}.png`;
         } else {
             setTimeout(() => assignSrc(img, index), 200);
