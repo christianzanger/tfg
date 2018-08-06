@@ -11,13 +11,6 @@ document.getElementById("settings").addEventListener("submit", (e) => {
 
     statsCookie.updateCookie();
 
-    fetch('/savehistory', {credentials: "same-origin", method: "POST"}).then((response) => {
-        if (response.ok) {
-            M.toast({html: 'Settings saved!'})
-        } else {
-            M.toast({html: 'Something went wrong...Look at the server console!'});
-        }
-    });
-
+    M.toast({html: 'Settings saved!'});
     e.preventDefault();
 });

@@ -6,8 +6,6 @@ const key = fs.readFileSync('./secret/unsplash', 'utf8', (err, data) => {
     return data.replace("\n", 'n');
 });
 const URL = `https://api.unsplash.com/search/photos?client_id=${key}&per_page=12&orientation=landscape&query=`.replace("\n", '');
-// TODO: remove debugging code
-// console.log(`URL: ${URL}`);
 
 /**
  * @param q search keyword

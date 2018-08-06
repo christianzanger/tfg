@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <link rel="stylesheet" href="/styles/materialize.min.css">
     <!-- Icons -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="/styles/icons.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="/styles/styles.css">
 
@@ -23,11 +23,24 @@
         <div>Bytes of images downloaded: <span id="downloadedBytes">Loading...</span></div>
     </div>
     <input type="button" id="reset" value="Reset stats">
-    <canvas id="myChart"></canvas>
+    <!--TODO container (y/n)?-->
+    <!--<div class="container">-->
+        <div id="avgLoadTimeChart" class="row">
+            <div class="col s12 m12 l6">
+                <canvas id="avgLoadTimeChart__canvas"></canvas>
+            </div>
+        </div>
+        <div id="downloadedBytesChart" class="row">
+            <div class="col s12 m12 l6">
+                <canvas id="downloadedBytesChart__canvas"></canvas>
+            </div>
+        </div>
+    <!--</div>-->
+
 
     <!-- Compiled and minified JavaScript for materialize -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <script src="/scripts/materialize.min.js"></script>
+    <script src="/scripts/Chart.min.js"></script>
 
     <script src="/scripts/stats.js" type="module"></script>
     <script src="/scripts/classicApp.js" type="module"></script>

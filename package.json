@@ -15,6 +15,7 @@
     "babel-plugin-transform-class-properties": "6.24.1",
     "babel-preset-env": "1.5.2",
     "babel-preset-react": "6.24.1",
+    "body-parser": "^1.18.3",
     "chart.js": "^2.7.2",
     "compression": "^1.7.2",
     "cookie-parser": "^1.4.3",

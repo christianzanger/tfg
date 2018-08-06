@@ -1,12 +1,12 @@
-const express = require('express');
+const app = require('express')();
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const fs = require('fs');
 const mysql = require('mysql');
 const compression = require('compression');
+const bodyParser = require('body-parser');
 const generation = require('./src/app/generation');
 
-const app = express();
 const port = process.env.PORT || 3000;
 const currentSessionsBuffer = {};
 const connection = mysql.createConnection({
@@ -19,7 +19,7 @@ const connection = mysql.createConnection({
 // For root directory referencing
 global.__basedir = __dirname;
 
-// ------------- MIDDLEWARE -------------
+// ------------------------------------------- MIDDLEWARE -------------------------------------------
 // Disallow robots.txt (Express has a weird behavior where robots.txt assigns a new userSessionID)
 app.get('/robots.txt', (req, res) => {
     res.type('text/plain');
@@ -33,12 +33,14 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
+app.use(bodyParser.json());
 
-// Used for server-tracking stats like file sizes.
+// Used for server-tracking stats like file sizes. This initializes a buffer that gets consulted later by /sync
 app.use((req, res, next) => {
     const session = req.cookies.stats && JSON.parse(req.cookies.stats);
     if (req.method !== "HEAD" && session && !currentSessionsBuffer.hasOwnProperty(session.uid)) {
         currentSessionsBuffer[session.uid] = {
+            bytes: 0,
             images: {
                 numberOfImages: 0,
                 downloadedBytes: 0
@@ -67,10 +69,11 @@ app.use((req, res, next) => {
 app.use(compression({
     filter: (req) => {
         return req.cookies.settings ? JSON.parse(req.cookies.settings).settings.compression : false;
-    }
+    },
+    level: 9
 }));
 
-// ------------- STATIC ROUTES -------------
+// ------------------------------------------- STATIC ROUTES -------------------------------------------
 app.get('/public/*', (req, res) => {
     res.sendFile(`${__dirname}${req.originalUrl}`)
 });
@@ -89,7 +92,7 @@ app.get('/images/*', (req, res) => {
         const sessionBuffer = currentSessionsBuffer[session.uid];
         sessionBuffer.images.numberOfImages++;
         sessionBuffer.images.downloadedBytes += fs.statSync(imagePath).size;
-        console.log(`${req.originalUrl}: ${fs.statSync(imagePath).size} bytes`);
+        // console.log(`${req.originalUrl}: ${fs.statSync(imagePath).size} bytes`);
         res.sendFile(imagePath);
     }
 });
@@ -106,7 +109,7 @@ app.get('/styles/*', (req, res) => {
     res.sendFile(`${__dirname}/public/${req.originalUrl}`)
 });
 
-// ------------- ROUTES -------------
+// ------------------------------------------- ROUTES -------------------------------------------
 app.get('/search', (req, res) => {
     if (!fs.existsSync(`${__dirname}/public/images/searches/${req.query.q}/`)) {
         generation(req.query.q, res, (res) => {
@@ -124,8 +127,15 @@ app.get('/search', (req, res) => {
 
 app.get('/sync', (req, res) => {
     const session = JSON.parse(req.cookies.stats);
-    const sessionBuffer = currentSessionsBuffer[session.uid];
-    // console.log(JSON.stringify(currentSessionsBuffer));
+    const sessionBuffer = {
+        images: {
+            numberOfImages: currentSessionsBuffer[session.uid].images.numberOfImages,
+            downloadedBytes: currentSessionsBuffer[session.uid].images.downloadedBytes
+        }
+    };
+
+    currentSessionsBuffer[session.uid].images.downloadedBytes = 0;
+
     res.type('json');
     res.send(JSON.stringify(sessionBuffer));
 });
@@ -178,10 +188,11 @@ app.get('/history', (req, res) => {
 app.post('/savehistory', (req, res) => {
     const session = JSON.parse(req.cookies.stats);
     const settings = req.cookies.settings && JSON.parse(req.cookies.settings);
+    const historyData = req.body;
 
     connection.query(
-        `INSERT INTO user_history (user_id, avg_load_time, loads, images, bytes, compression) VALUES
-        ("${session.uid}", ${session.averageLoadTime}, ${session.numberOfLoads}, ${session.images.numberOfImages}, ${session.images.downloadedBytes}, ${settings ? settings.settings.compression : 0})`,
+        `INSERT INTO user_history (user_id, avg_load_time, loads, images, bytes, compression, bytesSavedByCompression) VALUES
+        ("${session.uid}", ${session.averageLoadTime}, ${session.numberOfLoads}, ${session.images.numberOfImages}, ${historyData.bytes}, ${settings ? settings.settings.compression : 0}, ${historyData.bytesSavedByCompression || 0})`,
         (error, rows, fields) => {
             if (error) {
                 console.log(error);
