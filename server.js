@@ -73,12 +73,7 @@ app.use(compression({
     level: 9
 }));
 
-// ------------------------------------------- STATIC ROUTES -------------------------------------------
-app.get('/public/*', (req, res) => {
-    res.sendFile(`${__dirname}${req.originalUrl}`)
-});
-
-app.get('/images/*', (req, res) => {
+function handleImages(req, res) {
     const imagePath = `${__dirname}/public/${req.originalUrl}`;
 
     if (req.method === "HEAD") {
@@ -90,11 +85,30 @@ app.get('/images/*', (req, res) => {
     } else {
         const session = JSON.parse(req.cookies.stats);
         const sessionBuffer = currentSessionsBuffer[session.uid];
+        const settings = req.cookies.settings && JSON.parse(req.cookies.settings);
+
         sessionBuffer.images.numberOfImages++;
         sessionBuffer.images.downloadedBytes += fs.statSync(imagePath).size;
         // console.log(`${req.originalUrl}: ${fs.statSync(imagePath).size} bytes`);
+
         res.sendFile(imagePath);
     }
+}
+
+// ------------------------------------------- "STATIC" ROUTES -------------------------------------------
+app.get('/cached/*', (req, res) => {
+    res.setHeader('Cache-Control', 'max-age=259200');
+    req.originalUrl = req.originalUrl.replace("/cached", "");
+    handleImages(req, res);
+});
+
+app.get('/public/*', (req, res) => {
+    res.sendFile(`${__dirname}${req.originalUrl}`)
+});
+
+app.get('/images/*', (req, res) =>  {
+    res.setHeader('Cache-Control', 'no-cache, no-store');
+    handleImages(req, res);
 });
 
 app.get('/pages/*', (req, res) => {
@@ -205,7 +219,7 @@ app.post('/savehistory', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    res.sendFile(`${__dirname}/public/pages/index.html`);
+    res.sendFile(`${__dirname}/public/pages/indexReact.html`);
 });
 
 app.listen(port, () => {

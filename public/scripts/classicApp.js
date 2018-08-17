@@ -61,7 +61,7 @@ const pageLoadedHandler = () => {
 };
 
 // Used for search page
-imgs.forEach((img) => img.onload = () => {
+imgs.forEach(img => img.onload = () => {
     if (++imagesLoaded === imgs.length && !synced) {
         pageLoadedHandler();
     }
