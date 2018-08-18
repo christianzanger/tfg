@@ -96,10 +96,16 @@ function handleImages(req, res) {
 }
 
 // ------------------------------------------- "STATIC" ROUTES -------------------------------------------
-app.get('/cached/*', (req, res) => {
+app.get('/cached/images/*', (req, res) => {
     res.setHeader('Cache-Control', 'max-age=259200');
     req.originalUrl = req.originalUrl.replace("/cached", "");
     handleImages(req, res);
+});
+
+app.get('/cached/*', (req, res) => {
+   const fileLocation = req.originalUrl.replace('/cached', '');
+   res.setHeader('Cache-Control', 'max-age=259200');
+   res.sendFile(`${__dirname}/public/${fileLocation}`);
 });
 
 app.get('/public/*', (req, res) => {
@@ -112,14 +118,17 @@ app.get('/images/*', (req, res) =>  {
 });
 
 app.get('/pages/*', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store');
     res.sendFile(`${__dirname}/public/${req.originalUrl}`)
 });
 
 app.get('/scripts/*', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store');
     res.sendFile(`${__dirname}/public/${req.originalUrl}`)
 });
 
 app.get('/styles/*', (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store');
     res.sendFile(`${__dirname}/public/${req.originalUrl}`)
 });
 
@@ -131,11 +140,11 @@ app.get('/search', (req, res) => {
                 // No results found for this keyword
                 res.sendFile(`${__dirname}/public/pages/search404.html`);
             } else {
-                res.sendFile(`${__dirname}/public/pages/search.html`);
+                res.sendFile(`${__dirname}/public/pages/react/searchReact.html`);
             }
         });
     } else {
-        res.sendFile(__dirname + '/public/pages/search.html');
+        res.sendFile(__dirname + '/public/pages/react/searchReact.html');
     }
 });
 
@@ -219,7 +228,7 @@ app.post('/savehistory', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    res.sendFile(`${__dirname}/public/pages/indexReact.html`);
+    res.sendFile(`${__dirname}/public/pages/react/indexReact.html`);
 });
 
 app.listen(port, () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import Featured from './Featured';
 
-export default class Search extends React.Component {
+export default class SearchForm extends React.Component {
     render () {
         return (
             <div id="search" className="valign-wrapper">
