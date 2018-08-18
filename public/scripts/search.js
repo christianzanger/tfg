@@ -1,10 +1,14 @@
+import Cookie from './Cookie.js';
+
 const imgs = document.querySelectorAll("img");
 const query = window.location.search.substring(3);
 
 const assignSrc = (img, index) => {
     fetch(`/images/searches/${query}/${index}.png`, {method: 'HEAD', credentials: "same-origin"}).then((response) => {
         if (response.status === 200) {
-            img.src = `/images/searches/${query}/${index}.png`;
+            const settings = new Cookie('settings');
+            const cache =  (settings && settings.obj.settings.cache) ? '/cached' : '';
+            img.src = `${cache}/images/searches/${query}/${index}.png`;
         } else {
             setTimeout(() => assignSrc(img, index), 200);
         }

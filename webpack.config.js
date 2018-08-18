@@ -3,7 +3,8 @@ const path = require('path');
 module.exports = {
   entry: {
     index: './src/components/pages/App.js',
-    search: './src/components/pages/Search.js'
+    search: './src/components/pages/SearchPage.js',
+    stats: './src/components/pages/StatisticsPage.js'
   },
   output: {
     path: path.join(__dirname, 'public/scripts/bundles'),

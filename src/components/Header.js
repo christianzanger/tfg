@@ -9,7 +9,7 @@ export default class Header extends React.Component {
                     <ul id="nav-mobile" className="left">
                         <li><a href="/">Home</a></li>
                         <li><a href="">FAQ</a></li>
-                        <li><a href="/pages/statistics.html">Stats</a></li>
+                        <li><a href="/pages/react/statsReact.html">Stats</a></li>
                         <li><a href="/pages/settings.html">Settings</a></li>
                     </ul>
                 </div>
