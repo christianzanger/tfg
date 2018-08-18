@@ -4,7 +4,8 @@ module.exports = {
   entry: {
     index: './src/components/pages/App.js',
     search: './src/components/pages/SearchPage.js',
-    stats: './src/components/pages/StatisticsPage.js'
+    stats: './src/components/pages/StatisticsPage.js',
+    settings: './src/components/pages/SettingsPage.js'
   },
   output: {
     path: path.join(__dirname, 'public/scripts/bundles'),

@@ -10,7 +10,7 @@ export default class Header extends React.Component {
                         <li><a href="/">Home</a></li>
                         <li><a href="">FAQ</a></li>
                         <li><a href="/pages/react/statsReact.html">Stats</a></li>
-                        <li><a href="/pages/settings.html">Settings</a></li>
+                        <li><a href="/pages/react/settingsReact.html">Settings</a></li>
                     </ul>
                 </div>
             </nav>
