@@ -4,7 +4,7 @@ import Cookie from '../../public/scripts/Cookie';
 export default class Featured extends React.Component {
     render () {
         const settingsCookie = new Cookie("settings");
-        const cached = settingsCookie.obj.settings.cache ? '/cached' : '';
+        const cached = settingsCookie.obj.settings && settingsCookie.obj.settings.cache ? '/cached' : '';
         return (
             <div className="row col s4">
                 <div className="card">
