@@ -9,7 +9,7 @@ class Index extends React.Component {
 
     render () {
         const settingsCookie = new Cookie("settings");
-        const cached = settingsCookie.obj.settings.cache ? '/cached' : '';
+        const cached = settingsCookie.obj.settings && settingsCookie.obj.settings.cache ? '/cached' : '';
         const materializeJS = document.createElement('script');
         const classicApp = document.createElement('script');
         // const materializeCSS = document.createElement('link');

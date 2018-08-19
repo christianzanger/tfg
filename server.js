@@ -214,14 +214,24 @@ app.post('/savehistory', (req, res) => {
     const historyData = req.body;
 
     connection.query(
-        `INSERT INTO user_history (user_id, avg_load_time, loads, images, bytes, compression, bytesSavedByCompression) VALUES
-        ("${session.uid}", ${session.averageLoadTime}, ${session.numberOfLoads}, ${session.images.numberOfImages}, ${historyData.bytes}, ${settings ? settings.settings.compression : 0}, ${historyData.bytesSavedByCompression || 0})`,
-        (error, rows, fields) => {
+        `INSERT INTO user_history (user_id, avg_load_time, loads, images, bytes, bytesSavedByCompression) VALUES
+        ("${session.uid}", ${session.averageLoadTime}, ${session.numberOfLoads}, ${session.images.numberOfImages}, ${historyData.bytes}, ${historyData.bytesSavedByCompression || 0})`,
+        (error, rows) => {
             if (error) {
                 console.log(error);
                 res.sendStatus(400);
             } else {
-                res.sendStatus(200);
+                connection.query(`INSERT INTO user_settings (history_id, compression, cache, user_id) VALUES
+                    (${rows.insertId}, ${settings ? settings.settings.compression : 0}, ${settings ? settings.settings.cache : 0}, "${session.uid}")`,
+                    error => {
+                        if (error) {
+                            console.log(error);
+                            res.sendStatus(400);
+                        } else {
+                            res.sendStatus(200);
+                        }
+                    }
+                );
             }
         }
     );

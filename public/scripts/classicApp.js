@@ -45,8 +45,10 @@ const updateStats = () => {
 
 const pageLoadedHandler = () => {
     const historyData = {};
+    // The last 2 conditions are to filter out the HEAD requests in the search page
     const localEntries = window.performance.getEntries()
                          .filter(entry => entry.name.startsWith("http://localhost") && (entry.initiatorType !== "" || !entry.name.includes("images")));
+
 
     synced = true;
     if (settingsCookie && settingsCookie.obj.settings.compression) {
