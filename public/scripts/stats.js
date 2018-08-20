@@ -5,6 +5,8 @@ const settingsCookie = new Cookie("settings");
 const imageBytes = statsCookie.obj.images.downloadedBytes;
 const loadChartDOM = document.getElementById('avgLoadTimeChart__canvas').getContext('2d');
 const bytesChartDOM = document.getElementById('downloadedBytesChart__canvas').getContext('2d');
+const bytesChartDOM2 = document.getElementById('downloadedBytesChart2__canvas').getContext('2d');
+const stacked = document.getElementById('stacked__canvas').getContext('2d');
 const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
 const avgLoadTimechart = new Chart(loadChartDOM, {
     type: 'line',
@@ -48,6 +50,66 @@ const downloadedBytesChart = new Chart(bytesChartDOM, {
     }
 });
 
+const downloadedBytesChart2 = new Chart(bytesChartDOM2, {
+    type: 'line',
+
+    data: {
+        datasets: [{
+            label: "Downloaded bytes",
+            borderColor: 'rgb(51, 204, 51)',
+            fill: false,
+            yAxisID: 0
+        }, {
+            label: "Estimated downloaded bytes without cache",
+            borderColor: 'rgb(51, 204, 204)',
+            fill: false,
+            yAxisID: 0
+        }]
+    },
+
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    // beginAtZero: true,
+                }
+            }]
+        }
+    }
+});
+
+const stackedBar = new Chart(stacked, {
+    type: 'bar',
+    data: {
+        datasets: [{
+            label: "Downloaded bytes",
+            backgroundColor: 'rgb(51, 204, 51)',
+            fill: false,
+            yAxisID: 0
+        }, {
+            label: "Bytes saved by cache",
+            backgroundColor: 'rgb(51, 204, 204)',
+            fill: false,
+            yAxisID: 0
+        }, {
+            label: "Bytes saved by compression",
+            backgroundColor: 'rgb(255, 171, 145)',
+            fill: false,
+            yAxisID: 0
+        }]
+    },
+    options: {
+        scales: {
+            xAxes: [{
+                stacked: true
+            }],
+            yAxes: [{
+                stacked: true
+            }]
+        }
+    }
+});
+
 async function resetStats() {
     return await fetch('/stats/reset', {credentials: "same-origin"});
 }
@@ -64,6 +126,17 @@ async function getStats() {
         downloadedBytesChart.data.datasets[0].data = data.map(row => row.bytes);
         downloadedBytesChart.data.datasets[1].data = data.map(row => row.bytesSavedByCompression + row.bytes);
         downloadedBytesChart.update();
+
+        downloadedBytesChart2.data.labels = [...Array(data.length).keys()];
+        downloadedBytesChart2.data.datasets[0].data = data.map(row => row.bytes);
+        downloadedBytesChart2.data.datasets[1].data = data.map(row => row.bytesSavedByCache + row.bytes);
+        downloadedBytesChart2.update();
+
+        stackedBar.data.labels = [...Array(data.length).keys()];
+        stackedBar.data.datasets[0].data = data.map(row => row.bytes);
+        stackedBar.data.datasets[1].data = data.map(row => row.bytesSavedByCache);
+        stackedBar.data.datasets[2].data = data.map(row => row.bytesSavedByCompression);
+        stackedBar.update();
     });
 }
 

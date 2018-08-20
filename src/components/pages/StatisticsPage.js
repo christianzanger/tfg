@@ -22,7 +22,7 @@ class StatisticsPage extends React.Component {
         classicApp.src = `${cached}/scripts/classicApp.js`;
         classicApp.type = "module";
         chartjs.src = `${cached}/scripts/Chart.min.js`;
-        stats.src = `${cached}/scripts/stats.js`;
+        chartjs.onload = () => stats.src = `${cached}/scripts/stats.js`;
         stats.type = "module";
 
         icons.rel = "stylesheet";

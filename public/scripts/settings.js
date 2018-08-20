@@ -16,3 +16,11 @@ document.getElementById("settings").addEventListener("submit", e => {
     M.toast({html: 'Settings saved!'});
     e.preventDefault();
 });
+
+document.querySelectorAll("[data-collapsible]").forEach(clickable => {
+    const collapsible = document.querySelector('.collapsible');
+    clickable.addEventListener('click', (e) => {
+        const collapsibleToExpand = e.target.dataset.collapsible;
+        M.Collapsible.getInstance(collapsible).open(collapsibleToExpand);
+    })
+});

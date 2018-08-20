@@ -49,11 +49,19 @@ const pageLoadedHandler = () => {
     const localEntries = window.performance.getEntries()
                          .filter(entry => entry.name.startsWith("http://localhost") && (entry.initiatorType !== "" || !entry.name.includes("images")));
 
+    const cachedEntries = localEntries.filter(entry => entry.transferSize === 0);
 
     synced = true;
-    if (settingsCookie && settingsCookie.obj.settings.compression) {
-        historyData.bytesSavedByCompression  = localEntries
-            .reduce((accumulator, entry) => accumulator + (entry.decodedBodySize - entry.encodedBodySize), 0);
+
+    if (settingsCookie && settingsCookie.obj.settings) {
+        if (settingsCookie.obj.settings.compression) {
+            historyData.bytesSavedByCompression  = localEntries
+                .reduce((accumulator, entry) => accumulator + (entry.decodedBodySize - entry.encodedBodySize), 0);
+        }
+
+        if (settingsCookie.obj.settings.cache) {
+            historyData.bytesSavedByCache = cachedEntries.reduce((accumulator, entry) => accumulator + entry.decodedBodySize, 0);
+        }
     }
 
     historyData.bytes = localEntries

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from "react-dom";
 import Header from '../Header';
 import Settings from '../Settings';
+import SettingsExplained from '../SettingsExplained';
 import Cookie from "../../../public/scripts/Cookie";
 
 class StatisticsPage extends React.Component {
@@ -19,6 +20,10 @@ class StatisticsPage extends React.Component {
         const styles = document.createElement('link');
 
         materializeJS.src = `${cached}/scripts/materialize.min.js`;
+        materializeJS.onload = () => {
+            const collapsibles = document.querySelectorAll('.collapsible');
+            M.Collapsible.init(collapsibles);
+        };
         classicApp.src = `${cached}/scripts/classicApp.js`;
         classicApp.type = "module";
         settings.src = `${cached}/scripts/settings.js`;
@@ -40,6 +45,7 @@ class StatisticsPage extends React.Component {
             <div className="app">
                 <Header />
                 <Settings />
+                <SettingsExplained />
             </div>
         );
     }

@@ -25,6 +25,16 @@ export default class Statistics extends React.Component {
                         <canvas id="downloadedBytesChart__canvas"></canvas>
                     </div>
                 </div>
+                <div id="downloadedBytesChart2" className="row">
+                    <div className="col s12 m12 l6">
+                        <canvas id="downloadedBytesChart2__canvas"></canvas>
+                    </div>
+                </div>
+                <div id="stacked" className="row">
+                    <div className="col s12 m12 l6">
+                        <canvas id="stacked__canvas"></canvas>
+                    </div>
+                </div>
             </div>
         );
     }

@@ -1,22 +1,22 @@
 import React from 'react';
 import Cookie from "../../public/scripts/Cookie";
 
-export default class Settings extends React.Component {
+export default class SettingsPanel extends React.Component {
     state = {};
 
     render () {
         return (
-            <div>
-                <h1 className="white-text center-align settings__header">Settings</h1>
-                <div className="row settings-panel">
-                    <div className="col m8 offset-m2 card-panel white">
+            <div className="container">
+                <h1 className="center-align settings__header">Settings</h1>
+                <div className="settings-panel">
+                    <div className="card-panel white">
                         <form id="settings">
                             <div className="row">
                                 <div className="settings-panel__setting">
                                     <div className="col s2">
                                         Compression
                                     </div>
-                                    <div className="col s2">
+                                    <div className="col s2" data-collapsible="0">
                                         Explain!
                                     </div>
                                     <div className="switch col s2">
@@ -32,7 +32,7 @@ export default class Settings extends React.Component {
                                     <div className="col s2">
                                         Cache assets
                                     </div>
-                                    <div className="col s2">
+                                    <div className="col s2" data-collapsible="1">
                                         Explain!
                                     </div>
                                     <div className="switch col s2">

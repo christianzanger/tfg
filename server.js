@@ -67,6 +67,7 @@ app.use((req, res, next) => {
 });
 
 app.use(compression({
+    threshold: 0,
     filter: (req) => {
         return req.cookies.settings ? JSON.parse(req.cookies.settings).settings.compression : false;
     },
@@ -214,8 +215,8 @@ app.post('/savehistory', (req, res) => {
     const historyData = req.body;
 
     connection.query(
-        `INSERT INTO user_history (user_id, avg_load_time, loads, images, bytes, bytesSavedByCompression) VALUES
-        ("${session.uid}", ${session.averageLoadTime}, ${session.numberOfLoads}, ${session.images.numberOfImages}, ${historyData.bytes}, ${historyData.bytesSavedByCompression || 0})`,
+        `INSERT INTO user_history (user_id, avg_load_time, loads, images, bytes, bytesSavedByCompression, bytesSavedByCache) VALUES
+        ("${session.uid}", ${session.averageLoadTime}, ${session.numberOfLoads}, ${session.images.numberOfImages}, ${historyData.bytes}, ${historyData.bytesSavedByCompression || 0}, ${historyData.bytesSavedByCache || 0})`,
         (error, rows) => {
             if (error) {
                 console.log(error);

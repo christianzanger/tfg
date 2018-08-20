@@ -1,5 +1,5 @@
 html, body {
-    height: 100%;
+    background-color: #ffecb3;
 }
 
 #app, .app {
@@ -51,8 +51,4 @@ html, body {
 
 .settings__header {
     margin: 0.2em 0.2em
-}
-
-.settings-panel {
-
 }
