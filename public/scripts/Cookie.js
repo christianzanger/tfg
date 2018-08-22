@@ -1,8 +1,11 @@
 export default class Cookie {
 
     constructor (key) {
-        this.key = key;
         this.obj = JSON.parse(decodeURIComponent(Cookie.searchForCookie(key))) || {};
+    }
+
+    static getCookie (key) {
+        return JSON.parse(decodeURIComponent(Cookie.searchForCookie(key))) || {};
     }
 
     static searchForCookie (key) {
@@ -14,11 +17,11 @@ export default class Cookie {
         return null;
     };
 
-    updateCookie () {
-        document.cookie = `${this.key}=${encodeURIComponent(JSON.stringify(this.obj))}; path=/`;
+    static updateCookie (key, obj) {
+        document.cookie = `${key}=${encodeURIComponent(JSON.stringify(obj))}; path=/`;
     };
 
-    reset () {
-        document.cookie = `${this.key}=; Max-Age=-99999999;`;
+    reset (key) {
+        document.cookie = `${key}=; Max-Age=-99999999;`;
     }
 }

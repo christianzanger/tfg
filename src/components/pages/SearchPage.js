@@ -17,10 +17,12 @@ class SearchPage extends React.Component {
         const styles = document.createElement('link');
 
         materializeJS.src = `${cached}/scripts/materialize.min.js`;
+        classicApp.crossOrigin = "use-credentials";
+        classicApp.type = "module";
         classicApp.src = `${cached}/scripts/classicApp.js`;
         search.src = `${cached}/scripts/search.js`;
-        classicApp.type = "module";
         search.type = "module";
+        search.crossOrigin = "use-credentials";
 
 
         icons.rel = "stylesheet";

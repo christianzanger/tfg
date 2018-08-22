@@ -21,9 +21,12 @@ class StatisticsPage extends React.Component {
         materializeJS.src = `${cached}/scripts/materialize.min.js`;
         classicApp.src = `${cached}/scripts/classicApp.js`;
         classicApp.type = "module";
+        classicApp.crossOrigin = "use-credentials";
         chartjs.src = `${cached}/scripts/Chart.min.js`;
         chartjs.onload = () => stats.src = `${cached}/scripts/stats.js`;
         stats.type = "module";
+        stats.crossOrigin = "use-credentials";
+
 
         icons.rel = "stylesheet";
         icons.href = `${cached}/styles/icons.css`;

@@ -42,17 +42,17 @@ export default class SettingsExplained extends React.Component {
                             </div>
                             Compression is extremely effective on text based files, like CSS and JavaScript. For example, the JavaScript file for the
                             Materialize framework is uncompressed 174.98 KB, while compressed it's 41.2 KB! On a modern web app that uses a lot of JavaScript
-                            and CSS compression is really important to lower the download time of these resources. On the other hand, on assets like images with
-                            formats that are already highly compressed, an end-to-end compression won't do much. For example, the home page's background image is
+                            and CSS, compression is really important to lower the download time of these resources. On the other hand, on assets like images with
+                            formats that are already highly compressed, end-to-end compression won't do much. For example, the home page's background image is
                             383 KB uncompressed, while compressed it's 382 KB.
                             <h5>When and what to compress</h5>
                             As explained above, compressing files that are based on text like HTML, CSS and JavaScript is great. Compressing files like images and
-                            videos isn't. That's why you should choose what to compress and what not. Don't waste server resources on images when it's not that efficient.
-                            You can always try to compress everything (like this website) and see the numbers for yourself with tools like <i>window.performance.getEntries()</i>
-                            which returns each request made from the client. Each element has an <i>encodedBodySize</i> and a <i>decodedBodySize</i> which shows how much
-                            compression affected a file. It's also more reliable than using Chrome's network tab since the HTTP headers may be included in the file sizes and the
-                            headers don't get compressed.
-                            <h5>Try it out!</h5>
+                            videos isn't. That's why you should choose what to compress and what not instead of blindly compressing everything. Don't waste server resources
+                            on images when it's not that efficient. You can always try to compress everything (like this website) and see the numbers for yourself with tools like
+                            <i>window.performance.getEntries()</i>which returns each request made from the client. Each element has an <i>encodedBodySize</i> and a <i>decodedBodySize</i>
+                            which shows how much compression affected a file. It's also more reliable than using Chrome's network tab since the HTTP headers may be included in the file
+                            sizes and the headers don't get compressed.
+                            <h5>Try it out! (?)</h5>
                             
                         </div>
                     </li>

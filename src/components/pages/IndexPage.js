@@ -1,27 +1,24 @@
 import React from 'react';
-import Header from '../Header';
-import SearchForm from '../SearchForm';
-import Cookie from '../../../public/scripts/Cookie';
 import ReactDOM from "react-dom";
 
-class Index extends React.Component {
-    state = {};
+import Header from '../Header';
+import SearchForm from '../SearchForm';
+import SettingsCookie from "../../../public/scripts/cookies/SettingsCookie";
 
+class IndexPage extends React.Component {
     render () {
-        const settingsCookie = new Cookie("settings");
-        const cached = settingsCookie.obj.settings && settingsCookie.obj.settings.cache ? '/cached' : '';
+        const settingsCookie = new SettingsCookie();
+        const cached = settingsCookie.cache ? '/cached' : '';
         const materializeJS = document.createElement('script');
         const classicApp = document.createElement('script');
-        // const materializeCSS = document.createElement('link');
         const icons = document.createElement('link');
         const styles = document.createElement('link');
 
         materializeJS.src = `${cached}/scripts/materialize.min.js`;
         classicApp.src = `${cached}/scripts/classicApp.js`;
         classicApp.type = "module";
+        classicApp.crossOrigin = "use-credentials";
 
-        // materializeCSS.rel = "stylesheet";
-        // materializeCSS.href = `/styles/materialize.min.css`;
         icons.rel = "stylesheet";
         icons.href = `${cached}/styles/icons.css`;
         styles.rel = "stylesheet";
@@ -32,7 +29,6 @@ class Index extends React.Component {
         document.body.appendChild(materializeJS);
         document.body.appendChild(classicApp);
 
-        // document.head.appendChild(materializeCSS);
         document.head.appendChild(icons);
         document.head.appendChild(styles);
 
@@ -45,4 +41,4 @@ class Index extends React.Component {
     }
 }
 
-ReactDOM.render(<Index />, document.getElementById('app'));
+ReactDOM.render(<IndexPage />, document.getElementById('app'));

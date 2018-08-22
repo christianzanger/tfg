@@ -1,8 +1,8 @@
-import Cookie from './Cookie.js';
+import StatsCookie from "./cookies/StatsCookie.js";
+import SettingsCookie from "./cookies/SettingsCookie.js";
 
-const statsCookie = new Cookie("stats");
-const settingsCookie = new Cookie("settings");
-const imageBytes = statsCookie.obj.images.downloadedBytes;
+const statsCookie = new StatsCookie();
+const settingsCookie = new SettingsCookie();
 const loadChartDOM = document.getElementById('avgLoadTimeChart__canvas').getContext('2d');
 const bytesChartDOM = document.getElementById('downloadedBytesChart__canvas').getContext('2d');
 const bytesChartDOM2 = document.getElementById('downloadedBytesChart2__canvas').getContext('2d');
@@ -151,13 +151,13 @@ document.getElementById('reset').addEventListener('click', () => {
 });
 
 window.addEventListener('statsUpdate', () => {
-    const statsCookie = new Cookie("stats");
-    document.getElementById("avgLoadTime").innerHTML = statsCookie.obj.averageLoadTime;
-    document.getElementById("pageLoads").innerHTML = statsCookie.obj.numberOfLoads.toString();
+    // TODO: should this be included? If so, update the graph as well
+    const statsCookie = new StatsCookie();
+    document.getElementById("avgLoadTime").innerHTML = statsCookie.averageLoadTime;
+    document.getElementById("pageLoads").innerHTML = statsCookie.numberOfLoads.toString();
 });
 
-document.getElementById("nImages").innerHTML = statsCookie.obj.images.numberOfImages.toString();
-document.getElementById("downloadedBytes").innerHTML = formatBytes(imageBytes);
+document.getElementById("nImages").innerHTML = statsCookie.images.toString();
 
 getStats();
 

@@ -1,8 +1,33 @@
 import React from 'react';
-import Cookie from "../../public/scripts/Cookie";
+import SettingsCookie from "../../public/scripts/cookies/SettingsCookie.js";
 
 export default class SettingsPanel extends React.Component {
     state = {};
+
+    settingsSubmitHandler (event) {
+        const settingsCookie = new SettingsCookie();
+        const data = new FormData(event.target);
+
+        settingsCookie.compression = data.get("compression") === "on";
+        settingsCookie.cache = data.get("cache") === "on";
+        settingsCookie.update();
+        M.toast({html: 'Settings saved!'});
+        event.preventDefault();
+    }
+
+    componentDidMount() {
+        const settingsCookie = new SettingsCookie();
+        document.getElementById("compression").checked = settingsCookie.compression;
+        document.getElementById("cache").checked = settingsCookie.cache;
+
+        document.querySelectorAll("[data-collapsible]").forEach(clickable => {
+            const collapsible = document.querySelector('.collapsible');
+            clickable.addEventListener('click', (e) => {
+                const collapsibleToExpand = e.target.dataset.collapsible;
+                M.Collapsible.getInstance(collapsible).open(collapsibleToExpand);
+            })
+        });
+    }
 
     render () {
         return (
@@ -10,7 +35,7 @@ export default class SettingsPanel extends React.Component {
                 <h1 className="center-align settings__header">Settings</h1>
                 <div className="settings-panel">
                     <div className="card-panel white">
-                        <form id="settings">
+                        <form id="settings" onSubmit={this.settingsSubmitHandler}>
                             <div className="row">
                                 <div className="settings-panel__setting">
                                     <div className="col s2">

@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   entry: {
-    index: './src/components/pages/App.js',
+    index: './src/components/pages/IndexPage.js',
     search: './src/components/pages/SearchPage.js',
     stats: './src/components/pages/StatisticsPage.js',
     settings: './src/components/pages/SettingsPage.js'

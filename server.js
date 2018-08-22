@@ -4,7 +4,6 @@ const session = require('express-session');
 const fs = require('fs');
 const mysql = require('mysql');
 const compression = require('compression');
-const bodyParser = require('body-parser');
 const generation = require('./src/app/generation');
 
 const port = process.env.PORT || 3000;
@@ -33,18 +32,13 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
-app.use(bodyParser.json());
 
 // Used for server-tracking stats like file sizes. This initializes a buffer that gets consulted later by /sync
 app.use((req, res, next) => {
     const session = req.cookies.stats && JSON.parse(req.cookies.stats);
     if (req.method !== "HEAD" && session && !currentSessionsBuffer.hasOwnProperty(session.uid)) {
         currentSessionsBuffer[session.uid] = {
-            bytes: 0,
-            images: {
-                numberOfImages: 0,
-                downloadedBytes: 0
-            }
+            images: 0
         }
     }
     next();
@@ -53,14 +47,27 @@ app.use((req, res, next) => {
 // Used to initialize the stats cookie
 app.use((req, res, next) => {
     if (!req.cookies.stats) {
+        console.log("No stats cookie: " + req.originalUrl);
         res.cookie("stats", JSON.stringify({
             uid: req.sessionID,
             averageLoadTime: 0,
             numberOfLoads: 0,
-            images: {
-                numberOfImages: 0,
-                downloadedBytes: 0
-            }
+            images: 0,
+            bytes: 0,
+            bytesSavedByCompression: 0,
+            bytesSavedByCache: 0,
+            filesSavedByCache: 0
+        }));
+    }
+    next();
+});
+
+// Used to initialize the settings cookie
+app.use((req, res, next) => {
+    if (!req.cookies.settings) {
+        res.cookie("settings", JSON.stringify({
+            cache: false,
+            compression: false
         }));
     }
     next();
@@ -69,7 +76,7 @@ app.use((req, res, next) => {
 app.use(compression({
     threshold: 0,
     filter: (req) => {
-        return req.cookies.settings ? JSON.parse(req.cookies.settings).settings.compression : false;
+        return req.cookies.settings ? JSON.parse(req.cookies.settings).compression : false;
     },
     level: 9
 }));
@@ -86,11 +93,8 @@ function handleImages(req, res) {
     } else {
         const session = JSON.parse(req.cookies.stats);
         const sessionBuffer = currentSessionsBuffer[session.uid];
-        const settings = req.cookies.settings && JSON.parse(req.cookies.settings);
 
-        sessionBuffer.images.numberOfImages++;
-        sessionBuffer.images.downloadedBytes += fs.statSync(imagePath).size;
-        // console.log(`${req.originalUrl}: ${fs.statSync(imagePath).size} bytes`);
+        sessionBuffer.images++;
 
         res.sendFile(imagePath);
     }
@@ -149,29 +153,11 @@ app.get('/search', (req, res) => {
     }
 });
 
-app.get('/sync', (req, res) => {
-    const session = JSON.parse(req.cookies.stats);
-    const sessionBuffer = {
-        images: {
-            numberOfImages: currentSessionsBuffer[session.uid].images.numberOfImages,
-            downloadedBytes: currentSessionsBuffer[session.uid].images.downloadedBytes
-        }
-    };
-
-    currentSessionsBuffer[session.uid].images.downloadedBytes = 0;
-
-    res.type('json');
-    res.send(JSON.stringify(sessionBuffer));
-});
-
 app.get('/stats/reset', (req, res) => {
     const currentID = JSON.parse(req.cookies.stats).uid;
 
     currentSessionsBuffer[currentID] = {
-        images: {
-            numberOfImages: 0,
-            downloadedBytes: 0
-        }
+        images: 0
     };
 
     connection.query(`DELETE FROM user_history WHERE user_id = "${currentID}"`,
@@ -195,6 +181,7 @@ app.get('/stats/reset', (req, res) => {
 
 app.get('/history', (req, res) => {
     const sessionId = JSON.parse(req.cookies.stats).uid;
+    const stats = JSON.parse(req.cookies.stats);
     res.type("JSON");
 
     connection.query(`SELECT * FROM user_history WHERE user_id = "${sessionId}"`,
@@ -203,6 +190,8 @@ app.get('/history', (req, res) => {
                 console.log(error);
                 res.sendStatus(400);
             } else {
+                stats.images = currentSessionsBuffer[stats.uid].images;
+                res.cookie("stats", JSON.stringify(stats));
                 res.send(rows);
             }
         }
@@ -210,20 +199,20 @@ app.get('/history', (req, res) => {
 });
 
 app.post('/savehistory', (req, res) => {
-    const session = JSON.parse(req.cookies.stats);
-    const settings = req.cookies.settings && JSON.parse(req.cookies.settings);
-    const historyData = req.body;
+    const stats = JSON.parse(req.cookies.stats);
+    // console.log(session);
+    const settings = JSON.parse(req.cookies.settings);
 
     connection.query(
         `INSERT INTO user_history (user_id, avg_load_time, loads, images, bytes, bytesSavedByCompression, bytesSavedByCache) VALUES
-        ("${session.uid}", ${session.averageLoadTime}, ${session.numberOfLoads}, ${session.images.numberOfImages}, ${historyData.bytes}, ${historyData.bytesSavedByCompression || 0}, ${historyData.bytesSavedByCache || 0})`,
+        ("${stats.uid}", ${stats.averageLoadTime}, ${stats.numberOfLoads}, ${currentSessionsBuffer[stats.uid].images}, ${stats.bytes}, ${stats.bytesSavedByCompression}, ${stats.bytesSavedByCache})`,
         (error, rows) => {
             if (error) {
                 console.log(error);
                 res.sendStatus(400);
             } else {
                 connection.query(`INSERT INTO user_settings (history_id, compression, cache, user_id) VALUES
-                    (${rows.insertId}, ${settings ? settings.settings.compression : 0}, ${settings ? settings.settings.cache : 0}, "${session.uid}")`,
+                    (${rows.insertId}, ${settings ? settings.compression : 0}, ${settings ? settings.cache : 0}, "${stats.uid}")`,
                     error => {
                         if (error) {
                             console.log(error);

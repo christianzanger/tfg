@@ -14,7 +14,6 @@ class StatisticsPage extends React.Component {
 
         const materializeJS = document.createElement('script');
         const classicApp = document.createElement('script');
-        const settings = document.createElement('script');
 
         const icons = document.createElement('link');
         const styles = document.createElement('link');
@@ -26,8 +25,7 @@ class StatisticsPage extends React.Component {
         };
         classicApp.src = `${cached}/scripts/classicApp.js`;
         classicApp.type = "module";
-        settings.src = `${cached}/scripts/settings.js`;
-        settings.type = "module";
+        classicApp.crossOrigin = "use-credentials";
 
         icons.rel = "stylesheet";
         icons.href = `${cached}/styles/icons.css`;
@@ -39,7 +37,6 @@ class StatisticsPage extends React.Component {
         document.head.appendChild(styles);
 
         document.body.appendChild(materializeJS);
-        document.body.appendChild(settings);
         document.body.appendChild(classicApp);
         return (
             <div className="app">

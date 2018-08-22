@@ -1,5 +1,4 @@
 import React from 'react';
-import Cookie from "../../public/scripts/Cookie";
 
 export default class Statistics extends React.Component {
     state = {};
@@ -12,7 +11,6 @@ export default class Statistics extends React.Component {
                     <div>Page loads: <span id="pageLoads">Loading...</span></div>
                     <br />
                     <div>Images downloaded: <span id="nImages">Loading...</span></div>
-                    <div>Bytes of images downloaded: <span id="downloadedBytes">Loading...</span></div>
                 </div>
                 <input type="button" id="reset" value="Reset stats" />
                 <div id="avgLoadTimeChart" className="row">
