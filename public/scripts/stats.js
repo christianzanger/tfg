@@ -1,8 +1,6 @@
 import StatsCookie from "./cookies/StatsCookie.js";
-import SettingsCookie from "./cookies/SettingsCookie.js";
 
 const statsCookie = new StatsCookie();
-const settingsCookie = new SettingsCookie();
 const loadChartDOM = document.getElementById('avgLoadTimeChart__canvas').getContext('2d');
 const bytesChartDOM = document.getElementById('downloadedBytesChart__canvas').getContext('2d');
 const bytesChartDOM2 = document.getElementById('downloadedBytesChart2__canvas').getContext('2d');
@@ -110,10 +108,6 @@ const stackedBar = new Chart(stacked, {
     }
 });
 
-async function resetStats() {
-    return await fetch('/stats/reset', {credentials: "same-origin"});
-}
-
 async function getStats() {
     return await fetch('/history', {credentials: "same-origin"}).then( response => {
         return response.json();
@@ -145,9 +139,8 @@ const formatBytes = (size, scale = 0) => {
 };
 
 document.getElementById('reset').addEventListener('click', () => {
-    resetStats().then(() => {
-        location.href = "/";
-    });
+    fetch('/stats/reset', {credentials: "same-origin"});
+    location.href = "/";
 });
 
 window.addEventListener('statsUpdate', () => {
@@ -155,6 +148,8 @@ window.addEventListener('statsUpdate', () => {
     const statsCookie = new StatsCookie();
     document.getElementById("avgLoadTime").innerHTML = statsCookie.averageLoadTime;
     document.getElementById("pageLoads").innerHTML = statsCookie.numberOfLoads.toString();
+
+
 });
 
 document.getElementById("nImages").innerHTML = statsCookie.images.toString();

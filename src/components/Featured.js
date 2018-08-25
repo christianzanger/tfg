@@ -1,10 +1,10 @@
 import React from 'react';
-import Cookie from '../../public/scripts/Cookie';
+import SettingsCookie from '../../public/scripts/cookies/SettingsCookie.js';
 
 export default class Featured extends React.Component {
     render () {
-        const settingsCookie = new Cookie("settings");
-        const cached = settingsCookie.obj.settings && settingsCookie.obj.settings.cache ? '/cached' : '';
+        const settingsCookie = new SettingsCookie();
+        const cached = settingsCookie.cache ? '/cached' : '';
         return (
             <div className="row col s4">
                 <div className="card">

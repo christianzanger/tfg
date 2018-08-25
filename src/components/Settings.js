@@ -1,16 +1,24 @@
 import React from 'react';
 import SettingsCookie from "../../public/scripts/cookies/SettingsCookie.js";
+import StatsCookie from "../../public/scripts/cookies/StatsCookie";
 
 export default class SettingsPanel extends React.Component {
     state = {};
 
     settingsSubmitHandler (event) {
         const settingsCookie = new SettingsCookie();
+        const statsCookie = new StatsCookie();
         const data = new FormData(event.target);
 
         settingsCookie.compression = data.get("compression") === "on";
         settingsCookie.cache = data.get("cache") === "on";
         settingsCookie.update();
+
+        if (!settingsCookie.compression) statsCookie.bytesSavedByCompression = 0;
+        if (!settingsCookie.cache) statsCookie.bytesSavedByCache = 0;
+
+        statsCookie.update();
+
         M.toast({html: 'Settings saved!'});
         event.preventDefault();
     }

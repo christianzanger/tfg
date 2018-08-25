@@ -5,6 +5,9 @@
         - **static**: images that shouldn't change (landing bg)
     - **pages**: HTML files
     - **scripts**: client JS
+        - **bundles**: React JS bundles
+        - **cookies**: classes for handling Stats and Settings cookies
+        - **libraries**: materialize and other libraries
     - **styles**: CSS
 - **server.js**: main entry point...should probably subdivide this...probably :)
 - **src**: server-side stuff. Really, here shouldn't be anything that gets requested from the client.

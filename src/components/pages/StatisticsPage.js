@@ -2,14 +2,14 @@ import React from 'react';
 import ReactDOM from "react-dom";
 import Header from '../Header';
 import Statistics from '../Statistics';
-import Cookie from "../../../public/scripts/Cookie";
+import SettingsCookie from "../../../public/scripts/cookies/SettingsCookie.js";
 
 class StatisticsPage extends React.Component {
     state = {};
 
     render () {
-        const settingsCookie = new Cookie("settings");
-        const cached = settingsCookie.obj.settings && settingsCookie.obj.settings.cache ? '/cached' : '';
+        const settingsCookie = new SettingsCookie();
+        const cached = settingsCookie.cache ? '/cached' : '';
         const materializeJS = document.createElement('script');
         const classicApp = document.createElement('script');
         const chartjs = document.createElement('script');

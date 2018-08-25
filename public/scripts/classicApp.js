@@ -6,19 +6,10 @@ const statsUpdatedEvent = new Event('statsUpdate');
 const settingsCookie = new SettingsCookie();
 
 let imagesLoaded = 0;
-
-const synced = () => {
-    return window.performance.getEntries().filter( entry => entry.name.includes("savehistory")).length <= 0;
-};
+let synced = false;
 
 const pageLoadedHandler = () => {
     // console.log(window.performance.timing.loadEventEnd);
-
-    if (!synced()) {
-        console.log("already synced!");
-        console.log(window.performance.getEntries().filter( entry => entry.name.includes("savehistory")).length);
-        console.log(synced());
-    }
 
     const statsCookie = new StatsCookie();
     // The last 2 conditions are to filter out the HEAD requests in the search page
@@ -51,7 +42,8 @@ const pageLoadedHandler = () => {
 // Used for search page
 imgs.forEach(img => img.onload = (event) => {
     event.stopPropagation();
-    if (++imagesLoaded === imgs.length) {
+    if (++imagesLoaded === imgs.length && !synced) {
+        synced = true;
         setTimeout(pageLoadedHandler, 0);
     }
 });
@@ -61,7 +53,8 @@ imgs.forEach(img => img.onload = (event) => {
 window.addEventListener('load', () => {
     // Used for pages where images load faster than the eventListener assignment
     const imagesLoaded = window.performance.getEntries().filter(entry => entry.initiatorType === "img");
-    if (imagesLoaded.length === imgs.length) {
+    if (imagesLoaded.length === imgs.length && !synced) {
+        synced = true;
         setTimeout(pageLoadedHandler, 0);
     }
 });

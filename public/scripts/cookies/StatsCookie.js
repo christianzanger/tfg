@@ -1,4 +1,4 @@
-import Cookie from '../Cookie.js';
+import Cookie from './Cookie.js';
 
 export default class StatsCookie {
 
