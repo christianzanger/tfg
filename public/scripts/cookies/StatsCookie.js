@@ -7,14 +7,12 @@ export default class StatsCookie {
 
         this.uid = cookie.uid;
         this.averageLoadTime = cookie.averageLoadTime;
-        this.numberOfLoads = cookie.numberOfLoads;
-        this.images = cookie.images;
-        this.bytes = cookie.bytes;
-        this.bytesSavedByCompression = cookie.bytesSavedByCompression;
-        this.bytesSavedByCache = cookie.bytesSavedByCache;
-        this.filesSavedByCache = cookie.filesSavedByCache;
-
-        // TODO: check for undefined?
+        this.numberOfLoads = cookie.numberOfLoads || 0;
+        this.images = cookie.images || 0;
+        this.bytes = cookie.bytes || 0;
+        this.bytesSavedByCompression = cookie.bytesSavedByCompression || 0;
+        this.bytesSavedByCache = cookie.bytesSavedByCache || 0;
+        this.filesSavedByCache = cookie.filesSavedByCache || 0;
     }
 
     updateStats () {
@@ -22,9 +20,11 @@ export default class StatsCookie {
         const currentTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
 
         this.numberOfLoads++;
+
         const newAverage = (lastSumOfTimes + currentTime) / this.numberOfLoads;
         this.averageLoadTime = Math.round(newAverage * 100) / 100;
         this.update();
+        console.table(this);
     }
 
     update () {

@@ -39,11 +39,11 @@ class StatisticsPage extends React.Component {
         document.body.appendChild(materializeJS);
         document.body.appendChild(classicApp);
         return (
-            <div className="app">
+            <React.Fragment>
                 <Header />
                 <Settings />
                 <SettingsExplained />
-            </div>
+            </React.Fragment>
         );
     }
 }

@@ -33,10 +33,10 @@ class IndexPage extends React.Component {
         document.head.appendChild(styles);
 
         return (
-            <div className="app">
+            <React.Fragment>
                 <Header />
                 <SearchForm />
-            </div>
+            </React.Fragment>
         );
     }
 }

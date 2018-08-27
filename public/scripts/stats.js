@@ -112,6 +112,8 @@ async function getStats() {
     return await fetch('/history', {credentials: "same-origin"}).then( response => {
         return response.json();
     }).then(data => {
+        document.getElementById("nImages").innerHTML = data.reduce((accumulator, entry) => accumulator + entry.images, 0);
+
         avgLoadTimechart.data.labels = [...Array(data.length).keys()];
         avgLoadTimechart.data.datasets[0].data = data.map(row => row.avg_load_time);
         avgLoadTimechart.update();
@@ -139,21 +141,19 @@ const formatBytes = (size, scale = 0) => {
 };
 
 document.getElementById('reset').addEventListener('click', () => {
-    fetch('/stats/reset', {credentials: "same-origin"});
-    location.href = "/";
+    fetch('/stats/reset', {credentials: "same-origin"}).then(() => {
+        const statsCookie = new StatsCookie();
+        statsCookie.reset();
+        location.href = "/"
+    });
 });
 
 window.addEventListener('statsUpdate', () => {
-    // TODO: should this be included? If so, update the graph as well
     const statsCookie = new StatsCookie();
     document.getElementById("avgLoadTime").innerHTML = statsCookie.averageLoadTime;
     document.getElementById("pageLoads").innerHTML = statsCookie.numberOfLoads.toString();
 
-
+    getStats();
 });
-
-document.getElementById("nImages").innerHTML = statsCookie.images.toString();
-
-getStats();
 
 

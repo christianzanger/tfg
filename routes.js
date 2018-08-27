@@ -19,11 +19,6 @@ module.exports = (app, currentSessionsBuffer, fs) => {
                 res.sendStatus(200);
             }
         } else {
-            const session = JSON.parse(req.cookies.stats);
-            const sessionBuffer = currentSessionsBuffer[session.uid];
-
-            sessionBuffer.images++;
-
             res.sendFile(imagePath);
         }
     }
@@ -65,7 +60,7 @@ module.exports = (app, currentSessionsBuffer, fs) => {
         }
     };
 
-    const statsReset = req => {
+    const statsReset = (req, res) => {
         const currentID = JSON.parse(req.cookies.stats).uid;
 
         currentSessionsBuffer[currentID] = {
@@ -76,6 +71,8 @@ module.exports = (app, currentSessionsBuffer, fs) => {
             (error) => {
                 if (error) {
                     console.log(error);
+                } else {
+                    res.sendStatus(200);
                 }
             }
         );
@@ -106,7 +103,7 @@ module.exports = (app, currentSessionsBuffer, fs) => {
 
         connection.query(
             `INSERT INTO user_history (user_id, avg_load_time, loads, images, bytes, bytesSavedByCompression, bytesSavedByCache) VALUES
-        ("${stats.uid}", ${stats.averageLoadTime}, ${stats.numberOfLoads}, ${currentSessionsBuffer[stats.uid].images}, ${stats.bytes}, ${stats.bytesSavedByCompression}, ${stats.bytesSavedByCache})`,
+        ("${stats.uid}", ${stats.averageLoadTime}, ${stats.numberOfLoads}, ${stats.images}, ${stats.bytes}, ${stats.bytesSavedByCompression}, ${stats.bytesSavedByCache})`,
             (error, rows) => {
                 if (error) {
                     console.log(error);

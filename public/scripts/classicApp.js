@@ -2,7 +2,6 @@ import SettingsCookie from './cookies/SettingsCookie.js';
 import StatsCookie from './cookies/StatsCookie.js';
 
 const imgs = document.querySelectorAll("img");
-const statsUpdatedEvent = new Event('statsUpdate');
 const settingsCookie = new SettingsCookie();
 
 let imagesLoaded = 0;
@@ -14,10 +13,10 @@ const pageLoadedHandler = () => {
     const statsCookie = new StatsCookie();
     // The last 2 conditions are to filter out the HEAD requests in the search page
     const localEntries = window.performance.getEntries()
-                         .filter(entry => entry.name.startsWith("http://localhost") && (entry.initiatorType !== "" || !entry.name.includes("images")));
+                         .filter(entry => entry.initiatorType !== "" || !entry.name.includes("images"));
 
     if (settingsCookie.compression) {
-        statsCookie.bytesSavedByCompression  = localEntries
+        statsCookie.bytesSavedByCompression  = localEntries.filter(entry => entry.decodedBodySize)
             .reduce((accumulator, entry) => accumulator + (entry.decodedBodySize - entry.encodedBodySize), 0);
     }
 
@@ -26,17 +25,16 @@ const pageLoadedHandler = () => {
         statsCookie.bytesSavedByCache = cachedEntries.reduce((accumulator, entry) => accumulator + entry.decodedBodySize, 0);
     }
 
-    statsCookie.bytes = localEntries
-        .reduce((accumulator, entry) => accumulator + entry.transferSize, 0);
+    statsCookie.bytes = localEntries.filter(entry => entry.transferSize).reduce((accumulator, entry) => accumulator + entry.transferSize, 0);
 
-    // syncStatsWithServer().then((imagesData) => updateStatsCookie(imagesData, historyData));
+    statsCookie.images = localEntries.filter(entry => entry.name.includes("images")).length;
+
     statsCookie.updateStats();
-    window.dispatchEvent(statsUpdatedEvent);
 
     fetch('/savehistory', {
         credentials: "same-origin",
         method: "POST"
-    });
+    }).then(() => window.dispatchEvent(new Event('statsUpdate')));
 };
 
 // Used for search page

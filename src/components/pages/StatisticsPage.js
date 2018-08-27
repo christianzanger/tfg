@@ -42,10 +42,10 @@ class StatisticsPage extends React.Component {
         document.body.appendChild(stats);
         document.body.appendChild(classicApp);
         return (
-            <div className="app">
+            <React.Fragment>
                 <Header />
                 <Statistics />
-            </div>
+            </React.Fragment>
         );
     }
 }

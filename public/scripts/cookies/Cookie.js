@@ -21,7 +21,7 @@ export default class Cookie {
         document.cookie = `${key}=${encodeURIComponent(JSON.stringify(obj))}; path=/`;
     };
 
-    reset (key) {
-        document.cookie = `${key}=; Max-Age=-99999999;`;
+    static reset (key) {
+        document.cookie = `${key}=; Max-Age=0; path=/`;
     }
 }

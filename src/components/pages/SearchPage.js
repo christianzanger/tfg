@@ -38,10 +38,10 @@ class SearchPage extends React.Component {
         document.body.appendChild(classicApp);
         document.body.appendChild(search);
         return (
-            <div className="app">
+            <React.Fragment>
                 <Header />
                 <SearchResults />
-            </div>
+            </React.Fragment>
         );
     }
 }

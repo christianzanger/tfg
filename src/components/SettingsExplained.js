@@ -52,8 +52,6 @@ export default class SettingsExplained extends React.Component {
                             <i>window.performance.getEntries()</i>which returns each request made from the client. Each element has an <i>encodedBodySize</i> and a <i>decodedBodySize</i>
                             which shows how much compression affected a file. It's also more reliable than using Chrome's network tab since the HTTP headers may be included in the file
                             sizes and the headers don't get compressed.
-                            <h5>Try it out! (?)</h5>
-                            
                         </div>
                     </li>
                     <li>
