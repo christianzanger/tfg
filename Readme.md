@@ -2,32 +2,17 @@
 - **public**: JS, Images and CSS (minified or "classic")
     - **images**
         - **searches**: subdirectories and images created by generation.js
-        - **static**: images that shouldn't change (landing bg)
+        - **static**: images that shouldn't change (home bg and featured)
     - **pages**: HTML files
+        - **react**: HTML files for loading each page with react and different bundles instead of using only 1 bundle. (used later for server vs client routing)
     - **scripts**: client JS
         - **bundles**: React JS bundles
         - **cookies**: classes for handling Stats and Settings cookies
-        - **libraries**: materialize and other libraries
+        - **libraries**: materialize and other libraries (TODO)
     - **styles**: CSS
-- **server.js**: main entry point...should probably subdivide this...probably :)
-- **src**: server-side stuff. Really, here shouldn't be anything that gets requested from the client.
+- **server.js**: main entry point. Calls middleware and routes.
+- **middleware.js**: all the middlewares (for example cookie parsing and compression if activated)
+- **routes.js**: all the endpoints
+- **src**: server-side stuff. Here shouldn't be anything that gets requested from the client.
     - **app**: for example generation.js
     - **components**: React components
-
-
-
-
-
-# Old Project structure
-(this wasn't really scalable... :D I should've planned better ahead).
-Leaving this here for broken links and refatoring
-- **classic**: pure HTML files
-- **images**:
-    - landing: images for the landing page
-    - searches: generating searches images
-- **public**: "static" assets: CSS, images (?) and JS
-- **src**:
-    - app: All javascript files
-    - components:
-    - styles: compiled styles
-    - app.js: app file for React
