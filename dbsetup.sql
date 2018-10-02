@@ -17,6 +17,7 @@ CREATE TABLE user_settings (
     compression bit default 0,
     cache bit default 0,
     user_id varchar(100),
+    tutorial_step tinyint,
     FOREIGN KEY (history_id) REFERENCES user_history(id) ON DELETE CASCADE,
     PRIMARY KEY (id)
 );

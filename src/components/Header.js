@@ -1,6 +1,15 @@
 import React from 'react';
+import SettingsCookie from "../../public/scripts/cookies/SettingsCookie";
+import StatsCookie from "../../public/scripts/cookies/StatsCookie";
 
 export default class Header extends React.Component {
+
+    resetCookies() {
+        StatsCookie.reset();
+        SettingsCookie.reset();
+        location.href = "/";
+    }
+
     render() {
         return (
             <nav>
@@ -11,6 +20,7 @@ export default class Header extends React.Component {
                         <li><a href="">FAQ</a></li>
                         <li><a href="/pages/react/statsReact.html">Stats</a></li>
                         <li><a href="/pages/react/settingsReact.html">Settings</a></li>
+                        <li className="red"><a onClick={this.resetCookies}>Reset Cookies</a></li>
                     </ul>
                 </div>
             </nav>

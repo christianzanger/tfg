@@ -7,13 +7,14 @@ export default class SettingsCookie {
 
         this.compression = cookie.compression;
         this.cache = cookie.cache;
+        this.tutorialStep = cookie.tutorialStep;
     }
 
     update () {
         Cookie.updateCookie('settings', this);
     }
 
-    reset () {
+    static reset () {
         Cookie.reset('settings');
     }
 }

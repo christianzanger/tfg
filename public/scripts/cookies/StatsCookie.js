@@ -24,14 +24,13 @@ export default class StatsCookie {
         const newAverage = (lastSumOfTimes + currentTime) / this.numberOfLoads;
         this.averageLoadTime = Math.round(newAverage * 100) / 100;
         this.update();
-        console.table(this);
     }
 
     update () {
         Cookie.updateCookie('stats', this);
     }
 
-    reset () {
+    static reset () {
         Cookie.reset('stats');
     }
 }

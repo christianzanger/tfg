@@ -45,7 +45,8 @@ module.exports = (app, currentSessionsBuffer) => {
         if (!req.cookies.settings) {
             res.cookie("settings", JSON.stringify({
                 cache: false,
-                compression: false
+                compression: false,
+                tutorialStep: 1
             }));
         }
         next();

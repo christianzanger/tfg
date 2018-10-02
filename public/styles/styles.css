@@ -44,6 +44,22 @@ html, body {
     height: 100%;
 }
 
+.translucent-bg {
+    background-color: #333333;
+    opacity: 0.5;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
+.highlight {
+    position: relative;
+    z-index: 110;
+}
+
 /******* SETTINGS *******/
 
 .settings {
@@ -52,4 +68,26 @@ html, body {
 
 .settings__header {
     margin: 0.2em 0.2em
+}
+
+/******* MODAL *******/
+.modal--small {
+    width: 40%;
+}
+
+.modal__header {
+    padding: 0.6em;
+    text-align: center;
+    /*color: white;*/
+}
+
+.modal__footer {
+    display: flex;
+    justify-content: center;
+}
+
+.modal__footer > * {
+    margin-left: 1em !important;
+    margin-right: 1em !important;
+    width: 10em;
 }
