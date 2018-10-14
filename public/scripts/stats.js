@@ -142,8 +142,7 @@ const formatBytes = (size, scale = 0) => {
 
 document.getElementById('reset').addEventListener('click', () => {
     fetch('/stats/reset', {credentials: "same-origin"}).then(() => {
-        const statsCookie = new StatsCookie();
-        statsCookie.reset();
+        StatsCookie.reset();
         location.href = "/"
     });
 });

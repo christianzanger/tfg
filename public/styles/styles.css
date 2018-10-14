@@ -18,8 +18,9 @@ html, body {
     padding-right: 1em;
 }
 
-#searchText {
+#search__text {
     margin-right: 1em;
+    font-size: 3.2em;
 }
 
 .featured__badge {
@@ -90,4 +91,8 @@ html, body {
     margin-left: 1em !important;
     margin-right: 1em !important;
     width: 10em;
+}
+
+.material-tooltip {
+    font-size: 2rem;
 }
