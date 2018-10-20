@@ -13,7 +13,7 @@ const pageLoadedHandler = () => {
     const statsCookie = new StatsCookie();
     // The last 2 conditions are to filter out the HEAD requests in the search page
     const localEntries = window.performance.getEntries()
-                         .filter(entry => entry.initiatorType !== "" || !entry.name.includes("images"));
+                         .filter(entry => entry.initiatorType !== "fetch" || !entry.name.includes("images"));
 
     if (settingsCookie.compression) {
         statsCookie.bytesSavedByCompression  = localEntries.filter(entry => entry.decodedBodySize)

@@ -140,13 +140,6 @@ const formatBytes = (size, scale = 0) => {
     return size <= 1024 ? `${Math.round(size)} ${sizes[scale]}` : formatBytes(size/1024, ++scale);
 };
 
-document.getElementById('reset').addEventListener('click', () => {
-    fetch('/stats/reset', {credentials: "same-origin"}).then(() => {
-        StatsCookie.reset();
-        location.href = "/"
-    });
-});
-
 window.addEventListener('statsUpdate', () => {
     const statsCookie = new StatsCookie();
     document.getElementById("avgLoadTime").innerHTML = statsCookie.averageLoadTime;

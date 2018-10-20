@@ -5,7 +5,7 @@ import Settings from '../Settings';
 import SettingsExplained from '../SettingsExplained';
 import SettingsCookie from "../../../public/scripts/cookies/SettingsCookie.js";
 
-class StatisticsPage extends React.Component {
+class SettingsPage extends React.Component {
     state = {};
 
     render () {
@@ -48,4 +48,4 @@ class StatisticsPage extends React.Component {
     }
 }
 
-ReactDOM.render(<StatisticsPage />, document.getElementById('app'));
+ReactDOM.render(<SettingsPage />, document.getElementById('app'));

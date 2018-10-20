@@ -1,8 +1,6 @@
 import React from 'react';
 
 export default class Statistics extends React.Component {
-    state = {};
-
     render () {
         return (
             <div>
@@ -12,10 +10,12 @@ export default class Statistics extends React.Component {
                     <br />
                     <div>Images downloaded: <span id="nImages">Loading...</span></div>
                 </div>
-                <input type="button" id="reset" value="Reset stats" />
                 <div id="avgLoadTimeChart" className="row">
                     <div className="col s12 m12 l6">
                         <canvas id="avgLoadTimeChart__canvas"></canvas>
+                    </div>
+                    <div className="col s12 m12 l6">
+                        <canvas id="stacked__canvas"></canvas>
                     </div>
                 </div>
                 <div id="downloadedBytesChart" className="row">
@@ -26,11 +26,6 @@ export default class Statistics extends React.Component {
                 <div id="downloadedBytesChart2" className="row">
                     <div className="col s12 m12 l6">
                         <canvas id="downloadedBytesChart2__canvas"></canvas>
-                    </div>
-                </div>
-                <div id="stacked" className="row">
-                    <div className="col s12 m12 l6">
-                        <canvas id="stacked__canvas"></canvas>
                     </div>
                 </div>
             </div>

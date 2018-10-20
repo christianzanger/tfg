@@ -3,24 +3,28 @@ import SettingsCookie from "../../public/scripts/cookies/SettingsCookie.js";
 import StatsCookie from "../../public/scripts/cookies/StatsCookie";
 
 export default class SettingsPanel extends React.Component {
-    state = {};
-
-    settingsSubmitHandler (event) {
+    compressionSwitchChange() {
         const settingsCookie = new SettingsCookie();
         const statsCookie = new StatsCookie();
-        const data = new FormData(event.target);
 
+        const data = new FormData(document.getElementById('settings'));
         settingsCookie.compression = data.get("compression") === "on";
-        settingsCookie.cache = data.get("cache") === "on";
-        settingsCookie.update();
-
         if (!settingsCookie.compression) statsCookie.bytesSavedByCompression = 0;
+
+        settingsCookie.update();
+        statsCookie.update();
+    }
+
+    cacheSwitchChange() {
+        const settingsCookie = new SettingsCookie();
+        const statsCookie = new StatsCookie();
+
+        const data = new FormData(document.getElementById('settings'));
+        settingsCookie.cache = data.get("cache") === "on";
         if (!settingsCookie.cache) statsCookie.bytesSavedByCache = 0;
 
+        settingsCookie.update();
         statsCookie.update();
-
-        M.toast({html: 'Settings saved!'});
-        event.preventDefault();
     }
 
     componentDidMount() {
@@ -43,7 +47,7 @@ export default class SettingsPanel extends React.Component {
                 <h1 className="center-align settings__header">Settings</h1>
                 <div className="settings-panel">
                     <div className="card-panel white">
-                        <form id="settings" onSubmit={this.settingsSubmitHandler}>
+                        <form id="settings" onSubmit={(e) => e.preventDefault()}>
                             <div className="row">
                                 <div className="settings-panel__setting">
                                     <div className="col s2">
@@ -55,7 +59,7 @@ export default class SettingsPanel extends React.Component {
                                     <div className="switch col s2">
                                         <label>
                                             Off
-                                            <input type="checkbox" name="compression" id="compression" />
+                                            <input type="checkbox" name="compression" id="compression" onClick={this.compressionSwitchChange}/>
                                             <span className="lever"></span>
                                             On
                                         </label>
@@ -71,17 +75,13 @@ export default class SettingsPanel extends React.Component {
                                     <div className="switch col s2">
                                         <label>
                                             Off
-                                            <input type="checkbox" name="cache" id="cache" />
+                                            <input type="checkbox" name="cache" id="cache" onClick={this.cacheSwitchChange} />
                                             <span className="lever"></span>
                                             On
                                         </label>
                                     </div>
                                 </div>
                             </div>
-                            <button className="btn waves-effect waves-light amber darken-4" type="submit" name="action">
-                                Save
-                                <i className="material-icons right">sync</i>
-                            </button>
                         </form>
                     </div>
                 </div>
