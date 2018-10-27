@@ -37,6 +37,7 @@ class SearchPage extends React.Component {
         document.body.appendChild(materializeJS);
         document.body.appendChild(classicApp);
         document.body.appendChild(search);
+
         return (
             <React.Fragment>
                 <Header />
