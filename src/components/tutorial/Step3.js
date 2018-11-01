@@ -19,7 +19,7 @@ export default class Step3 extends React.Component {
 
     render() {
         return (
-            <div className="translucent-bg"></div>
+            <div className="translucent"></div>
         )
     }
 }
