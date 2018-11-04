@@ -3,7 +3,7 @@ import SettingsCookie from "../../../public/scripts/cookies/SettingsCookie";
 
 export default class Step2 extends React.Component {
 
-    startStep2() {
+    componentDidMount() {
         const $searchInput = document.getElementById('search__text');
         const settingsCookie = new SettingsCookie();
         const search = "Dublin";
@@ -26,14 +26,6 @@ export default class Step2 extends React.Component {
             }
             offset += 600;
         });
-    }
-
-    componentDidMount() {
-        if (typeof M == "undefined") {
-            window.addEventListener('load', this.startStep2);
-        } else {
-            this.startStep2();
-        }
     }
 
     render() {

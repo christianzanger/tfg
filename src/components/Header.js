@@ -13,20 +13,6 @@ export default class Header extends React.Component {
     }
 
     render() {
-        const settingsCookie = new SettingsCookie();
-        const isStep3 = settingsCookie.tutorialStep === 3;
-        const step3Text = "Now that we have some data for our stats, let's take a look at them! When you're ready, click on \"Stats\"";
-        const className = isStep3 ? "highlight amber lighten-2 tooltipped" : "";
-        const endStep3 = (event) => {
-          if (isStep3) {
-              event.preventDefault();
-              settingsCookie.tutorialStep = 4;
-              console.log("Entering step 4");
-              settingsCookie.update();
-              window.location = "/pages/react/statsReact.html";
-          }
-        };
-
         return (
             <nav>
                 <div className="nav-wrapper amber lighten-2">
@@ -35,12 +21,7 @@ export default class Header extends React.Component {
                         <li><a href="/">Home</a></li>
                         <li><a href="">FAQ</a></li>
                         <li>
-                            <a href="/pages/react/statsReact.html"
-                               className={className}
-                               data-position={isStep3 && "bottom"}
-                               data-tooltip={isStep3 && step3Text}
-                               onClick={endStep3}
-                            >
+                            <a href="/pages/react/statsReact.html" id="statsLink">
                                 Stats
                             </a>
                         </li>
