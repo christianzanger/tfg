@@ -46,8 +46,7 @@ html, body {
 }
 
 .translucent {
-    background-color: #333333;
-    opacity: 0.5;
+    background-color: rgba(51, 51, 51, 0.5);
     width: 100%;
     height: 100%;
     position: fixed;
@@ -57,8 +56,7 @@ html, body {
 }
 
 .translucent--half {
-    background-color: #333333;
-    opacity: 0.5;
+    background-color: rgba(51, 51, 51, 0.5);
     width: 50%;
     height: 100%;
     position: fixed;
@@ -68,14 +66,28 @@ html, body {
 }
 
 .translucent--quarter {
-    background-color: #333333;
-    opacity: 0.5;
+    background-color: rgba(51, 51, 51, 0.5);
     width: 50%;
     height: 30%;
     position: fixed;
     top: 70%;
     left: 50%;
     z-index: 100;
+}
+
+.tutorial-panel {
+    background-color: #323232;
+    color: white;
+    font-size: 1.5rem;
+    text-align: justify;
+    padding: 0.5em;
+}
+
+.step2 {
+    position: absolute;
+    top: 38%;
+    left: 10%;
+    width: 80%;
 }
 
 .highlight {
@@ -113,8 +125,4 @@ html, body {
     margin-left: 1em !important;
     margin-right: 1em !important;
     width: 10em;
-}
-
-.material-tooltip {
-    font-size: 2rem;
 }
