@@ -46,9 +46,10 @@ module.exports = (app, currentSessionsBuffer, fs) => {
     };
 
     const search = (req, res) => {
-        if (!fs.existsSync(`${__dirname}/public/images/searches/${req.query.q}/`)) {
+
+        if (!fs.existsSync(`${__dirname}/public/images/searches/${encodeURIComponent(req.query.q)}/`)) {
             generation(req.query.q, res, (res) => {
-                if (!fs.existsSync(`${__dirname}/public/images/searches/${req.query.q}/`)) {
+                if (!fs.existsSync(`${__dirname}/public/images/searches/${encodeURIComponent(req.query.q)}/`)) {
                     // No results found for this keyword
                     res.sendFile(`${__dirname}/public/pages/search404.html`);
                 } else {

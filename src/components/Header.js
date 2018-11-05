@@ -26,7 +26,7 @@ export default class Header extends React.Component {
                             </a>
                         </li>
                         <li><a href="/pages/react/settingsReact.html" id="settingsLink">Settings</a></li>
-                        <li className="red"><a onClick={this.resetCookies}>Reset Cookies</a></li>
+                        <li className="red"><a onClick={this.resetCookies}>Reset</a></li>
                     </ul>
                 </div>
             </nav>

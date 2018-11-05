@@ -16,6 +16,12 @@ export default class SearchForm extends React.Component {
         this.forceUpdate();
     }
 
+    search(e) {
+        e.preventDefault();
+        const $input = document.getElementById("search__text");
+        window.location = `/search?q=${encodeURIComponent($input.value)}`
+    }
+
     render () {
         const settingsCookie = new SettingsCookie();
         const isStep2 = settingsCookie.tutorialStep === 2;
@@ -25,7 +31,7 @@ export default class SearchForm extends React.Component {
                 { settingsCookie.tutorialStep === 1 && <Step1 updateParent={this.forceRerender}/> }
                 { isStep2 && <Step2 /> }
                 <div className="container amber lighten-3">
-                    <form className="" id="search__form" action="/search" method="get">
+                    <form className="" id="search__form" method="get" onSubmit={this.search}>
                         <div className="input-field col s12">
                             <i className="material-icons prefix grey-text text-darken-4">search</i>
                             <input
