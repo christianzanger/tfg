@@ -1,9 +1,10 @@
 import React from 'react';
 import SettingsCookie from "../../public/scripts/cookies/SettingsCookie.js";
 import StatsCookie from "../../public/scripts/cookies/StatsCookie";
+import Step5 from "./tutorial/Step5";
 
 export default class SettingsPanel extends React.Component {
-    compressionSwitchChange() {
+    static compressionSwitchChange() {
         const settingsCookie = new SettingsCookie();
         const statsCookie = new StatsCookie();
 
@@ -42,8 +43,12 @@ export default class SettingsPanel extends React.Component {
     }
 
     render () {
+        const settingsCookie = new SettingsCookie();
+        const isStep5 = settingsCookie.tutorialStep === 5;
+
         return (
             <div className="container">
+                {isStep5 && <Step5 />}
                 <h1 className="center-align settings__header">Settings</h1>
                 <div className="settings-panel">
                     <div className="card-panel white">
@@ -53,13 +58,10 @@ export default class SettingsPanel extends React.Component {
                                     <div className="col s2">
                                         Compression
                                     </div>
-                                    <div className="col s2" data-collapsible="0">
-                                        Explain!
-                                    </div>
                                     <div className="switch col s2">
                                         <label>
                                             Off
-                                            <input type="checkbox" name="compression" id="compression" onClick={this.compressionSwitchChange}/>
+                                            <input type="checkbox" name="compression" id="compression" onClick={SettingsPanel.compressionSwitchChange}/>
                                             <span className="lever"></span>
                                             On
                                         </label>
@@ -68,9 +70,6 @@ export default class SettingsPanel extends React.Component {
                                 <div className="settings-panel__setting">
                                     <div className="col s2">
                                         Cache assets
-                                    </div>
-                                    <div className="col s2" data-collapsible="1">
-                                        Explain!
                                     </div>
                                     <div className="switch col s2">
                                         <label>
