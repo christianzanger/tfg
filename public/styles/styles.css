@@ -115,6 +115,46 @@ html, body {
     z-index: 100;
 }
 
+.translucent--step6--1 {
+    background-color: rgba(51, 51, 51, 0.5);
+    position: fixed;
+    width: 14%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
+.translucent--step6--2 {
+    background-color: rgba(51, 51, 51, 0.5);
+    position: fixed;
+    width: 86%;
+    height: 24%;
+    top: 0;
+    left: 14%;
+    z-index: 100;
+}
+
+.translucent--step6--3 {
+    background-color: rgba(51, 51, 51, 0.5);
+    position: fixed;
+    width: 86%;
+    height: 70%;
+    top: 32%;
+    left: 14%;
+    z-index: 100;
+}
+
+.translucent--step6--4 {
+    background-color: rgba(51, 51, 51, 0.5);
+    position: fixed;
+    width: 15%;
+    height: 8%;
+    top: 24%;
+    left: 85%;
+    z-index: 100;
+}
+
 .tutorial-panel {
     background-color: #323232;
     color: white;
@@ -139,6 +179,10 @@ html, body {
 .step5 {
     width: 50%;
     left: -15%;
+}
+
+.step6 {
+    width: 83%;
 }
 
 .highlight {

@@ -8,7 +8,7 @@ export default class Step2 extends React.Component {
         const settingsCookie = new SettingsCookie();
         const search = "Dublin";
         const lastIteration = search.length - 1;
-        let offset = 2000;
+        let offset = 10000;
 
         $searchInput.classList.add("highlight");
         $searchInput.disabled = true;
@@ -34,7 +34,7 @@ export default class Step2 extends React.Component {
                 <div className="tutorial-panel step2">
                     Let's first establish a baseline of performance with the default settings.
                     You can search for anything you like! Big cities work well,
-                    so let's search for pictures of Dublin.
+                    so let's search for pictures of Dublin. Wait 10 seconds for the input to complete itself :)
                 </div>
             </div>
         )

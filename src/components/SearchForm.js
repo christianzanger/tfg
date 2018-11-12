@@ -3,6 +3,7 @@ import Featured from './Featured';
 import SettingsCookie from "../../public/scripts/cookies/SettingsCookie";
 import Step1 from "./tutorial/Step1";
 import Step2 from "./tutorial/Step2";
+import Step6 from "./tutorial/Step6";
 
 export default class SearchForm extends React.Component {
 
@@ -24,12 +25,15 @@ export default class SearchForm extends React.Component {
 
     render () {
         const settingsCookie = new SettingsCookie();
+        const isStep1 = settingsCookie.tutorialStep === 1;
         const isStep2 = settingsCookie.tutorialStep === 2;
+        const isStep6 = settingsCookie.tutorialStep === 6;
 
         return (
             <div id="search" className="valign-wrapper">
-                { settingsCookie.tutorialStep === 1 && <Step1 updateParent={this.forceRerender}/> }
+                { isStep1 && <Step1 updateParent={this.forceRerender}/> }
                 { isStep2 && <Step2 /> }
+                { isStep6 && <Step6 /> }
                 <div className="container amber lighten-3">
                     <form className="" id="search__form" method="get" onSubmit={this.search}>
                         <div className="input-field col s12">
