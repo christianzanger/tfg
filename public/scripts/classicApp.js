@@ -14,14 +14,21 @@ const pageLoadedHandler = () => {
     // The last 2 conditions are to filter out the HEAD requests in the search page
     const localEntries = window.performance.getEntries()
                          .filter(entry => entry.initiatorType !== "fetch" || !entry.name.includes("images"));
+    const cachedEntries = localEntries.filter(entry => entry.transferSize === 0);
 
     if (settingsCookie.compression) {
-        statsCookie.bytesSavedByCompression  = localEntries.filter(entry => entry.decodedBodySize)
-            .reduce((accumulator, entry) => accumulator + (entry.decodedBodySize - entry.encodedBodySize), 0);
+        let compressedEntries;
+        const compressionAdder = (accumulator, entry) => accumulator + (entry.decodedBodySize - entry.encodedBodySize);
+        if (settingsCookie.cache && cachedEntries.length > 0) {
+            compressedEntries = localEntries.filter(entry => entry.decodedBodySize && entry.transferSize !== 0);
+        } else {
+            compressedEntries = localEntries.filter(entry => entry.decodedBodySize);
+        }
+
+        statsCookie.bytesSavedByCompression  = compressedEntries.reduce(compressionAdder, 0);
     }
 
     if (settingsCookie.cache) {
-        const cachedEntries = localEntries.filter(entry => entry.transferSize === 0);
         statsCookie.bytesSavedByCache = cachedEntries.reduce((accumulator, entry) => accumulator + entry.decodedBodySize, 0);
     }
 
