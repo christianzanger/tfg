@@ -8,6 +8,7 @@ CREATE TABLE user_history (
     bytesSavedByCompression int default 0,
     bytesSavedByCache int default 0,
     filesSavedByCache int default 0,
+    page varchar(100),
     PRIMARY KEY (id)
 );
 

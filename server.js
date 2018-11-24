@@ -1,4 +1,5 @@
-const app = require('express')();
+const express = require('express');
+const app = express();
 const fs = require('fs');
 
 const port = process.env.PORT || 3000;
@@ -13,7 +14,7 @@ app.get('/robots.txt', (req, res) => {
     res.send("User-agent: *\nDisallow: /");
 });
 
-require('./middleware')(app, currentSessionsBuffer);
+require('./middleware')(app, currentSessionsBuffer, express);
 require('./routes')(app, currentSessionsBuffer, fs);
 
 app.listen(port, () => {

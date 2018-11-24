@@ -2,7 +2,8 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const compression = require('compression');
 
-module.exports = (app, currentSessionsBuffer) => {
+module.exports = (app, currentSessionsBuffer, express) => {
+    app.use(express.json());
     // Middleware needs to be created after static files, or it will get called for each of the static files
     app.use(cookieParser());
     app.use(session({

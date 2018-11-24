@@ -40,7 +40,11 @@ const pageLoadedHandler = () => {
 
     fetch('/savehistory', {
         credentials: "same-origin",
-        method: "POST"
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify({page: window.location.href}),
     }).then(() => window.dispatchEvent(new Event('statsUpdate')));
 };
 

@@ -98,13 +98,21 @@ module.exports = (app, currentSessionsBuffer, fs) => {
         );
     };
 
+    const getPageFromURL = url => {
+        if (url.includes("stats")) return "Statistics";
+        if (url.includes("settings")) return "Settings";
+        if (url.includes("search")) return `Search: ${url.substring(url.indexOf('=') + 1)}`;
+        return "Home";
+    };
+
     const saveHistory = (req, res) => {
         const stats = JSON.parse(req.cookies.stats);
         const settings = JSON.parse(req.cookies.settings);
+        const page = getPageFromURL(req.body.page);
 
         connection.query(
-            `INSERT INTO user_history (user_id, avg_load_time, loads, images, bytes, bytesSavedByCompression, bytesSavedByCache) VALUES
-        ("${stats.uid}", ${stats.averageLoadTime}, ${stats.numberOfLoads}, ${stats.images}, ${stats.bytes}, ${stats.bytesSavedByCompression}, ${stats.bytesSavedByCache})`,
+            `INSERT INTO user_history (user_id, avg_load_time, loads, images, bytes, bytesSavedByCompression, bytesSavedByCache, page) VALUES
+        ("${stats.uid}", ${stats.averageLoadTime}, ${stats.numberOfLoads}, ${stats.images}, ${stats.bytes}, ${stats.bytesSavedByCompression}, ${stats.bytesSavedByCache}, "${page}")`,
             (error, rows) => {
                 if (error) {
                     console.log(error);
