@@ -1,14 +1,28 @@
 import React from 'react';
 import HTTP from './HTTP';
+import Step9 from "./tutorial/Step9";
+import SettingsCookie from "../../public/scripts/cookies/SettingsCookie";
 
 export default class SettingsExplained extends React.Component {
-    state = {};
+    constructor(props) {
+        super(props);
+
+        this.forceRerender = this.forceRerender.bind(this);
+    }
+
+    forceRerender() {
+        this.forceUpdate();
+    }
 
     render () {
+        const settingsCookie = new SettingsCookie();
+        const isStep9 = settingsCookie.tutorialStep === 9;
+
         return (
             <div className="container">
+                {isStep9 && <Step9 updateParent={this.forceRerender}/>}
                 <h1 className="center-align settings__header">How it works</h1>
-                <ul className="collapsible popout">
+                <ul className="collapsible popout" id="compressionExplainedDropdown">
                     <li>
                         <div className="collapsible-header">
                             <h5><i className="material-icons">work</i>Compression</h5>

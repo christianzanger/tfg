@@ -1,15 +1,18 @@
 import React from 'react';
 import SettingsCookie from "../../public/scripts/cookies/SettingsCookie";
 import Step4 from "./tutorial/Step4";
+import Step8 from "./tutorial/Step8";
 
 export default class Statistics extends React.Component {
     render () {
         const settingsCookie = new SettingsCookie();
         const isStep4 = settingsCookie.tutorialStep === 4;
+        const isStep8 = settingsCookie.tutorialStep === 8;
 
         return (
             <div>
                 {isStep4 && <Step4/>}
+                {isStep8 && <Step8/>}
                 <div>
                     <div>Average load time: <span id="avgLoadTime">Loading...</span></div>
                     <div>Page loads: <span id="pageLoads">Loading...</span></div>

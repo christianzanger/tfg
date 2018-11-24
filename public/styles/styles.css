@@ -155,6 +155,46 @@ html, body {
     z-index: 100;
 }
 
+.translucent--step9--1 {
+    background-color: rgba(51, 51, 51, 0.5);
+    position: fixed;
+    width: 17%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
+.translucent--step9--2 {
+    background-color: rgba(51, 51, 51, 0.5);
+    position: fixed;
+    width: 85%;
+    height: 35%;
+    top: 0;
+    left: 17%;
+    z-index: 100;
+}
+
+.translucent--step9--3 {
+    background-color: rgba(51, 51, 51, 0.5);
+    position: fixed;
+    width: 85%;
+    height: 73%;
+    top: 45%;
+    left: 17%;
+    z-index: 100;
+}
+
+.translucent--step9--4 {
+    background-color: rgba(51, 51, 51, 0.5);
+    position: fixed;
+    width: 65%;
+    height: 10%;
+    top: 35%;
+    left: 83%;
+    z-index: 100;
+}
+
 .tutorial-panel {
     background-color: #323232;
     color: white;
@@ -169,7 +209,7 @@ html, body {
     left: 10%;
     width: 80%;
 }
-
+/* Also usedfor step7 */
 .step3 {
     top: 7%;
     left: 5%;
@@ -183,6 +223,10 @@ html, body {
 
 .step6 {
     width: 83%;
+}
+
+.step9 {
+    width: 78%;
 }
 
 .highlight {
