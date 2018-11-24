@@ -112,7 +112,7 @@ module.exports = (app, currentSessionsBuffer, fs) => {
 
         connection.query(
             `INSERT INTO user_history (user_id, avg_load_time, loads, images, bytes, bytesSavedByCompression, bytesSavedByCache, page) VALUES
-        ("${stats.uid}", ${stats.averageLoadTime}, ${stats.numberOfLoads}, ${stats.images}, ${stats.bytes}, ${stats.bytesSavedByCompression}, ${stats.bytesSavedByCache}, "${page}")`,
+        ("${stats.uid}", ${stats.averageLoadTime}, ${stats.numberOfLoads}, ${stats.images}, ${stats.bytes}, ${stats.bytesSavedByCompression}, ${stats.bytesSavedByCache}, "${decodeURIComponent(page)}")`,
             (error, rows) => {
                 if (error) {
                     console.log(error);

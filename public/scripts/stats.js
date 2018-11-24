@@ -17,7 +17,16 @@ const avgLoadTimechart = new Chart(loadChartDOM, {
         }]
     },
 
-    options: {}
+    options: {
+        scales: {
+            xAxes: [{
+                stacked: true,
+                ticks: {
+                    autoSkip: false
+                }
+            }],
+        }
+    }
 });
 
 const downloadedBytesChart = new Chart(bytesChartDOM, {
@@ -43,7 +52,12 @@ const downloadedBytesChart = new Chart(bytesChartDOM, {
                ticks: {
                    // beginAtZero: true,
                }
-           }]
+           }],
+           xAxes: [{
+               ticks: {
+                   autoSkip: false
+               }
+           }],
        }
     }
 });
@@ -71,7 +85,12 @@ const downloadedBytesChart2 = new Chart(bytesChartDOM2, {
                 ticks: {
                     // beginAtZero: true,
                 }
-            }]
+            }],
+            xAxes: [{
+                ticks: {
+                    autoSkip: false
+                }
+            }],
         }
     }
 });
@@ -99,7 +118,10 @@ const stackedBar = new Chart(stacked, {
     options: {
         scales: {
             xAxes: [{
-                stacked: true
+                stacked: true,
+                ticks: {
+                    autoSkip: false
+                }
             }],
             yAxes: [{
                 stacked: true
@@ -114,21 +136,21 @@ async function getStats() {
     }).then(data => {
         document.getElementById("nImages").innerHTML = data.reduce((accumulator, entry) => accumulator + entry.images, 0);
 
-        avgLoadTimechart.data.labels = [...Array(data.length).keys()];
+        avgLoadTimechart.data.labels = data.map(row => row.page);
         avgLoadTimechart.data.datasets[0].data = data.map(row => row.avg_load_time);
         avgLoadTimechart.update();
 
-        downloadedBytesChart.data.labels = [...Array(data.length).keys()];
+        downloadedBytesChart.data.labels = data.map(row => row.page);
         downloadedBytesChart.data.datasets[0].data = data.map(row => row.bytes);
         downloadedBytesChart.data.datasets[1].data = data.map(row => row.bytesSavedByCompression + row.bytes);
         downloadedBytesChart.update();
 
-        downloadedBytesChart2.data.labels = [...Array(data.length).keys()];
+        downloadedBytesChart2.data.labels = data.map(row => row.page);
         downloadedBytesChart2.data.datasets[0].data = data.map(row => row.bytes);
         downloadedBytesChart2.data.datasets[1].data = data.map(row => row.bytesSavedByCache + row.bytes);
         downloadedBytesChart2.update();
 
-        stackedBar.data.labels = [...Array(data.length).keys()];
+        stackedBar.data.labels = data.map(row => row.page);
         stackedBar.data.datasets[0].data = data.map(row => row.bytes);
         stackedBar.data.datasets[1].data = data.map(row => row.bytesSavedByCache);
         stackedBar.data.datasets[2].data = data.map(row => row.bytesSavedByCompression);
