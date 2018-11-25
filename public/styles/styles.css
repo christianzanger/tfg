@@ -195,6 +195,10 @@ html, body {
     z-index: 100;
 }
 
+.hidden {
+    display: none;
+}
+
 .tutorial-panel {
     background-color: #323232;
     color: white;
@@ -227,6 +231,20 @@ html, body {
 
 .step9 {
     width: 78%;
+}
+
+#stacked {
+    margin-top: 2.5em;
+    padding-right: 1em;
+}
+
+#statsPanel h4 {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+#statsPanel {
+    margin-top: 2.5em;
 }
 
 .highlight {

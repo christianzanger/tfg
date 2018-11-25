@@ -35,7 +35,8 @@ const pageLoadedHandler = () => {
     statsCookie.bytes = localEntries.filter(entry => entry.transferSize).reduce((accumulator, entry) => accumulator + entry.transferSize, 0);
 
     statsCookie.images = localEntries.filter(entry => entry.name.includes("images")).length;
-
+    statsCookie.filesSavedByCache = cachedEntries.length;
+    
     statsCookie.updateStats();
 
     fetch('/savehistory', {

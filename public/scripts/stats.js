@@ -1,99 +1,99 @@
 import StatsCookie from "./cookies/StatsCookie.js";
 
 const statsCookie = new StatsCookie();
-const loadChartDOM = document.getElementById('avgLoadTimeChart__canvas').getContext('2d');
-const bytesChartDOM = document.getElementById('downloadedBytesChart__canvas').getContext('2d');
-const bytesChartDOM2 = document.getElementById('downloadedBytesChart2__canvas').getContext('2d');
+// const loadChartDOM = document.getElementById('avgLoadTimeChart__canvas').getContext('2d');
+// const bytesChartDOM = document.getElementById('downloadedBytesChart__canvas').getContext('2d');
+// const bytesChartDOM2 = document.getElementById('downloadedBytesChart2__canvas').getContext('2d');
 const stacked = document.getElementById('stacked__canvas').getContext('2d');
 const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-const avgLoadTimechart = new Chart(loadChartDOM, {
-    type: 'line',
+// const avgLoadTimechart = new Chart(loadChartDOM, {
+//     type: 'line',
+//
+//     data: {
+//         datasets: [{
+//             label: "Average load time",
+//             borderColor: 'rgb(255, 99, 132)',
+//             fill: false,
+//         }]
+//     },
+//
+//     options: {
+//         scales: {
+//             xAxes: [{
+//                 stacked: true,
+//                 ticks: {
+//                     autoSkip: false
+//                 }
+//             }],
+//         }
+//     }
+// });
 
-    data: {
-        datasets: [{
-            label: "Average load time",
-            borderColor: 'rgb(255, 99, 132)',
-            fill: false,
-        }]
-    },
+// const downloadedBytesChart = new Chart(bytesChartDOM, {
+//    type: 'line',
+//
+//    data: {
+//        datasets: [{
+//            label: "Downloaded bytes",
+//            borderColor: 'rgb(51, 204, 51)',
+//            fill: false,
+//            yAxisID: 0
+//        }, {
+//            label: "Estimated downloaded bytes without compression",
+//            borderColor: 'rgb(51, 204, 204)',
+//            fill: false,
+//            yAxisID: 0
+//        }]
+//    },
+//
+//     options: {
+//        scales: {
+//            yAxes: [{
+//                ticks: {
+//                    // beginAtZero: true,
+//                }
+//            }],
+//            xAxes: [{
+//                ticks: {
+//                    autoSkip: false
+//                }
+//            }],
+//        }
+//     }
+// });
 
-    options: {
-        scales: {
-            xAxes: [{
-                stacked: true,
-                ticks: {
-                    autoSkip: false
-                }
-            }],
-        }
-    }
-});
-
-const downloadedBytesChart = new Chart(bytesChartDOM, {
-   type: 'line',
-
-   data: {
-       datasets: [{
-           label: "Downloaded bytes",
-           borderColor: 'rgb(51, 204, 51)',
-           fill: false,
-           yAxisID: 0
-       }, {
-           label: "Estimated downloaded bytes without compression",
-           borderColor: 'rgb(51, 204, 204)',
-           fill: false,
-           yAxisID: 0
-       }]
-   },
-
-    options: {
-       scales: {
-           yAxes: [{
-               ticks: {
-                   // beginAtZero: true,
-               }
-           }],
-           xAxes: [{
-               ticks: {
-                   autoSkip: false
-               }
-           }],
-       }
-    }
-});
-
-const downloadedBytesChart2 = new Chart(bytesChartDOM2, {
-    type: 'line',
-
-    data: {
-        datasets: [{
-            label: "Downloaded bytes",
-            borderColor: 'rgb(51, 204, 51)',
-            fill: false,
-            yAxisID: 0
-        }, {
-            label: "Estimated downloaded bytes without cache",
-            borderColor: 'rgb(51, 204, 204)',
-            fill: false,
-            yAxisID: 0
-        }]
-    },
-
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    // beginAtZero: true,
-                }
-            }],
-            xAxes: [{
-                ticks: {
-                    autoSkip: false
-                }
-            }],
-        }
-    }
-});
+// const downloadedBytesChart2 = new Chart(bytesChartDOM2, {
+//     type: 'line',
+//
+//     data: {
+//         datasets: [{
+//             label: "Downloaded bytes",
+//             borderColor: 'rgb(51, 204, 51)',
+//             fill: false,
+//             yAxisID: 0
+//         }, {
+//             label: "Estimated downloaded bytes without cache",
+//             borderColor: 'rgb(51, 204, 204)',
+//             fill: false,
+//             yAxisID: 0
+//         }]
+//     },
+//
+//     options: {
+//         scales: {
+//             yAxes: [{
+//                 ticks: {
+//                     // beginAtZero: true,
+//                 }
+//             }],
+//             xAxes: [{
+//                 ticks: {
+//                     autoSkip: false
+//                 }
+//             }],
+//         }
+//     }
+// });
 
 const stackedBar = new Chart(stacked, {
     type: 'bar',
@@ -134,21 +134,41 @@ async function getStats() {
     return await fetch('/history', {credentials: "same-origin"}).then( response => {
         return response.json();
     }).then(data => {
+        const bytesSavedByCompression = data.reduce((accumulator, entry) => accumulator + entry.bytesSavedByCompression, 0);
+        const bytesSavedByCache = data.reduce((accumulator, entry) => accumulator + entry.bytesSavedByCache, 0);
+        const filesSavedByCache = data.reduce((acculator, entry) => acculator + entry.filesSavedByCache, 0);
+        const $compressionSavings = document.getElementById('compressionSavings');
+        const $cacheSavings = document.getElementById('cacheSavings');
+        const $cacheFileSavings = document.getElementById('cachefileSavings');
+
+        if (bytesSavedByCompression > 0) {
+            $compressionSavings.innerHTML = formatBytes(bytesSavedByCompression);
+            $compressionSavings.parentElement.classList.remove('hidden');
+        }
+
+        if (bytesSavedByCache > 0) {
+            $cacheSavings.innerHTML = formatBytes(bytesSavedByCache);
+            $cacheSavings.parentElement.classList.remove('hidden');
+
+            $cacheFileSavings.innerHTML = filesSavedByCache;
+            $cacheFileSavings.parentElement.classList.remove('hidden');
+        }
+
         document.getElementById("nImages").innerHTML = data.reduce((accumulator, entry) => accumulator + entry.images, 0);
 
-        avgLoadTimechart.data.labels = data.map(row => row.page);
-        avgLoadTimechart.data.datasets[0].data = data.map(row => row.avg_load_time);
-        avgLoadTimechart.update();
+        // avgLoadTimechart.data.labels = data.map(row => row.page);
+        // avgLoadTimechart.data.datasets[0].data = data.map(row => row.avg_load_time);
+        // avgLoadTimechart.update();
 
-        downloadedBytesChart.data.labels = data.map(row => row.page);
-        downloadedBytesChart.data.datasets[0].data = data.map(row => row.bytes);
-        downloadedBytesChart.data.datasets[1].data = data.map(row => row.bytesSavedByCompression + row.bytes);
-        downloadedBytesChart.update();
-
-        downloadedBytesChart2.data.labels = data.map(row => row.page);
-        downloadedBytesChart2.data.datasets[0].data = data.map(row => row.bytes);
-        downloadedBytesChart2.data.datasets[1].data = data.map(row => row.bytesSavedByCache + row.bytes);
-        downloadedBytesChart2.update();
+        // downloadedBytesChart.data.labels = data.map(row => row.page);
+        // downloadedBytesChart.data.datasets[0].data = data.map(row => row.bytes);
+        // downloadedBytesChart.data.datasets[1].data = data.map(row => row.bytesSavedByCompression + row.bytes);
+        // downloadedBytesChart.update();
+        //
+        // downloadedBytesChart2.data.labels = data.map(row => row.page);
+        // downloadedBytesChart2.data.datasets[0].data = data.map(row => row.bytes);
+        // downloadedBytesChart2.data.datasets[1].data = data.map(row => row.bytesSavedByCache + row.bytes);
+        // downloadedBytesChart2.update();
 
         stackedBar.data.labels = data.map(row => row.page);
         stackedBar.data.datasets[0].data = data.map(row => row.bytes);
@@ -159,6 +179,7 @@ async function getStats() {
 }
 
 const formatBytes = (size, scale = 0) => {
+    const sizes = ['B', 'KB', 'MB', 'GB'];
     return size <= 1024 ? `${Math.round(size)} ${sizes[scale]}` : formatBytes(size/1024, ++scale);
 };
 

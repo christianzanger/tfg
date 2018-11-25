@@ -109,10 +109,21 @@ module.exports = (app, currentSessionsBuffer, fs) => {
         const stats = JSON.parse(req.cookies.stats);
         const settings = JSON.parse(req.cookies.settings);
         const page = getPageFromURL(req.body.page);
+        const queryColumns = `INSERT INTO user_history 
+                              (user_id, avg_load_time, loads, images, bytes, bytesSavedByCompression, bytesSavedByCache, filesSavedByCache, page) 
+                              VALUES `;
+        const queryValues =  `("${stats.uid}", 
+                                ${stats.averageLoadTime}, 
+                                ${stats.numberOfLoads}, 
+                                ${stats.images}, 
+                                ${stats.bytes}, 
+                                ${stats.bytesSavedByCompression}, 
+                                ${stats.bytesSavedByCache}, 
+                                ${stats.filesSavedByCache}, 
+                                "${decodeURIComponent(page)}")`;
 
         connection.query(
-            `INSERT INTO user_history (user_id, avg_load_time, loads, images, bytes, bytesSavedByCompression, bytesSavedByCache, page) VALUES
-        ("${stats.uid}", ${stats.averageLoadTime}, ${stats.numberOfLoads}, ${stats.images}, ${stats.bytes}, ${stats.bytesSavedByCompression}, ${stats.bytesSavedByCache}, "${decodeURIComponent(page)}")`,
+            queryColumns + queryValues,
             (error, rows) => {
                 if (error) {
                     console.log(error);
