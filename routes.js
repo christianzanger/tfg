@@ -143,7 +143,12 @@ module.exports = (app, currentSessionsBuffer, fs) => {
         res.status(404).send("Sorry can't find that!")
     };
 
+    function favicon(req, res) {
+        res.sendFile(`${__dirname}/favicon.ico`);
+    }
+
     /* ASSETS */
+    app.get('/favicon.ico', favicon);
     app.get('/cached/images/*', cachedImage);
     app.get('/cached/*', cachedAsset);
     app.get('/images/*', image);
