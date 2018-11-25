@@ -11,6 +11,7 @@ export default class HTTP extends React.Component {
                     { this.props.acceptEncoding && <span><strong>Accept-Encoding: </strong>{this.props.acceptEncoding}<br /></span>}
                     { this.props.contentEncoding && <span><strong>Content-Encoding: </strong>{this.props.contentEncoding}<br /></span>}
                     { this.props.vary && <span><strong>Vary: </strong>{this.props.vary}<br /></span>}
+                    { this.props.cacheControl && <span><strong>Cache-Control: </strong>{this.props.cacheControl}<br /></span>}
                 </div>
             </div>
         )

@@ -1,6 +1,6 @@
 import React from "react";
 import SettingsCookie from "../../../public/scripts/cookies/SettingsCookie";
-import SettingsPanel from "../Settings";
+import SettingsPanel from "../settings/SettingsPanel";
 
 export default class Step5 extends React.Component {
 

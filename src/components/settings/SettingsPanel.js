@@ -1,7 +1,7 @@
 import React from 'react';
-import SettingsCookie from "../../public/scripts/cookies/SettingsCookie.js";
-import StatsCookie from "../../public/scripts/cookies/StatsCookie";
-import Step5 from "./tutorial/Step5";
+import SettingsCookie from "../../../public/scripts/cookies/SettingsCookie.js";
+import StatsCookie from "../../../public/scripts/cookies/StatsCookie";
+import Step5 from "../tutorial/Step5";
 
 export default class SettingsPanel extends React.Component {
     static compressionSwitchChange() {

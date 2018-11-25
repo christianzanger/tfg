@@ -1,12 +1,11 @@
 import React from 'react';
 import ReactDOM from "react-dom";
 import Header from '../Header';
-import Settings from '../Settings';
-import SettingsExplained from '../SettingsExplained';
+import SettingsPanel from '../settings/SettingsPanel';
+import SettingsExplained from '../settings/SettingsExplained';
 import SettingsCookie from "../../../public/scripts/cookies/SettingsCookie.js";
 
 class SettingsPage extends React.Component {
-    state = {};
 
     render () {
         const settingsCookie = new SettingsCookie();
@@ -41,7 +40,7 @@ class SettingsPage extends React.Component {
         return (
             <React.Fragment>
                 <Header />
-                <Settings />
+                <SettingsPanel />
                 <SettingsExplained />
             </React.Fragment>
         );
