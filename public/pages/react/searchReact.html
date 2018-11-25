@@ -3,11 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/styles/materialize.min.css">
+    <link rel="stylesheet" data-cacheable="/styles/materialize.min.css">
     <title>Interactive Web Performance</title>
 </head>
 <body>
-<div id="app" class="amber lighten-4"></div>
-<script type="text/javascript" src="/scripts/bundles/search-bundle.js"></script>
+    <div id="app" class="amber lighten-4"></div>
+    <script type="text/javascript" data-cacheable="/scripts/bundles/search-bundle.js"></script>
+    <script>
+        const searchForSettingsCookie = () => {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                let c = cookies[i].replace(' ', '');
+                if (c.indexOf(`settings=`) === 0) return c.substring(`settings=`.length, c.length);
+            }
+            return null;
+        };
+
+        const settingsCookie = JSON.parse(decodeURIComponent(searchForSettingsCookie()));
+        const cacheables = document.querySelectorAll('[data-cacheable]');
+
+        cacheables.forEach( $element => {
+            const resourceURL = settingsCookie.cache ? '/cached' + $element.dataset.cacheable : $element.dataset.cacheable;
+            if ($element.nodeName === "LINK") {
+                $element.href = resourceURL;
+            } else {
+                $element.src = resourceURL;
+            }
+        });
+    </script>
 </body>
 </html>
