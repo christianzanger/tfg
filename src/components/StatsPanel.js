@@ -12,8 +12,8 @@ export default class StatsPanel extends React.Component {
                 <br />
                 <h4>Downloaded resources</h4>
                 <div>Images: <span id="nImages">Loading...</span></div>
-                <div>Javascript files: TODO :)</div>
-                <div>CSS files: TODO :)</div>
+                <div>Javascript files: <span id="jsFiles">Loading...</span></div>
+                <div>CSS files: <span id="cssFiles">Loading...</span></div>
                 <div className="hidden">Files not downloaded thanks to cache: <span id="cachefileSavings">Loading...</span></div>
             </div>
         )

@@ -32,6 +32,8 @@ module.exports = (app, currentSessionsBuffer, express) => {
                 averageLoadTime: 0,
                 numberOfLoads: 0,
                 images: 0,
+                cssFiles: 0,
+                jsFiles: 0,
                 bytes: 0,
                 bytesSavedByCompression: 0,
                 bytesSavedByCache: 0,

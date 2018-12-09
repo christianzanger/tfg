@@ -19,7 +19,6 @@ export default class Step1 extends React.Component {
     handleDismissal() {
         const settingsCookie = new SettingsCookie();
         if (settingsCookie.tutorialStep !== 2) {
-            console.log("Setting -1");
             settingsCookie.tutorialStep = -1;
             settingsCookie.update()
         }

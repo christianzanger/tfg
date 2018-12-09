@@ -84,14 +84,15 @@ module.exports = (app, currentSessionsBuffer, fs) => {
         const stats = JSON.parse(req.cookies.stats);
         res.type("JSON");
 
-        connection.query(`SELECT * FROM user_history WHERE user_id = "${sessionId}"`,
-            (error, rows, fields) => {
+        connection.query(`SELECT * FROM user_history INNER JOIN user_resources on user_history.id = user_resources.history_id WHERE user_history.user_id = "${sessionId}"`,
+            (error, rows) => {
                 if (error) {
                     console.log(error);
-                    res.sendStatus(400);
+                    res.sendStatus(500);
                 } else {
                     stats.images = currentSessionsBuffer[stats.uid].images;
                     res.cookie("stats", JSON.stringify(stats));
+                    console.log(rows);
                     res.send(rows);
                 }
             }
@@ -110,12 +111,11 @@ module.exports = (app, currentSessionsBuffer, fs) => {
         const settings = JSON.parse(req.cookies.settings);
         const page = getPageFromURL(req.body.page);
         const queryColumns = `INSERT INTO user_history 
-                              (user_id, avg_load_time, loads, images, bytes, bytesSavedByCompression, bytesSavedByCache, filesSavedByCache, page) 
+                              (user_id, avg_load_time, loads, bytes, bytesSavedByCompression, bytesSavedByCache, filesSavedByCache, page) 
                               VALUES `;
-        const queryValues =  `("${stats.uid}", 
+        const historyQueryValues =  `("${stats.uid}", 
                                 ${stats.averageLoadTime}, 
-                                ${stats.numberOfLoads}, 
-                                ${stats.images}, 
+                                ${stats.numberOfLoads},  
                                 ${stats.bytes}, 
                                 ${stats.bytesSavedByCompression}, 
                                 ${stats.bytesSavedByCache}, 
@@ -123,20 +123,30 @@ module.exports = (app, currentSessionsBuffer, fs) => {
                                 "${decodeURIComponent(page)}")`;
 
         connection.query(
-            queryColumns + queryValues,
+            queryColumns + historyQueryValues,
             (error, rows) => {
                 if (error) {
                     console.log(error);
-                    res.sendStatus(400);
+                    res.sendStatus(500);
                 } else {
                     connection.query(`INSERT INTO user_settings (history_id, compression, cache, user_id) VALUES
                     (${rows.insertId}, ${settings ? settings.compression : 0}, ${settings ? settings.cache : 0}, "${stats.uid}")`,
                         error => {
                             if (error) {
                                 console.log(error);
-                                res.sendStatus(400);
+                                res.sendStatus(500);
                             } else {
-                                res.sendStatus(200);
+                                connection.query(`INSERT INTO user_resources (history_id, images, javascriptFiles, cssFiles) VALUES 
+                                (${rows.insertId}, ${stats.images}, ${stats.jsFiles}, ${stats.cssFiles})`,
+                                    error => {
+                                        if (error) {
+                                            console.log(error);
+                                            res.sendStatus(500);
+                                        } else {
+                                            res.sendStatus(200);
+
+                                        }
+                                });
                             }
                         }
                     );
