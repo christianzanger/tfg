@@ -172,6 +172,7 @@ module.exports = (app, currentSessionsBuffer, fs) => {
     app.get('/cached/images/*', cachedImage);
     app.get('/cached/*', cachedAsset);
     app.get('/images/*', image);
+    app.get('/minified/*', asset);
     app.get('/pages/*', asset);
     app.get('/scripts/*', asset);
     app.get('/styles/*', asset);

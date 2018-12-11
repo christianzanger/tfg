@@ -10,6 +10,8 @@ class SettingsPage extends React.Component {
     render () {
         const settingsCookie = new SettingsCookie();
         const cached = settingsCookie.cache ? '/cached' : '';
+        const minification = settingsCookie.minification ? '/minified' : '';
+        const minificationExtension = settingsCookie.minification ? '.min' : '';
 
         const materializeJS = document.createElement('script');
         const classicApp = document.createElement('script');
@@ -22,7 +24,7 @@ class SettingsPage extends React.Component {
             const collapsibles = document.querySelectorAll('.collapsible');
             M.Collapsible.init(collapsibles);
         };
-        classicApp.src = `${cached}/scripts/classicApp.js`;
+        classicApp.src = `${cached}${minification}/scripts/classicApp${minificationExtension}.js`;
         classicApp.type = "module";
         classicApp.crossOrigin = "use-credentials";
 

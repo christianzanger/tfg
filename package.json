@@ -4,8 +4,9 @@
   "main": "server.js",
   "license": "MIT",
   "scripts": {
-    "build": "webpack",
-    "watch": "webpack --watch"
+    "build": "webpack --progress",
+    "watch": "webpack --watch",
+    "minify": "webpack --config webpack-minify.config.js --progress"
   },
   "dependencies": {
     "babel-cli": "6.24.1",

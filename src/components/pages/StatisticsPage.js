@@ -10,6 +10,9 @@ class StatisticsPage extends React.Component {
     render () {
         const settingsCookie = new SettingsCookie();
         const cached = settingsCookie.cache ? '/cached' : '';
+        const minification = settingsCookie.minification ? '/minified' : '';
+        const minificationExtension = settingsCookie.minification ? '.min' : '';
+
         const materializeJS = document.createElement('script');
         const classicApp = document.createElement('script');
         const chartjs = document.createElement('script');
@@ -19,11 +22,11 @@ class StatisticsPage extends React.Component {
         const styles = document.createElement('link');
 
         materializeJS.src = `${cached}/scripts/vendors/materialize.min.js`;
-        classicApp.src = `${cached}/scripts/classicApp.js`;
+        classicApp.src = `${cached}${minification}/scripts/classicApp${minificationExtension}.js`;
         classicApp.type = "module";
         classicApp.crossOrigin = "use-credentials";
         chartjs.src = `${cached}/scripts/vendors/Chart.min.js`;
-        chartjs.onload = () => stats.src = `${cached}/scripts/stats.js`;
+        chartjs.onload = () => stats.src = `${cached}${minification}/scripts/stats${minificationExtension}.js`;
         stats.type = "module";
         stats.crossOrigin = "use-credentials";
 

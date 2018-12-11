@@ -49,6 +49,7 @@ module.exports = (app, currentSessionsBuffer, express) => {
             res.cookie("settings", JSON.stringify({
                 cache: false,
                 compression: false,
+                minification: false,
                 tutorialStep: 1
             }));
         }

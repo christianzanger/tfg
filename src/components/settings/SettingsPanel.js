@@ -33,6 +33,7 @@ export default class SettingsPanel extends React.Component {
         const data = new FormData(document.getElementById('settings'));
 
         settingsCookie.minification = data.get("minification") === "on";
+        console.log(settingsCookie.minification);
         settingsCookie.update();
     }
 
@@ -40,6 +41,7 @@ export default class SettingsPanel extends React.Component {
         const settingsCookie = new SettingsCookie();
         document.getElementById("compression").checked = settingsCookie.compression;
         document.getElementById("cache").checked = settingsCookie.cache;
+        document.getElementById("minification").checked = settingsCookie.minification;
 
         document.querySelectorAll("[data-collapsible]").forEach(clickable => {
             const collapsible = document.querySelector('.collapsible');

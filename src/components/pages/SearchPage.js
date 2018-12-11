@@ -10,6 +10,9 @@ class SearchPage extends React.Component {
     render () {
         const settingsCookie = new SettingsCookie();
         const cached = settingsCookie.cache ? '/cached' : '';
+        const minification = settingsCookie.minification ? '/minified' : '';
+        const minificationExtension = settingsCookie.minification ? '.min' : '';
+
         const materializeJS = document.createElement('script');
         const classicApp = document.createElement('script');
         const search = document.createElement('script');
@@ -19,8 +22,8 @@ class SearchPage extends React.Component {
         materializeJS.src = `${cached}/scripts/vendors/materialize.min.js`;
         classicApp.crossOrigin = "use-credentials";
         classicApp.type = "module";
-        classicApp.src = `${cached}/scripts/classicApp.js`;
-        search.src = `${cached}/scripts/search.js`;
+        classicApp.src = `${cached}${minification}/scripts/classicApp${minificationExtension}.js`;
+        search.src = `${cached}${minification}/scripts/search${minificationExtension}.js`;
         search.type = "module";
         search.crossOrigin = "use-credentials";
 

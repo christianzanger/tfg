@@ -8,6 +8,7 @@ export default class SettingsCookie {
         this.compression = cookie.compression;
         this.cache = cookie.cache;
         this.tutorialStep = cookie.tutorialStep;
+        this.minification = cookie.minification;
     }
 
     update () {
