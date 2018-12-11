@@ -16,7 +16,7 @@ class SearchPage extends React.Component {
         const icons = document.createElement('link');
         const styles = document.createElement('link');
 
-        materializeJS.src = `${cached}/scripts/materialize.min.js`;
+        materializeJS.src = `${cached}/scripts/vendors/materialize.min.js`;
         classicApp.crossOrigin = "use-credentials";
         classicApp.type = "module";
         classicApp.src = `${cached}/scripts/classicApp.js`;

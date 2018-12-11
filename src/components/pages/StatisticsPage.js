@@ -18,11 +18,11 @@ class StatisticsPage extends React.Component {
         const icons = document.createElement('link');
         const styles = document.createElement('link');
 
-        materializeJS.src = `${cached}/scripts/materialize.min.js`;
+        materializeJS.src = `${cached}/scripts/vendors/materialize.min.js`;
         classicApp.src = `${cached}/scripts/classicApp.js`;
         classicApp.type = "module";
         classicApp.crossOrigin = "use-credentials";
-        chartjs.src = `${cached}/scripts/Chart.min.js`;
+        chartjs.src = `${cached}/scripts/vendors/Chart.min.js`;
         chartjs.onload = () => stats.src = `${cached}/scripts/stats.js`;
         stats.type = "module";
         stats.crossOrigin = "use-credentials";

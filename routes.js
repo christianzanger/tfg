@@ -92,7 +92,6 @@ module.exports = (app, currentSessionsBuffer, fs) => {
                 } else {
                     stats.images = currentSessionsBuffer[stats.uid].images;
                     res.cookie("stats", JSON.stringify(stats));
-                    console.log(rows);
                     res.send(rows);
                 }
             }

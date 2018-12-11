@@ -28,6 +28,14 @@ export default class SettingsPanel extends React.Component {
         statsCookie.update();
     }
 
+    minificationSwitchChange() {
+        const settingsCookie = new SettingsCookie();
+        const data = new FormData(document.getElementById('settings'));
+
+        settingsCookie.minification = data.get("minification") === "on";
+        settingsCookie.update();
+    }
+
     componentDidMount() {
         const settingsCookie = new SettingsCookie();
         document.getElementById("compression").checked = settingsCookie.compression;
@@ -75,6 +83,19 @@ export default class SettingsPanel extends React.Component {
                                         <label>
                                             Off
                                             <input type="checkbox" name="cache" id="cache" onClick={this.cacheSwitchChange} />
+                                            <span className="lever"></span>
+                                            On
+                                        </label>
+                                    </div>
+                                </div>
+                                <div className="settings-panel__setting">
+                                    <div className="col s2">
+                                        Minify assets
+                                    </div>
+                                    <div className="switch col s2">
+                                        <label>
+                                            Off
+                                            <input type="checkbox" name="minification" id="minification" onClick={this.minificationSwitchChange} />
                                             <span className="lever"></span>
                                             On
                                         </label>
