@@ -23,10 +23,24 @@
         const cacheables = document.querySelectorAll('[data-cacheable]');
 
         cacheables.forEach( $element => {
-            const resourceURL = settingsCookie.cache ? '/cached' + $element.dataset.cacheable : $element.dataset.cacheable;
+            const minification = settingsCookie.minification ? '/minified' : '';
+            const minificationExtension = settingsCookie.minification ? '.min.' : '';
+            const cached = settingsCookie.cache ? '/cached' : '';
+            let resourceURL = $element.dataset.cacheable;
+
+            if (!$element.dataset.cacheable.includes('.min')) {
+                resourceURL = minification + resourceURL.replace('.', minificationExtension);
+            }
+
+            if (cached) {
+                resourceURL = cached + resourceURL;
+            }
+
             if ($element.nodeName === "LINK") {
                 $element.href = resourceURL;
-            } else {
+            }
+
+            if ($element.nodeName === "SCRIPT") {
                 $element.src = resourceURL;
             }
         });
