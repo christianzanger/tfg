@@ -1,104 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="/styles/materialize.min.css">
-    <!-- Icons -->
-    <link href="/styles/icons.css" rel="stylesheet">
-
-    <link rel="stylesheet" type="text/css" href="/styles/styles.css">
-
+    <link rel="stylesheet" data-cacheable="/styles/materialize.min.css">
     <title>Interactive Web Performance</title>
 </head>
 <body>
-<div class="amber lighten-2 settings">
-    <a href="/">Home</a>
-    <h1 class="white-text center-align settings__header">Settings</h1>
-    <div class="row settings-panel">
-        <div class="col m8 offset-m2 card-panel white">
-            <form id="settings">
-                <div class="row">
-                    <div class="settings-panel__setting">
-                        <div class="col s2">
-                            Compression
-                        </div>
-                        <div class="col s2">
-                            Explain!
-                        </div>
-                        <div class="switch col s2">
-                            <label>
-                                Off
-                                <input type="checkbox" name="compression" id="compression">
-                                <span class="lever"></span>
-                                On
-                            </label>
-                        </div>
-                    </div>
-                    <div class="settings-panel__setting">
-                        <div class="col s2">
-                            Cache assets
-                        </div>
-                        <div class="col s2">
-                            Explain!
-                        </div>
-                        <div class="switch col s2">
-                            <label>
-                                Off
-                                <input type="checkbox" name="cache" id="cache">
-                                <span class="lever"></span>
-                                On
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <button class="btn waves-effect waves-light amber darken-4" type="submit" name="action">
-                    Save
-                    <i class="material-icons right">sync</i>
-                </button>
-            </form>
-        </div>
-    </div>
-    <!-- <ul class="collapsible">
-        <li>
-            <div class="collapsible-header">
-                <h4>Compression</h4>
-                <div class="switch col s3">
-                    <label>
-                        Off
-                        <input type="checkbox">
-                        <span class="lever"></span>
-                        On
-                    </label>
-                </div>
-            </div>
-            <div class="collapsible-body">
-                <span>Lorem ipsum dolor sit amet.</span>
-            </div>
-        </li>
-        <li>
-            <div class="collapsible-header">
-                <h4>Compression</h4>
-                <div class="switch col s3">
-                    <label>
-                        Off
-                        <input type="checkbox">
-                        <span class="lever"></span>
-                        On
-                    </label>
-                </div>
-            </div>
-            <div class="collapsible-body">
-                <span>Lorem ipsum dolor sit amet.</span>
-            </div>
-        </li>
+    <div id="app"></div>
+    <script type="text/javascript" data-cacheable="/scripts/bundles/settings-bundle.js"></script>
+    <script>
+        const searchForSettingsCookie = () => {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                let c = cookies[i].replace(' ', '');
+                if (c.indexOf(`settings=`) === 0) return c.substring(`settings=`.length, c.length);
+            }
+            return null;
+        };
 
-    </ul> -->
-</div>
-<!-- Compiled and minified JavaScript for MaterializeCSS -->
-<script src="/scripts/vendors/materialize.min.js"></script>
-<script src="/scripts/classicApp.js" type="module"></script>
+        const settingsCookie = JSON.parse(decodeURIComponent(searchForSettingsCookie()));
+        const cacheables = document.querySelectorAll('[data-cacheable]');
+
+        cacheables.forEach( $element => {
+            const minification = settingsCookie.minification ? '/minified' : '';
+            const minificationExtension = settingsCookie.minification ? '.min.' : '';
+            const cached = settingsCookie.cache ? '/cached' : '';
+            let resourceURL = $element.dataset.cacheable;
+
+            if (minification && !$element.dataset.cacheable.includes('.min')) {
+                resourceURL = minification + resourceURL.replace('.', minificationExtension);
+            }
+
+            if (cached) {
+                resourceURL = cached + resourceURL;
+            }
+
+            if ($element.nodeName === "LINK") {
+                $element.href = resourceURL;
+            }
+
+            if ($element.nodeName === "SCRIPT") {
+                $element.src = resourceURL;
+            }
+        });
+    </script>
 </body>
 </html>

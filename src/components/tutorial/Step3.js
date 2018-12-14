@@ -13,7 +13,7 @@ export default class Step3 extends React.Component {
             event.preventDefault();
             settingsCookie.tutorialStep = 4;
             settingsCookie.update();
-            window.location = "/pages/react/statsReact.html";
+            window.location = "/pages/stats.html";
         })
     }
 

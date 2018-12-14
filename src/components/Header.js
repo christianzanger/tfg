@@ -21,11 +21,11 @@ export default class Header extends React.Component {
                         <li><a href="/">Home</a></li>
                         <li><a href="">FAQ</a></li>
                         <li>
-                            <a href="/pages/react/statsReact.html" id="statsLink">
+                            <a href="/pages/stats.html" id="statsLink">
                                 Stats
                             </a>
                         </li>
-                        <li><a href="/pages/react/settingsReact.html" id="settingsLink">Settings</a></li>
+                        <li><a href="/pages/settings.html" id="settingsLink">Settings</a></li>
                         <li className="highlight red"><a onClick={this.resetCookies}>Reset</a></li>
                     </ul>
                 </div>

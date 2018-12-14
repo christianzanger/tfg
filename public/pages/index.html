@@ -3,95 +3,47 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <!-- Compiled and minified CSS -->
-        <link rel="stylesheet" href="/styles/materialize.min.css">
-        <!-- Icons -->
-        <link rel="stylesheet" href="/styles/icons.css">
-
-        <link rel="stylesheet" type="text/css" href="/styles/styles.css">
-
+        <link rel="stylesheet" data-cacheable="/styles/materialize.min.css" type="text/css">
         <title>Interactive Web Performance</title>
     </head>
     <body>
-        <div class="app">
-            <nav>
-                <div class="nav-wrapper amber lighten-2">
-                    <a href="#" class="brand-logo right hide-on-med-and-down">A generic travel agency</a>
-                    <ul id="nav-mobile" class="left">
-                        <li><a href="">Home</a></li>
-                        <li><a href="">FAQ</a></li>
-                        <li><a href="/pages/statistics.html">Stats</a></li>
-                        <li><a href="/pages/settings.html">Settings</a></li>
-                    </ul>
-                </div>
-            </nav>
-            <div id="search" class="valign-wrapper" >
-                <div class="container amber lighten-3">
-                    <form class="" id="search__form" action="/search" method="get">
-                        <div class="input-field col s12">
-                            <i class="material-icons prefix grey-text text-darken-4">search</i>
-                            <input id="search__text" type="text" class="validate amber lighten-5" placeholder="Location" name="q">
-                        </div>
-                    </form>
-                    <div id="featured" class="row">
-                        <div class="row col s4">
-                            <div class="card">
-                                <div class="featured__badge deep-orange lighten-3 deep-orange-text text-darken-4">
-                                    <i class="material-icons deep-orange-text">favorite</i>
-                                    Featured
-                                </div>
-                                <div class="card-image">
-                                    <img src="/cached/images/static/featured1.png">
-                                </div>
-                                <div class="card-content">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                </div>
-                                <div class="card-action">
-                                    <a href="#">Visit offer</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row col s4">
-                            <div class="card">
-                                <div class="featured__badge deep-orange lighten-3 deep-orange-text text-darken-4">
-                                    <i class="material-icons deep-orange-text">favorite</i>
-                                    Featured
-                                </div>
-                                <div class="card-image">
-                                    <img src="/images/static/featured2.png">
-                                </div>
-                                <div class="card-content">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                </div>
-                                <div class="card-action">
-                                    <a href="#">Visit offer</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row col s4">
-                            <div class="card">
-                                <div class="featured__badge deep-orange lighten-3 deep-orange-text text-darken-4">
-                                    <i class="material-icons deep-orange-text">favorite</i>
-                                    Featured
-                                </div>
-                                <div class="card-image">
-                                    <img src="/images/static/featured3.png">
-                                </div>
-                                <div class="card-content">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                </div>
-                                <div class="card-action">
-                                    <a href="#">Visit offer</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Compiled and minified JavaScript -->
-        <script src="/scripts/vendors/materialize.min.js"></script>
-        <script src="/scripts/classicApp.js" type="module"></script>
+        <div id="app"></div>
+        <script type="text/javascript" data-cacheable="/scripts/bundles/index-bundle.js"></script>
+        <script>
+            const searchForSettingsCookie = () => {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    let c = cookies[i].replace(' ', '');
+                    if (c.indexOf(`settings=`) === 0) return c.substring(`settings=`.length, c.length);
+                }
+                return null;
+            };
+
+            const settingsCookie = JSON.parse(decodeURIComponent(searchForSettingsCookie()));
+            const cacheables = document.querySelectorAll('[data-cacheable]');
+
+            cacheables.forEach( $element => {
+                const minification = settingsCookie.minification ? '/minified' : '';
+                const minificationExtension = settingsCookie.minification ? '.min.' : '';
+                const cached = settingsCookie.cache ? '/cached' : '';
+                let resourceURL = $element.dataset.cacheable;
+
+                if (minification && !$element.dataset.cacheable.includes('.min')) {
+                    resourceURL = minification + resourceURL.replace('.', minificationExtension);
+                }
+
+                if (cached) {
+                    resourceURL = cached + resourceURL;
+                }
+
+                if ($element.nodeName === "LINK") {
+                    $element.href = resourceURL;
+                }
+
+                if ($element.nodeName === "SCRIPT") {
+                    $element.src = resourceURL;
+                }
+            });
+        </script>
     </body>
 </html>

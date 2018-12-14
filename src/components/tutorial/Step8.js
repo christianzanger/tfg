@@ -13,7 +13,7 @@ export default class Step8 extends React.Component {
             const settingsCookie = new SettingsCookie();
             settingsCookie.tutorialStep = 9;
             settingsCookie.update();
-            window.location.href = "/pages/react/settingsReact.html"
+            window.location.href = "/pages/settings.html"
         });
     }
 

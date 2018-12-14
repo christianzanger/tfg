@@ -53,11 +53,11 @@ module.exports = (app, currentSessionsBuffer, fs) => {
                     // No results found for this keyword
                     res.sendFile(`${__dirname}/public/pages/search404.html`);
                 } else {
-                    res.sendFile(`${__dirname}/public/pages/react/searchReact.html`);
+                    res.sendFile(`${__dirname}/public/pages/search.html`);
                 }
             });
         } else {
-            res.sendFile(__dirname + '/public/pages/react/searchReact.html');
+            res.sendFile(__dirname + '/public/pages/search.html');
         }
     };
 
@@ -155,7 +155,7 @@ module.exports = (app, currentSessionsBuffer, fs) => {
     };
 
     const home = (req, res) => {
-        res.sendFile(`${__dirname}/public/pages/react/indexReact.html`);
+        res.sendFile(`${__dirname}/public/pages/index.html`);
     };
 
     const _404 = (req, res) => {
