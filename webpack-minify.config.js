@@ -1,9 +1,11 @@
 const path = require('path');
+const webpack = require('webpack');
 const MinifyPlugin = require("babel-minify-webpack-plugin");
 
 module.exports = [
     {
         name: "minified-js",
+        mode: "production",
         entry: {
             'bundles/index-bundle': './src/components/pages/IndexPage.js',
             'bundles/search-bundle': './src/components/pages/SearchPage.js',
@@ -30,9 +32,6 @@ module.exports = [
         devtool: 'cheap-module-eval-source-map',
         devServer: {
             contentBase: path.join(__dirname, 'public')
-        },
-        plugins: [
-            new MinifyPlugin(),
-        ]
+        }
     },
 ];

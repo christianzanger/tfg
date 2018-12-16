@@ -6,7 +6,8 @@
   "scripts": {
     "build": "webpack --progress",
     "watch": "webpack --watch",
-    "minify": "webpack --config webpack-minify.config.js --progress"
+    "minify": "webpack --config webpack-minify.config.js --progress",
+    "create-stats": "webpack --json > stats.json"
   },
   "dependencies": {
     "babel-cli": "6.24.1",
@@ -34,10 +35,11 @@
     "sass-loader": "6.0.6",
     "style-loader": "0.18.2",
     "validator": "8.0.0",
-    "webpack": "3.1.0",
     "webpack-dev-server": "2.5.1"
   },
   "devDependencies": {
-    "babel-minify-webpack-plugin": "^0.3.1"
+    "babel-minify-webpack-plugin": "^0.3.1",
+    "webpack": "^4.27.1",
+    "webpack-cli": "^3.1.2"
   }
 }

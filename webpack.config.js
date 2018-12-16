@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
     entry: {
@@ -11,6 +12,7 @@ module.exports = {
         path: path.join(__dirname, 'public/scripts/bundles'),
         filename: '[name]-bundle.js'
     },
+    mode: "development",
     module: {
         rules: [{
             loader: 'babel-loader',
