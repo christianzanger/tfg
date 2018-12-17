@@ -1,6 +1,4 @@
-const path = require('path');
-const webpack = require('webpack');
-const MinifyPlugin = require("babel-minify-webpack-plugin");
+const path = require('path');;
 
 module.exports = [
     {

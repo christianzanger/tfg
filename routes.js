@@ -113,7 +113,7 @@ module.exports = (app, currentSessionsBuffer, fs) => {
                               (user_id, avg_load_time, loads, bytes, bytesSavedByCompression, bytesSavedByCache, filesSavedByCache, page, bytesSavedByProd) 
                               VALUES `;
         const historyQueryValues =  `("${stats.uid}", 
-                                ${stats.averageLoadTime}, 
+                                ${stats.averageLoadTime > 0 ? stats.averageLoadTime : 0}, 
                                 ${stats.numberOfLoads},  
                                 ${stats.bytes}, 
                                 ${stats.bytesSavedByCompression}, 

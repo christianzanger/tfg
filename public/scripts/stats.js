@@ -4,22 +4,30 @@ const stacked = document.getElementById('stacked__canvas').getContext('2d');
 const stackedBar = new Chart(stacked, {
     type: 'bar',
     data: {
-        datasets: [{
-            label: "Downloaded bytes",
-            backgroundColor: 'rgb(51, 204, 51)',
-            fill: false,
-            yAxisID: 0
-        }, {
-            label: "Bytes saved by cache",
-            backgroundColor: 'rgb(51, 204, 204)',
-            fill: false,
-            yAxisID: 0
-        }, {
-            label: "Bytes saved by compression",
-            backgroundColor: 'rgb(255, 171, 145)',
-            fill: false,
-            yAxisID: 0
-        }]
+        datasets: [
+            {
+                label: "Downloaded bytes",
+                backgroundColor: 'rgb(51, 204, 51)',
+                fill: false,
+                yAxisID: 0
+            },
+            {
+                label: "Bytes saved by cache",
+                backgroundColor: 'rgb(51, 204, 204)',
+                fill: false,
+                yAxisID: 0
+            },
+            {
+                label: "Bytes saved by compression",
+                backgroundColor: 'rgb(255, 171, 145)',
+                fill: false,
+                yAxisID: 0
+            },
+            {
+                label: "Bytes saved by prod env",
+                backgroundColor: 'rgb(255, 87, 34)'
+            }
+        ]
     },
     options: {
         scales: {
@@ -68,6 +76,7 @@ async function getStats() {
         stackedBar.data.datasets[0].data = data.map(row => row.bytes);
         stackedBar.data.datasets[1].data = data.map(row => row.bytesSavedByCache);
         stackedBar.data.datasets[2].data = data.map(row => row.bytesSavedByCompression);
+        stackedBar.data.datasets[3].data = data.map(row => row.bytesSavedByProd);
         stackedBar.update();
     });
 }

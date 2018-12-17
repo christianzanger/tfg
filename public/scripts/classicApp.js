@@ -15,6 +15,7 @@ const pageLoadedHandler = () => {
     const localEntries = window.performance.getEntries()
                          .filter(entry => entry.initiatorType !== "fetch" || !entry.name.includes("images"));
     const cachedEntries = localEntries.filter(entry => entry.transferSize === 0);
+    const reactDevBytes = 1355907;
 
     if (settingsCookie.compression) {
         let compressedEntries;
@@ -28,12 +29,19 @@ const pageLoadedHandler = () => {
         statsCookie.bytesSavedByCompression  = compressedEntries.reduce(compressionAdder, 0);
     }
 
-    if (settingsCookie.cache) {
+    if (settingsCookie.cache && cachedEntries.length > 0) {
         statsCookie.bytesSavedByCache = cachedEntries.reduce((accumulator, entry) => accumulator + entry.decodedBodySize, 0);
+        if (settingsCookie.minification) {
+            statsCookie.bytesSavedByCache += reactDevBytes;
+        }
+    } else {
+        statsCookie.bytesSavedByCache = 0;
     }
 
-    if (settingsCookie.minification) {
-        statsCookie.bytesSavedByProd = 1355907;
+    if (settingsCookie.minification && cachedEntries.filter(entry => entry.name.includes('bundle')).length === 0) {
+        statsCookie.bytesSavedByProd = reactDevBytes;
+    } else {
+        statsCookie.bytesSavedByProd = 0;
     }
 
     statsCookie.bytes = localEntries.filter(entry => entry.transferSize).reduce((accumulator, entry) => accumulator + entry.transferSize, 0);
