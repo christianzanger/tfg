@@ -110,7 +110,7 @@ module.exports = (app, currentSessionsBuffer, fs) => {
         const settings = JSON.parse(req.cookies.settings);
         const page = getPageFromURL(req.body.page);
         const queryColumns = `INSERT INTO user_history 
-                              (user_id, avg_load_time, loads, bytes, bytesSavedByCompression, bytesSavedByCache, filesSavedByCache, page) 
+                              (user_id, avg_load_time, loads, bytes, bytesSavedByCompression, bytesSavedByCache, filesSavedByCache, page, bytesSavedByProd) 
                               VALUES `;
         const historyQueryValues =  `("${stats.uid}", 
                                 ${stats.averageLoadTime}, 
@@ -119,7 +119,8 @@ module.exports = (app, currentSessionsBuffer, fs) => {
                                 ${stats.bytesSavedByCompression}, 
                                 ${stats.bytesSavedByCache}, 
                                 ${stats.filesSavedByCache}, 
-                                "${decodeURIComponent(page)}")`;
+                                "${decodeURIComponent(page)}",
+                                ${stats.bytesSavedByProd})`;
 
         connection.query(
             queryColumns + historyQueryValues,

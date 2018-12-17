@@ -33,7 +33,6 @@ export default class SettingsPanel extends React.Component {
         const data = new FormData(document.getElementById('settings'));
 
         settingsCookie.minification = data.get("minification") === "on";
-        console.log(settingsCookie.minification);
         settingsCookie.update();
     }
 
@@ -92,7 +91,7 @@ export default class SettingsPanel extends React.Component {
                                 </div>
                                 <div className="settings-panel__setting">
                                     <div className="col s2">
-                                        Minify assets
+                                        Production mode
                                     </div>
                                     <div className="switch col s2">
                                         <label>

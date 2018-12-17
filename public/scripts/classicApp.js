@@ -32,6 +32,10 @@ const pageLoadedHandler = () => {
         statsCookie.bytesSavedByCache = cachedEntries.reduce((accumulator, entry) => accumulator + entry.decodedBodySize, 0);
     }
 
+    if (settingsCookie.minification) {
+        statsCookie.bytesSavedByProd = 1355907;
+    }
+
     statsCookie.bytes = localEntries.filter(entry => entry.transferSize).reduce((accumulator, entry) => accumulator + entry.transferSize, 0);
 
     statsCookie.images = localEntries.filter(entry => entry.name.includes("images") && entry.transferSize !== 0).length;

@@ -13,6 +13,7 @@ export default class StatsCookie {
         this.bytesSavedByCompression = cookie.bytesSavedByCompression || 0;
         this.bytesSavedByCache = cookie.bytesSavedByCache || 0;
         this.filesSavedByCache = cookie.filesSavedByCache || 0;
+        this.bytesSavedByProd = cookie.bytesSavedByProd || 0;
     }
 
     updateStats () {

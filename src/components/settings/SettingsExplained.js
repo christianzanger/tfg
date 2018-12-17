@@ -3,6 +3,7 @@ import Step9 from "../tutorial/Step9";
 import SettingsCookie from "../../../public/scripts/cookies/SettingsCookie";
 import CompressionExplained from "./settingsExplained/CompressionExplained";
 import CacheExplained from "./settingsExplained/CacheExplained";
+import ProductionExplained from "./settingsExplained/ProductionExplained";
 
 export default class SettingsExplained extends React.Component {
     constructor(props) {
@@ -26,6 +27,7 @@ export default class SettingsExplained extends React.Component {
                 <ul className="collapsible popout" id="compressionExplainedDropdown">
                     <CompressionExplained />
                     <CacheExplained/>
+                    <ProductionExplained />
                 </ul>
             </div>
         );

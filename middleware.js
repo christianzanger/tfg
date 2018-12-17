@@ -37,7 +37,8 @@ module.exports = (app, currentSessionsBuffer, express) => {
                 bytes: 0,
                 bytesSavedByCompression: 0,
                 bytesSavedByCache: 0,
-                filesSavedByCache: 0
+                filesSavedByCache: 0,
+                bytesSavedByProd: 0
             }));
         }
         next();
