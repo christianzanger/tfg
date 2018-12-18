@@ -5,7 +5,7 @@ import Header from '../Header';
 import SearchForm from '../SearchForm';
 import SettingsCookie from "../../../public/scripts/cookies/SettingsCookie";
 
-class IndexPage extends React.Component {
+export default class IndexPage extends React.Component {
     render () {
         const settingsCookie = new SettingsCookie();
         const cached = settingsCookie.cache ? '/cached' : '';
@@ -44,4 +44,4 @@ class IndexPage extends React.Component {
     }
 }
 
-ReactDOM.render(<IndexPage />, document.getElementById('app'));
+// ReactDOM.render(<IndexPage />, document.getElementById('app'));

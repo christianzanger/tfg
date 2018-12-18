@@ -4,7 +4,7 @@ import Header from '../Header';
 import Statistics from '../Statistics';
 import SettingsCookie from "../../../public/scripts/cookies/SettingsCookie.js";
 
-class StatisticsPage extends React.Component {
+export default class StatisticsPage extends React.Component {
     state = {};
 
     render () {
@@ -46,11 +46,11 @@ class StatisticsPage extends React.Component {
         document.body.appendChild(classicApp);
         return (
             <React.Fragment>
-                <Header />
+                {/*<Header />*/}
                 <Statistics />
             </React.Fragment>
         );
     }
 }
 
-ReactDOM.render(<StatisticsPage />, document.getElementById('app'));
+// ReactDOM.render(<StatisticsPage />, document.getElementById('app'));

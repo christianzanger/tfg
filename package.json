@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "babel-minify-webpack-plugin": "^0.3.1",
+    "react-router-dom": "^4.3.1",
     "webpack": "^4.27.1",
     "webpack-cli": "^3.1.2"
   }

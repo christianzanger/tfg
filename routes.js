@@ -156,7 +156,7 @@ module.exports = (app, currentSessionsBuffer, fs) => {
     };
 
     const home = (req, res) => {
-        res.sendFile(`${__dirname}/public/pages/index.html`);
+        res.sendFile(`${__dirname}/public/pages/clientRouting.html`);
     };
 
     const _404 = (req, res) => {
