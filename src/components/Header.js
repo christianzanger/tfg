@@ -29,10 +29,10 @@ export default class Header extends React.Component {
                             <NavigationLink url="#" text="FAQ" />
                         </li>
                         <li>
-                            <NavigationLink url="/pages/stats.html" id="statsLink" text="Stats" />
+                            <NavigationLink url="/stats" id="statsLink" text="Stats" />
                         </li>
                         <li>
-                            <NavigationLink url="/pages/settings.html" id="settingsLink" text="Settings" />
+                            <NavigationLink url="/settings" id="settingsLink" text="Settings" />
                         </li>
                         <li className="highlight red">
                             <a onClick={this.resetCookies}>Reset</a>

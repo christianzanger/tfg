@@ -7,44 +7,43 @@
     <title>Interactive Web Performance</title>
 </head>
 <body>
-<div id="app"></div>
-<!--<script type="text/javascript" data-cacheable="/scripts/bundles/index-bundle.js"></script>-->
-<script type="text/javascript" data-cacheable="/scripts/bundles/clientRouting-bundle.js"></script>
-<script>
-    const searchForSettingsCookie = () => {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            let c = cookies[i].replace(' ', '');
-            if (c.indexOf(`settings=`) === 0) return c.substring(`settings=`.length, c.length);
-        }
-        return null;
-    };
+    <div id="app"></div>
+    <script type="text/javascript" data-cacheable="/scripts/bundles/clientRouting-bundle.js"></script>
+    <script>
+        const searchForSettingsCookie = () => {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                let c = cookies[i].replace(' ', '');
+                if (c.indexOf(`settings=`) === 0) return c.substring(`settings=`.length, c.length);
+            }
+            return null;
+        };
 
-    const settingsCookie = JSON.parse(decodeURIComponent(searchForSettingsCookie()));
-    const cacheables = document.querySelectorAll('[data-cacheable]');
+        const settingsCookie = JSON.parse(decodeURIComponent(searchForSettingsCookie()));
+        const cacheables = document.querySelectorAll('[data-cacheable]');
 
-    cacheables.forEach( $element => {
-        const minification = settingsCookie.minification ? '/minified' : '';
-        const minificationExtension = settingsCookie.minification ? '.min.' : '';
-        const cached = settingsCookie.cache ? '/cached' : '';
-        let resourceURL = $element.dataset.cacheable;
+        cacheables.forEach( $element => {
+            const minification = settingsCookie.minification ? '/minified' : '';
+            const minificationExtension = settingsCookie.minification ? '.min.' : '';
+            const cached = settingsCookie.cache ? '/cached' : '';
+            let resourceURL = $element.dataset.cacheable;
 
-        if (minification && !$element.dataset.cacheable.includes('.min')) {
-            resourceURL = minification + resourceURL.replace('.', minificationExtension);
-        }
+            if (minification && !$element.dataset.cacheable.includes('.min')) {
+                resourceURL = minification + resourceURL.replace('.', minificationExtension);
+            }
 
-        if (cached) {
-            resourceURL = cached + resourceURL;
-        }
+            if (cached) {
+                resourceURL = cached + resourceURL;
+            }
 
-        if ($element.nodeName === "LINK") {
-            $element.href = resourceURL;
-        }
+            if ($element.nodeName === "LINK") {
+                $element.href = resourceURL;
+            }
 
-        if ($element.nodeName === "SCRIPT") {
-            $element.src = resourceURL;
-        }
-    });
-</script>
+            if ($element.nodeName === "SCRIPT") {
+                $element.src = resourceURL;
+            }
+        });
+    </script>
 </body>
 </html>

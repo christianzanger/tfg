@@ -7,6 +7,7 @@ import ReactDOM from "react-dom";
 import SearchForm from "./SearchForm";
 import Header from "./Header";
 import Statistics from "./Statistics";
+import SettingsWrapper from "./settings/SettingsWrapper";
 import styles from "../../public/styles/styles.css";
 import icons from "../../public/styles/icons.css";
 import materializecss from "../../public/styles/materialize.min.css"
@@ -19,6 +20,7 @@ class AppRouter extends React.Component {
                     <Header/>
                     <Switch>
                         <Route path="/stats" component={Statistics} />
+                        <Route path="/settings" component={SettingsWrapper} />
                         <Route path="/" component={SearchForm} />
                     </Switch>
                 </React.Fragment>

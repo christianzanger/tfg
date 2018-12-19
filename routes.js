@@ -156,7 +156,21 @@ module.exports = (app, currentSessionsBuffer, fs) => {
     };
 
     const home = (req, res) => {
-        res.sendFile(`${__dirname}/public/pages/clientRouting.html`);
+        const settings = JSON.parse(req.cookies.settings);
+        const responseFile = settings.clientSide ? 'clientRouting.html' : 'index.html';
+        res.sendFile(`${__dirname}/public/pages/${responseFile}`);
+    };
+
+    const stats = (req, res) => {
+        const settings = JSON.parse(req.cookies.settings);
+        const responseFile = settings.clientSide ? 'clientRouting.html' : 'stats.html';
+        res.sendFile(`${__dirname}/public/pages/${responseFile}`)
+    };
+
+    const settings = (req, res) => {
+        const settings = JSON.parse(req.cookies.settings);
+        const responseFile = settings.clientSide ? 'clientRouting.html' : 'settings.html';
+        res.sendFile(`${__dirname}/public/pages/${responseFile}`)
     };
 
     const _404 = (req, res) => {
@@ -182,6 +196,8 @@ module.exports = (app, currentSessionsBuffer, fs) => {
     app.get('/stats/reset', statsReset);
     app.get('/history', history);
     app.post('/savehistory', saveHistory);
+    app.get('/stats', stats);
+    app.get('/settings', settings);
     app.get('/', home);
     app.use(_404);
 };
