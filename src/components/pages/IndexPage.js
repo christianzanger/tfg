@@ -44,4 +44,4 @@ export default class IndexPage extends React.Component {
     }
 }
 
-// ReactDOM.render(<IndexPage />, document.getElementById('app'));
+ReactDOM.render(<IndexPage />, document.getElementById('app'));

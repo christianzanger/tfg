@@ -36,11 +36,21 @@ export default class SettingsPanel extends React.Component {
         settingsCookie.update();
     }
 
+
+    clientSideSwitchChange() {
+        const settingsCookie = new SettingsCookie();
+        const data = new FormData(document.getElementById('settings'));
+
+        settingsCookie.clientSide = data.get("client-side") === "on";
+        settingsCookie.update();
+    }
+
     componentDidMount() {
         const settingsCookie = new SettingsCookie();
         document.getElementById("compression").checked = settingsCookie.compression;
         document.getElementById("cache").checked = settingsCookie.cache;
         document.getElementById("minification").checked = settingsCookie.minification;
+        document.getElementById("client-side").checked = settingsCookie.clientSide;
 
         document.querySelectorAll("[data-collapsible]").forEach(clickable => {
             const collapsible = document.querySelector('.collapsible');
@@ -101,6 +111,19 @@ export default class SettingsPanel extends React.Component {
                                             On
                                         </label>
                                     </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col s2">
+                                    Client-side routing
+                                </div>
+                                <div className="switch col s2">
+                                    <label>
+                                        Off
+                                        <input type="checkbox" name="client-side" id="client-side" onClick={this.clientSideSwitchChange}/>
+                                        <span className="lever"></span>
+                                        On
+                                    </label>
                                 </div>
                             </div>
                         </form>

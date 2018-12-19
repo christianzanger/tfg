@@ -9,6 +9,7 @@ export default class SettingsCookie {
         this.cache = cookie.cache;
         this.tutorialStep = cookie.tutorialStep;
         this.minification = cookie.minification;
+        this.clientSide = cookie.clientSide;
     }
 
     update () {

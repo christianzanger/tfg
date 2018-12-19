@@ -46,11 +46,11 @@ export default class StatisticsPage extends React.Component {
         document.body.appendChild(classicApp);
         return (
             <React.Fragment>
-                {/*<Header />*/}
+                <Header />
                 <Statistics />
             </React.Fragment>
         );
     }
 }
 
-// ReactDOM.render(<StatisticsPage />, document.getElementById('app'));
+ReactDOM.render(<StatisticsPage />, document.getElementById('app'));

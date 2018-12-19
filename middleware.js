@@ -51,6 +51,7 @@ module.exports = (app, currentSessionsBuffer, express) => {
                 cache: false,
                 compression: false,
                 minification: false,
+                clientSide: false,
                 tutorialStep: 1
             }));
         }
