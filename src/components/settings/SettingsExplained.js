@@ -16,6 +16,14 @@ export default class SettingsExplained extends React.Component {
         this.forceUpdate();
     }
 
+    componentDidMount() {
+        const settingsCookie = new SettingsCookie();
+        if (settingsCookie.clientSide) {
+            const collapsibles = document.querySelectorAll('.collapsible');
+            M.Collapsible.init(collapsibles);
+        }
+    }
+
     render () {
         const settingsCookie = new SettingsCookie();
         const isStep9 = settingsCookie.tutorialStep === 9;
