@@ -9,6 +9,7 @@ module.exports = [
             'bundles/search-bundle': './src/components/pages/SearchPage.js',
             'bundles/stats-bundle': './src/components/pages/StatisticsPage.js',
             'bundles/settings-bundle': './src/components/pages/SettingsPage.js',
+            'bundles/clientRouting-bundle': './src/components/Router.js',
             'cookies/Cookie': './public/scripts/cookies/Cookie.js',
             'cookies/SettingsCookie': './public/scripts/cookies/SettingsCookie.js',
             'cookies/StatsCookie': './public/scripts/cookies/StatsCookie.js',
@@ -25,6 +26,12 @@ module.exports = [
                 loader: 'babel-loader',
                 test: /\.js$/,
                 exclude: /node_modules/
+            }, {
+                test: /\.css$/,
+                use: [
+                    'style-loader',
+                    'css-loader',
+                ]
             }]
         },
         devtool: 'cheap-module-eval-source-map',

@@ -53,10 +53,15 @@ module.exports = (app, currentSessionsBuffer, fs) => {
                     // No results found for this keyword
                     res.sendFile(`${__dirname}/public/pages/search404.html`);
                 } else {
-                    res.sendFile(`${__dirname}/public/pages/search.html`);
+                    const settings = JSON.parse(req.cookies.settings);
+                    const responseFile = settings.clientSide ? 'clientRouting.html' : 'search.html';
+                    res.sendFile(`${__dirname}/public/pages/${responseFile}`);
                 }
             });
         } else {
+            const settings = JSON.parse(req.cookies.settings);
+            const responseFile = settings.clientSide ? 'clientRouting.html' : 'search.html';
+            res.sendFile(`${__dirname}/public/pages/${responseFile}`);
             res.sendFile(__dirname + '/public/pages/search.html');
         }
     };
@@ -158,18 +163,21 @@ module.exports = (app, currentSessionsBuffer, fs) => {
     const home = (req, res) => {
         const settings = JSON.parse(req.cookies.settings);
         const responseFile = settings.clientSide ? 'clientRouting.html' : 'index.html';
+        res.setHeader('Cache-Control', 'no-cache, no-store');
         res.sendFile(`${__dirname}/public/pages/${responseFile}`);
     };
 
     const stats = (req, res) => {
         const settings = JSON.parse(req.cookies.settings);
         const responseFile = settings.clientSide ? 'clientRouting.html' : 'stats.html';
+        res.setHeader('Cache-Control', 'no-cache, no-store');
         res.sendFile(`${__dirname}/public/pages/${responseFile}`)
     };
 
     const settings = (req, res) => {
         const settings = JSON.parse(req.cookies.settings);
         const responseFile = settings.clientSide ? 'clientRouting.html' : 'settings.html';
+        res.setHeader('Cache-Control', 'no-cache, no-store');
         res.sendFile(`${__dirname}/public/pages/${responseFile}`)
     };
 

@@ -4,6 +4,7 @@ import SettingsCookie from "../../../public/scripts/cookies/SettingsCookie";
 import CompressionExplained from "./settingsExplained/CompressionExplained";
 import CacheExplained from "./settingsExplained/CacheExplained";
 import ProductionExplained from "./settingsExplained/ProductionExplained";
+import ClientRoutingExplained from "./settingsExplained/ClientRoutingExplained";
 
 export default class SettingsExplained extends React.Component {
     constructor(props) {
@@ -33,9 +34,10 @@ export default class SettingsExplained extends React.Component {
                 {isStep9 && <Step9 updateParent={this.forceRerender}/>}
                 <h1 className="center-align settings__header">How it works</h1>
                 <ul className="collapsible popout" id="compressionExplainedDropdown">
-                    <CompressionExplained />
+                    <CompressionExplained/>
                     <CacheExplained/>
-                    <ProductionExplained />
+                    <ProductionExplained/>
+                    <ClientRoutingExplained/>
                 </ul>
             </div>
         );

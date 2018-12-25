@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from "react-dom";
 import Header from '../Header';
-import SettingsPanel from '../settings/SettingsPanel';
-import SettingsExplained from '../settings/SettingsExplained';
 import SettingsCookie from "../../../public/scripts/cookies/SettingsCookie.js";
 import SettingsWrapper from "../settings/SettingsWrapper";
 
