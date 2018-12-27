@@ -26,6 +26,10 @@ const stackedBar = new Chart(stacked, {
             {
                 label: "Bytes saved by prod env",
                 backgroundColor: 'rgb(255, 87, 34)'
+            },
+            {
+                label: "Bytes saved by client-side routing",
+                backgroundColor: 'rgb(155,89,182)'
             }
         ]
     },
@@ -77,6 +81,7 @@ async function getStats() {
         stackedBar.data.datasets[1].data = data.map(row => row.bytesSavedByCache);
         stackedBar.data.datasets[2].data = data.map(row => row.bytesSavedByCompression);
         stackedBar.data.datasets[3].data = data.map(row => row.bytesSavedByProd);
+        stackedBar.data.datasets[4].data = data.map(row => row.bytesSavedByClientSide);
         stackedBar.update();
     });
 }

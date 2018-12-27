@@ -20,6 +20,16 @@ import SettingsCookie from "../../public/scripts/cookies/SettingsCookie";
 
 class AppRouter extends React.Component {
 
+    constructor(props) {
+        super(props);
+
+        this.pageLoadedHandler = this.pageLoadedHandler.bind(this);
+
+        this.state = {
+          pageLoaded: false
+        };
+    }
+
     pageLoadedHandler() {
         const statsCookie = new StatsCookie();
         const settingsCookie = new SettingsCookie();
@@ -73,6 +83,37 @@ class AppRouter extends React.Component {
             },
             body: JSON.stringify({page: window.location.href}),
         }).then(() => window.dispatchEvent(new Event('statsUpdate')));
+
+        this.setState(() => ({ pageLoaded: true }));
+    }
+
+    updateClientSideStats() {
+        const statsCookie = new StatsCookie();
+        // The last 2 conditions are to filter out the HEAD requests in the search page
+        const localEntries = window.performance.getEntries()
+            .filter(entry => entry.initiatorType !== "fetch" || !entry.name.includes("images"));
+        const totalBytes = localEntries.filter(entry => entry.transferSize).reduce((accumulator, entry) => accumulator + entry.transferSize, 0);
+        const imageBytes = localEntries.filter(entry => entry.name.includes('images')).reduce((accumulator, entry) => accumulator + entry.transferSize, 0);
+
+        statsCookie.bytes = imageBytes;
+        statsCookie.images = localEntries.filter(entry => entry.name.includes("images") && entry.transferSize !== 0).length;
+        statsCookie.cssFiles = localEntries.filter(entry => entry.name.includes("css") && entry.transferSize !== 0).length;
+        statsCookie.jsFiles = localEntries.filter(entry => entry.name.includes("js") && entry.transferSize !== 0).length;
+        statsCookie.filesSavedByCache = 0;
+        statsCookie.bytesSavedByProd = 0;
+        statsCookie.bytesSavedByCompression = 0;
+        statsCookie.bytesSavedByClientSide = totalBytes - imageBytes;
+
+        statsCookie.updateStats();
+
+        fetch('/savehistory', {
+            credentials: "same-origin",
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json;charset=utf-8",
+            },
+            body: JSON.stringify({page: window.location.href}),
+        }).then(() => window.dispatchEvent(new Event('statsUpdate')));
     }
 
     componentDidMount() {
@@ -82,15 +123,20 @@ class AppRouter extends React.Component {
     }
 
     render() {
+        const statistcs = (props) => <Statistics {...props} pageLoaded={this.state.pageLoaded} updateClientSideStats={this.updateClientSideStats}/>;
+        const settingsWrapper = (props) => <SettingsWrapper {...props} pageLoaded={this.state.pageLoaded} updateClientSideStats={this.updateClientSideStats}/>;
+        const searchForm = (props) => <SearchForm {...props} pageLoaded={this.state.pageLoaded} updateClientSideStats={this.updateClientSideStats}/>;
+        const searchResults = (props) => <SearchResults {...props} pageLoaded={this.state.pageLoaded} updateClientSideStats={this.updateClientSideStats}/>;
+
         return (
             <Router>
                 <React.Fragment>
                     <Header/>
                     <Switch>
-                        <Route path="/stats" component={Statistics} />
-                        <Route path="/settings" component={SettingsWrapper} />
-                        <Route path="/search" component={SearchResults} />
-                        <Route path="/" component={SearchForm} />
+                        <Route path="/stats" render={statistcs}/>
+                        <Route path="/settings" component={settingsWrapper} />
+                        <Route path="/search" component={searchResults} />
+                        <Route path="/" component={searchForm} />
                     </Switch>
                 </React.Fragment>
             </Router>

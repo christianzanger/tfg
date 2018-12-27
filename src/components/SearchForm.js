@@ -13,6 +13,13 @@ export default class SearchForm extends React.Component {
         this.forceRerender = this.forceRerender.bind(this);
     }
 
+    componentDidMount() {
+        const settingsCookie = new SettingsCookie();
+        if (settingsCookie.clientSide && this.props.pageLoaded) {
+            this.props.updateClientSideStats();
+        }
+    }
+
     forceRerender() {
         this.forceUpdate();
     }

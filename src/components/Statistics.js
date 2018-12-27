@@ -34,6 +34,10 @@ export default class Statistics extends React.Component {
                     {
                         label: "Bytes saved by prod env",
                         backgroundColor: 'rgb(255, 87, 34)'
+                    },
+                    {
+                        label: "Bytes saved by client-side routing",
+                        backgroundColor: 'rgb(155,89,182)'
                     }
                 ]
             },
@@ -85,6 +89,7 @@ export default class Statistics extends React.Component {
                 stackedBar.data.datasets[1].data = data.map(row => row.bytesSavedByCache);
                 stackedBar.data.datasets[2].data = data.map(row => row.bytesSavedByCompression);
                 stackedBar.data.datasets[3].data = data.map(row => row.bytesSavedByProd);
+                stackedBar.data.datasets[4].data = data.map(row => row.bytesSavedByClientSide);
                 stackedBar.update();
             });
         }
@@ -104,6 +109,15 @@ export default class Statistics extends React.Component {
     componentDidMount() {
         const settingsCookie = new SettingsCookie();
         if (settingsCookie.clientSide) {
+            if (this.props.pageLoaded) {
+                this.props.updateClientSideStats();
+            }
+            this.loadChart();
+        }
+    }
+
+    componentDidUpdate() {
+        if (this.props.pageLoaded) {
             this.loadChart();
         }
     }

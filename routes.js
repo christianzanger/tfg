@@ -62,7 +62,6 @@ module.exports = (app, currentSessionsBuffer, fs) => {
             const settings = JSON.parse(req.cookies.settings);
             const responseFile = settings.clientSide ? 'clientRouting.html' : 'search.html';
             res.sendFile(`${__dirname}/public/pages/${responseFile}`);
-            res.sendFile(__dirname + '/public/pages/search.html');
         }
     };
 
@@ -115,7 +114,7 @@ module.exports = (app, currentSessionsBuffer, fs) => {
         const settings = JSON.parse(req.cookies.settings);
         const page = getPageFromURL(req.body.page);
         const queryColumns = `INSERT INTO user_history 
-                              (user_id, avg_load_time, loads, bytes, bytesSavedByCompression, bytesSavedByCache, filesSavedByCache, page, bytesSavedByProd) 
+                              (user_id, avg_load_time, loads, bytes, bytesSavedByCompression, bytesSavedByCache, filesSavedByCache, page, bytesSavedByProd, bytesSavedByClientSide) 
                               VALUES `;
         const historyQueryValues =  `("${stats.uid}", 
                                 ${stats.averageLoadTime > 0 ? stats.averageLoadTime : 0}, 
@@ -125,7 +124,8 @@ module.exports = (app, currentSessionsBuffer, fs) => {
                                 ${stats.bytesSavedByCache}, 
                                 ${stats.filesSavedByCache}, 
                                 "${decodeURIComponent(page)}",
-                                ${stats.bytesSavedByProd})`;
+                                ${stats.bytesSavedByProd},
+                                ${stats.bytesSavedByClientSide})`;
 
         connection.query(
             queryColumns + historyQueryValues,

@@ -28,6 +28,10 @@ export default class SearchResults extends React.Component {
 
             // Hide the progess bar
             document.querySelector('.progress').style.display = 'none';
+
+            if (this.props.pageLoaded) {
+                this.props.updateClientSideStats();
+            }
         }
     }
 
