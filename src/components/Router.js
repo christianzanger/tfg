@@ -72,6 +72,7 @@ class AppRouter extends React.Component {
         statsCookie.cssFiles = localEntries.filter(entry => entry.name.includes("css") && entry.transferSize !== 0).length;
         statsCookie.jsFiles = localEntries.filter(entry => entry.name.includes("js") && entry.transferSize !== 0).length;
         statsCookie.filesSavedByCache = cachedEntries.length;
+        statsCookie.bytesSavedByClientSide = 0;
 
         statsCookie.updateStats();
 
