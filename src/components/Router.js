@@ -93,7 +93,7 @@ class AppRouter extends React.Component {
         // The last 2 conditions are to filter out the HEAD requests in the search page
         const localEntries = window.performance.getEntries()
             .filter(entry => entry.initiatorType !== "fetch" || !entry.name.includes("images"));
-        const totalBytes = localEntries.filter(entry => entry.transferSize).reduce((accumulator, entry) => accumulator + entry.transferSize, 0);
+        const totalBytes = localEntries.filter(entry => entry.decodedBodySize).reduce((accumulator, entry) => accumulator + entry.decodedBodySize, 0);
         const imageBytes = localEntries.filter(entry => entry.name.includes('images')).reduce((accumulator, entry) => accumulator + entry.transferSize, 0);
 
         statsCookie.bytes = imageBytes;
@@ -101,6 +101,7 @@ class AppRouter extends React.Component {
         statsCookie.cssFiles = localEntries.filter(entry => entry.name.includes("css") && entry.transferSize !== 0).length;
         statsCookie.jsFiles = localEntries.filter(entry => entry.name.includes("js") && entry.transferSize !== 0).length;
         statsCookie.filesSavedByCache = 0;
+        statsCookie.bytesSavedByCache = 0;
         statsCookie.bytesSavedByProd = 0;
         statsCookie.bytesSavedByCompression = 0;
         statsCookie.bytesSavedByClientSide = totalBytes - imageBytes;

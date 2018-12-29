@@ -108,10 +108,8 @@ export default class Statistics extends React.Component {
 
     componentDidMount() {
         const settingsCookie = new SettingsCookie();
-        if (settingsCookie.clientSide) {
-            if (this.props.pageLoaded) {
-                this.props.updateClientSideStats();
-            }
+        if (settingsCookie.clientSide && this.props.pageLoaded) {
+            this.props.updateClientSideStats();
             this.loadChart();
         }
     }
