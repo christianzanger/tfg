@@ -82,9 +82,9 @@ class AppRouter extends React.Component {
                 "Content-Type": "application/json;charset=utf-8",
             },
             body: JSON.stringify({page: window.location.href}),
-        }).then(() => window.dispatchEvent(new Event('statsUpdate')));
-
-        this.setState(() => ({ pageLoaded: true }));
+        }).then(() => {
+            this.setState(() => ({ pageLoaded: true }));
+        });
     }
 
     updateClientSideStats() {
@@ -113,7 +113,7 @@ class AppRouter extends React.Component {
                 "Content-Type": "application/json;charset=utf-8",
             },
             body: JSON.stringify({page: window.location.href}),
-        }).then(() => window.dispatchEvent(new Event('statsUpdate')));
+        });
     }
 
     componentDidMount() {
@@ -123,7 +123,7 @@ class AppRouter extends React.Component {
     }
 
     render() {
-        const statistcs = (props) => <Statistics {...props} pageLoaded={this.state.pageLoaded} updateClientSideStats={this.updateClientSideStats}/>;
+        const statistics = (props) => <Statistics {...props} pageLoaded={this.state.pageLoaded} updateClientSideStats={this.updateClientSideStats}/>;
         const settingsWrapper = (props) => <SettingsWrapper {...props} pageLoaded={this.state.pageLoaded} updateClientSideStats={this.updateClientSideStats}/>;
         const searchForm = (props) => <SearchForm {...props} pageLoaded={this.state.pageLoaded} updateClientSideStats={this.updateClientSideStats}/>;
         const searchResults = (props) => <SearchResults {...props} pageLoaded={this.state.pageLoaded} updateClientSideStats={this.updateClientSideStats}/>;
@@ -133,10 +133,10 @@ class AppRouter extends React.Component {
                 <React.Fragment>
                     <Header/>
                     <Switch>
-                        <Route path="/stats" render={statistcs}/>
-                        <Route path="/settings" component={settingsWrapper} />
-                        <Route path="/search" component={searchResults} />
-                        <Route path="/" component={searchForm} />
+                        <Route path="/stats" render={statistics}/>
+                        <Route path="/settings" render={settingsWrapper} />
+                        <Route path="/search" render={searchResults} />
+                        <Route path="/" render={searchForm} />
                     </Switch>
                 </React.Fragment>
             </Router>
