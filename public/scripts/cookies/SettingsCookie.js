@@ -10,6 +10,7 @@ export default class SettingsCookie {
         this.tutorialStep = cookie.tutorialStep;
         this.minification = cookie.minification;
         this.clientSide = cookie.clientSide;
+        this.renderBlocking = cookie.renderBlocking;
     }
 
     update () {

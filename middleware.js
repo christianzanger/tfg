@@ -53,6 +53,7 @@ module.exports = (app, currentSessionsBuffer, express) => {
                 compression: false,
                 minification: false,
                 clientSide: false,
+                renderBlocking: true,
                 tutorialStep: 1
             }));
         }
