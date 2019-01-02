@@ -119,9 +119,15 @@ class AppRouter extends React.Component {
     }
 
     componentDidMount() {
-        window.addEventListener('load', () =>
-            setTimeout(this.pageLoadedHandler, 0)
-        );
+        const settingsCookie = new SettingsCookie();
+        if (!settingsCookie.renderBlocking) {
+            window.addEventListener('load', () =>
+                setTimeout(this.pageLoadedHandler, 0)
+            );
+        } else {
+            this.pageLoadedHandler();
+        }
+
     }
 
     render() {

@@ -19,6 +19,7 @@ class SettingsPage extends React.Component {
         const styles = document.createElement('link');
 
         materializeJS.src = `${cached}/scripts/vendors/materialize.min.js`;
+        materializeJS.id = 'materializeJS';
         materializeJS.onload = () => {
             const collapsibles = document.querySelectorAll('.collapsible');
             M.Collapsible.init(collapsibles);

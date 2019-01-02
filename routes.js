@@ -162,8 +162,18 @@ module.exports = (app, currentSessionsBuffer, fs) => {
     };
 
     const home = (req, res) => {
-        const settings = JSON.parse(req.cookies.settings);
+        const defaultSettings = {
+            cache: false,
+            compression: false,
+            minification: false,
+            clientSide: false,
+            renderBlocking: true,
+            tutorialStep: 1
+        };
+
+        const settings = req.cookies.settings ? JSON.parse(req.cookies.settings) : defaultSettings;
         const responseFile = settings.clientSide ? 'clientRouting.html' : 'index.html';
+
         res.setHeader('Cache-Control', 'no-cache, no-store');
         res.sendFile(`${__dirname}/public/pages/${responseFile}`);
     };

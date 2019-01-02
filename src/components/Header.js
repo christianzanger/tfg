@@ -2,15 +2,13 @@ import React from 'react';
 import SettingsCookie from "../../public/scripts/cookies/SettingsCookie";
 import StatsCookie from "../../public/scripts/cookies/StatsCookie";
 import NavigationLink from "./NavigationLink";
-// import StatisticsPage from "./pages/StatisticsPage";
-// import IndexPage from "./pages/IndexPage";
 
 
 export default class Header extends React.Component {
 
     resetCookies() {
-        SettingsCookie.reset();
         fetch('/stats/reset', {credentials: "same-origin"}).then(() => {
+            SettingsCookie.reset();
             StatsCookie.reset();
             location.href = "/"
         });

@@ -39,7 +39,8 @@ module.exports = (app, currentSessionsBuffer, express) => {
                 bytesSavedByCache: 0,
                 filesSavedByCache: 0,
                 bytesSavedByProd: 0,
-                bytesSavedByClientSide: 0
+                bytesSavedByClientSide: 0,
+                msWastedByRenderBlocking: 0
             }));
         }
         next();
@@ -48,6 +49,7 @@ module.exports = (app, currentSessionsBuffer, express) => {
     // Used to initialize the settings cookie
     app.use((req, res, next) => {
         if (!req.cookies.settings) {
+            console.log("No settings cookie: " + req.originalUrl);
             res.cookie("settings", JSON.stringify({
                 cache: false,
                 compression: false,

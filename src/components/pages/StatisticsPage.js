@@ -22,6 +22,7 @@ export default class StatisticsPage extends React.Component {
         const styles = document.createElement('link');
 
         materializeJS.src = `${cached}/scripts/vendors/materialize.min.js`;
+        materializeJS.id = 'materializeJS';
         classicApp.src = `${cached}${minification}/scripts/classicApp${minificationExtension}.js`;
         classicApp.type = "module";
         classicApp.crossOrigin = "use-credentials";

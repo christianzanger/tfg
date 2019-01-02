@@ -25,7 +25,8 @@ export default class Step1 extends React.Component {
     }
 
     componentDidMount() {
-        window.addEventListener('load', () => {
+        const $materializeJS = document.getElementById('materializeJS');
+        $materializeJS.addEventListener('load', () => {
             const $modal = document.getElementById('modal1');
             const modalSettings = {
                 onCloseEnd: this.handleDismissal
