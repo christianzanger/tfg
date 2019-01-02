@@ -53,23 +53,30 @@ async function getStats() {
         return response.json();
     }).then(data => {
         const bytesSavedByCompression = data.reduce((accumulator, entry) => accumulator + entry.bytesSavedByCompression, 0);
+        const msWastedByRenderBlocking = data.reduce((accumulator, entry) => accumulator + entry.msWastedByRenderBlocking, 0);
         const bytesSavedByCache = data.reduce((accumulator, entry) => accumulator + entry.bytesSavedByCache, 0);
         const filesSavedByCache = data.reduce((acculator, entry) => acculator + entry.filesSavedByCache, 0);
-        const $compressionSavings = document.getElementById('compressionSavings');
-        const $cacheSavings = document.getElementById('cacheSavings');
-        const $cacheFileSavings = document.getElementById('cachefileSavings');
 
         if (bytesSavedByCompression > 0) {
+            const $compressionSavings = document.getElementById('compressionSavings');
             $compressionSavings.innerHTML = formatBytes(bytesSavedByCompression);
             $compressionSavings.parentElement.classList.remove('hidden');
         }
 
         if (bytesSavedByCache > 0) {
+            const $cacheSavings = document.getElementById('cacheSavings');
             $cacheSavings.innerHTML = formatBytes(bytesSavedByCache);
             $cacheSavings.parentElement.classList.remove('hidden');
 
+            const $cacheFileSavings = document.getElementById('cachefileSavings');
             $cacheFileSavings.innerHTML = filesSavedByCache;
             $cacheFileSavings.parentElement.classList.remove('hidden');
+        }
+
+        if (msWastedByRenderBlocking > 0) {
+            const $msWastedByRenderBlocking = document.getElementById('msWastedByRenderBlocking');
+            $msWastedByRenderBlocking.innerHTML = msWastedByRenderBlocking;
+            $msWastedByRenderBlocking.parentElement.classList.remove('hidden');
         }
 
         document.getElementById("nImages").innerHTML = data.reduce((accumulator, entry) => accumulator + entry.images, 0);

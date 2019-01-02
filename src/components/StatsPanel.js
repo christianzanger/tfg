@@ -9,6 +9,7 @@ export default class StatsPanel extends React.Component {
                 <div>Pages loaded: <span id="pageLoads">Loading...</span></div>
                 <div className="hidden">Savings from compression: <span id="compressionSavings">Loading...</span></div>
                 <div className="hidden">Savings from cache: <span id="cacheSavings">Loading...</span></div>
+                <div className="hidden">Milliseconds wasted by render-blocking JS: <span id="msWastedByRenderBlocking">Loading...</span> ms</div>
                 <br />
                 <h4>Downloaded resources</h4>
                 <div>Images: <span id="nImages">Loading...</span></div>

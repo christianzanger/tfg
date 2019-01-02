@@ -14,6 +14,7 @@ const pageLoadedHandler = () => {
                          .filter(entry => entry.initiatorType !== "fetch" || !entry.name.includes("images"));
     const cachedEntries = localEntries.filter(entry => entry.transferSize === 0);
     const reactDevBytes = 1355907;
+    const msWastedByRenderBlocking = 1500;
 
     if (settingsCookie.compression) {
         let compressedEntries;
@@ -40,6 +41,12 @@ const pageLoadedHandler = () => {
         statsCookie.bytesSavedByProd = reactDevBytes;
     } else {
         statsCookie.bytesSavedByProd = 0;
+    }
+
+    if (settingsCookie.renderBlocking) {
+        statsCookie.msWastedByRenderBlocking = msWastedByRenderBlocking;
+    } else {
+        statsCookie.msWastedByRenderBlocking = 0;
     }
 
     statsCookie.bytes = localEntries.filter(entry => entry.transferSize).reduce((accumulator, entry) => accumulator + entry.transferSize, 0);
