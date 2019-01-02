@@ -127,7 +127,6 @@ class AppRouter extends React.Component {
         } else {
             this.pageLoadedHandler();
         }
-
     }
 
     render() {

@@ -16,7 +16,7 @@ export default class ClientRoutingExplained extends React.Component {
                     On modern front-end libraries the user normally doesn't download the final HTML but an empty placeholder body with a JS bundle. It's
                     then the library's job to render the view into de DOM with JS.
                     <br/><br/>
-                    <strong>Server-side routing</strong> refers to having the front-end library handle the routing. This means that when the URL changes from clicking on a link,
+                    <strong>Client-side routing</strong> refers to having the front-end library handle the routing. This means that when the URL changes from clicking on a link,
                     <strong> the library detects that and instead of sending a request to the server to download the new document, it renders the necessary components into
                         the view without making a request to the server</strong>. This is specially useful for SPAs or different pages that will always mantain some elements
                     (for example the Header and the Footer and the sidebar will always be visible and rendered). If you need new data for a specific view, you can
