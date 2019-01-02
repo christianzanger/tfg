@@ -1,4 +1,5 @@
 import Cookie from './Cookie.js';
+import SettingsCookie from "./SettingsCookie.js";
 
 export default class StatsCookie {
 
@@ -18,8 +19,13 @@ export default class StatsCookie {
     }
 
     updateStats () {
+        const settingsCookie = new SettingsCookie();
         const lastSumOfTimes = this.averageLoadTime * this.numberOfLoads || 0;
-        const currentTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+        let currentTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+
+        if (settingsCookie.renderBlocking) {
+            currentTime += 1500;
+        }
 
         this.numberOfLoads++;
 

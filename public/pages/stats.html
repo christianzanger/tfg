@@ -21,30 +21,46 @@
         };
 
         const settingsCookie = JSON.parse(decodeURIComponent(searchForSettingsCookie()));
-        const cacheables = document.querySelectorAll('[data-cacheable]');
 
-        cacheables.forEach( $element => {
-            const minification = settingsCookie.minification ? '/minified' : '';
-            const minificationExtension = settingsCookie.minification ? '.min.' : '';
-            const cached = settingsCookie.cache ? '/cached' : '';
-            let resourceURL = $element.dataset.cacheable;
+        function handleCachedAndMinified() {
+            const cacheables = document.querySelectorAll('[data-cacheable]');
 
-            if (minification && !$element.dataset.cacheable.includes('.min')) {
-                resourceURL = minification + resourceURL.replace('.', minificationExtension);
-            }
+            cacheables.forEach($element => {
+                const minification = settingsCookie.minification ? '/minified' : '';
+                const minificationExtension = settingsCookie.minification ? '.min.' : '';
+                const cached = settingsCookie.cache ? '/cached' : '';
+                let resourceURL = $element.dataset.cacheable;
 
-            if (cached) {
-                resourceURL = cached + resourceURL;
-            }
+                if (minification && !$element.dataset.cacheable.includes('.min')) {
+                    resourceURL = minification + resourceURL.replace('.', minificationExtension);
+                }
 
-            if ($element.nodeName === "LINK") {
-                $element.href = resourceURL;
-            }
+                if (cached) {
+                    resourceURL = cached + resourceURL;
+                }
 
-            if ($element.nodeName === "SCRIPT") {
-                $element.src = resourceURL;
-            }
-        });
+                if ($element.nodeName === "LINK") {
+                    $element.href = resourceURL;
+                }
+
+                if ($element.nodeName === "SCRIPT") {
+                    $element.src = resourceURL;
+                }
+            });
+        }
+
+        if (settingsCookie.renderBlocking) {
+            const renderBlockingScript = `
+                    setTimeout(handleCachedAndMinified, 1500);
+                `;
+            const renderBlockingJS = document.createElement('script');
+            renderBlockingJS.setAttribute('type', 'text/javascript');
+            renderBlockingJS.innerHTML = renderBlockingScript;
+
+            document.head.appendChild(renderBlockingJS);
+        } else {
+            handleCachedAndMinified();
+        }
     </script>
 </body>
 </html>

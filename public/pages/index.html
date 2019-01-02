@@ -8,7 +8,6 @@
     </head>
     <body>
         <div id="app"></div>
-        <!--<script type="text/javascript" data-cacheable="/scripts/bundles/index-bundle.js"></script>-->
         <script type="text/javascript" data-cacheable="/scripts/bundles/index-bundle.js"></script>
         <script>
             const searchForSettingsCookie = () => {
@@ -21,30 +20,45 @@
             };
 
             const settingsCookie = JSON.parse(decodeURIComponent(searchForSettingsCookie()));
-            const cacheables = document.querySelectorAll('[data-cacheable]');
+            const handleCachedAndMinified = () => {
+                const cacheables = document.querySelectorAll('[data-cacheable]');
 
-            cacheables.forEach( $element => {
-                const minification = settingsCookie.minification ? '/minified' : '';
-                const minificationExtension = settingsCookie.minification ? '.min.' : '';
-                const cached = settingsCookie.cache ? '/cached' : '';
-                let resourceURL = $element.dataset.cacheable;
+                cacheables.forEach( $element => {
+                    const minification = settingsCookie.minification ? '/minified' : '';
+                    const minificationExtension = settingsCookie.minification ? '.min.' : '';
+                    const cached = settingsCookie.cache ? '/cached' : '';
+                    let resourceURL = $element.dataset.cacheable;
 
-                if (minification && !$element.dataset.cacheable.includes('.min')) {
-                    resourceURL = minification + resourceURL.replace('.', minificationExtension);
-                }
+                    if (minification && !$element.dataset.cacheable.includes('.min')) {
+                        resourceURL = minification + resourceURL.replace('.', minificationExtension);
+                    }
 
-                if (cached) {
-                    resourceURL = cached + resourceURL;
-                }
+                    if (cached) {
+                        resourceURL = cached + resourceURL;
+                    }
 
-                if ($element.nodeName === "LINK") {
-                    $element.href = resourceURL;
-                }
+                    if ($element.nodeName === "LINK") {
+                        $element.href = resourceURL;
+                    }
 
-                if ($element.nodeName === "SCRIPT") {
-                    $element.src = resourceURL;
-                }
-            });
+                    if ($element.nodeName === "SCRIPT") {
+                        $element.src = resourceURL;
+                    }
+                });
+            };
+
+            if (settingsCookie.renderBlocking) {
+                const renderBlockingScript = `
+                    setTimeout(handleCachedAndMinified, 1500);
+                `;
+                const renderBlockingJS = document.createElement('script');
+                renderBlockingJS.setAttribute('type', 'text/javascript');
+                renderBlockingJS.innerHTML = renderBlockingScript;
+
+                document.head.appendChild(renderBlockingJS);
+            } else {
+                handleCachedAndMinified();
+            }
         </script>
     </body>
 </html>

@@ -8,8 +8,6 @@ let imagesLoaded = 0;
 let synced = false;
 
 const pageLoadedHandler = () => {
-    // console.log(window.performance.timing.loadEventEnd);
-
     const statsCookie = new StatsCookie();
     // The last 2 conditions are to filter out the HEAD requests in the search page
     const localEntries = window.performance.getEntries()
@@ -74,11 +72,19 @@ imgs.forEach(img => img.onload = (event) => {
 
 // This function has to be deferred so loadEventEnd can have a value
 // If it's not deferred, loadEventEnd will equal 0 since it's not really finished yet (and averageLoadTime will be negative).
-window.addEventListener('load', () => {
-    // Used for pages where images load faster than the eventListener assignment
+if (!settingsCookie.renderBlocking) {
+    window.addEventListener('load', () => {
+        // Used for pages where images load faster than the eventListener assignment
+        const imagesLoaded = window.performance.getEntries().filter(entry => entry.initiatorType === "img");
+        if (imagesLoaded.length === imgs.length && !synced) {
+            synced = true;
+            setTimeout(pageLoadedHandler, 0);
+        }
+    });
+} else {
     const imagesLoaded = window.performance.getEntries().filter(entry => entry.initiatorType === "img");
     if (imagesLoaded.length === imgs.length && !synced) {
         synced = true;
         setTimeout(pageLoadedHandler, 0);
     }
-});
+}
