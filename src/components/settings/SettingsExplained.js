@@ -5,6 +5,7 @@ import CompressionExplained from "./settingsExplained/CompressionExplained";
 import CacheExplained from "./settingsExplained/CacheExplained";
 import ProductionExplained from "./settingsExplained/ProductionExplained";
 import ClientRoutingExplained from "./settingsExplained/ClientRoutingExplained";
+import RenderBlockingExplained from "./settingsExplained/RenderBlockingExplained";
 
 export default class SettingsExplained extends React.Component {
     constructor(props) {
@@ -38,6 +39,7 @@ export default class SettingsExplained extends React.Component {
                     <CacheExplained/>
                     <ProductionExplained/>
                     <ClientRoutingExplained/>
+                    <RenderBlockingExplained/>
                 </ul>
             </div>
         );

@@ -1,6 +1,6 @@
 import React from "react";
 
-export default class SettingsPanel extends React.Component {
+export default class ProductionExplained extends React.Component {
     render () {
         return (
             <li>
