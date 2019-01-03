@@ -193,7 +193,7 @@ module.exports = (app, currentSessionsBuffer, fs) => {
     };
 
     const _404 = (req, res) => {
-        console.log(`404: ${req.originalUrl}`);
+        console.log(`404 [${new Date()}]: ${req.originalUrl} IP: ${req.connection.remoteAddress}`);
         res.status(404).send("Sorry can't find that!")
     };
 
