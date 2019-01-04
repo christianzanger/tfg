@@ -1,6 +1,6 @@
 import SettingsCookie from './cookies/SettingsCookie.js';
 
-const imgs = document.querySelectorAll("img");
+const imgs = document.getElementById('app').querySelectorAll("img");
 const query = window.location.search.substring(3);
 
 const assignSrc = (img, index) => {

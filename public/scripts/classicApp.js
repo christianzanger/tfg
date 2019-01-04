@@ -1,7 +1,7 @@
 import SettingsCookie from './cookies/SettingsCookie.js';
 import StatsCookie from './cookies/StatsCookie.js';
 
-const imgs = document.querySelectorAll("img");
+const imgs = document.getElementById('app').querySelectorAll("img");
 const settingsCookie = new SettingsCookie();
 
 let imagesLoaded = 0;

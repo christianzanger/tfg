@@ -24,9 +24,6 @@ export default class Header extends React.Component {
                             <NavigationLink url="/" text="Home" />
                         </li>
                         <li>
-                            <NavigationLink url="#" text="FAQ" />
-                        </li>
-                        <li>
                             <NavigationLink url="/stats" id="statsLink" text="Stats" />
                         </li>
                         <li>
