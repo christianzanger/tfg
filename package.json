@@ -7,7 +7,9 @@
     "build": "webpack --progress",
     "watch": "webpack --watch",
     "minify": "webpack --config webpack-minify.config.js --progress",
-    "create-stats": "webpack --json > stats.json"
+    "create-stats": "webpack --json > stats.json",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
     "babel-cli": "6.24.1",
@@ -35,12 +37,14 @@
     "sass-loader": "6.0.7",
     "style-loader": "0.18.2",
     "validator": "8.0.0",
-    "webpack-dev-server": "2.11.4"
+    "webpack-dev-server": "2.11.4",
+    "snyk": "^1.316.1"
   },
   "devDependencies": {
     "babel-minify-webpack-plugin": "^0.3.1",
     "react-router-dom": "^4.3.1",
     "webpack": "^4.27.1",
     "webpack-cli": "^3.1.2"
-  }
+  },
+  "snyk": true
 }
