@@ -33,7 +33,7 @@
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
     "sass-loader": "6.0.7",
-    "style-loader": "0.18.2",
+    "style-loader": "0.20.0",
     "validator": "8.0.0",
     "webpack-dev-server": "2.11.4"
   },
